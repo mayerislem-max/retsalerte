@@ -860,7 +860,10 @@ function drawLine(id,labels,values,color){
 async function doRef(btn){
   if(!btn)return;btn.classList.add("loading");
   let txt=null;
-  try{const r=await fetch("/.netlify/functions/sheets",{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}
+  // Essai 1 : direct Google Sheets (CORS public)
+  try{const r=await fetch(SHEETS,{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}
+  // Essai 2 : proxy CORS public si direct échoue
+  if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(SHEETS),{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
   const upEl=document.getElementById("lastUpdate");
   if(txt){
     parseAndLoad(txt);
