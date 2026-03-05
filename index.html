@@ -101,7 +101,7 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 .card-list{display:flex;flex-direction:column;gap:6px;}
 .card{background:var(--s1);border:1px solid var(--bd2);border-radius:10px;overflow:hidden;display:grid;grid-template-columns:3px 1fr 175px;transition:all .2s cubic-bezier(.4,0,.2,1);position:relative;cursor:pointer;}
 .card::after{content:"";position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 10px 10px 0;border-color:transparent var(--bd3) transparent transparent;transition:border-color .2s;}
-.card:hover{background:var(--s2);border-color:var(--bd3);transform:translateX(4px);box-shadow:var(--sh);}
+.card:hover{background:var(--s2);border-color:rgba(255,80,0,.25);transform:translateX(5px);box-shadow:0 4px 20px rgba(0,0,0,.4);}
 .card:hover::after{border-color:transparent var(--or) transparent transparent;}
 @keyframes cardIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
 .cbar{}
@@ -109,14 +109,17 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 .card.sw .cbar{background:var(--amber);}
 .card.sk .cbar{background:var(--green);}
 .card.sd .cbar{background:var(--ink4);}
-.cbody{padding:12px 15px;display:flex;align-items:center;gap:12px;}
-.cav{width:40px;height:40px;border-radius:8px;background:var(--s3);border:1px solid var(--bd3);display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:1rem;letter-spacing:1px;color:var(--or2);flex-shrink:0;transition:all .2s;}
-.card:hover .cav{border-color:rgba(255,80,0,.3);background:var(--or5);}
+.cbody{padding:14px 16px;display:flex;align-items:center;gap:14px;}
+.cav{width:44px;height:44px;border-radius:10px;background:var(--s3);border:1px solid var(--bd3);display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:1.05rem;letter-spacing:1px;color:var(--or2);flex-shrink:0;transition:all .2s;}
+.card.su .cav{background:rgba(255,26,64,.12);border-color:rgba(255,26,64,.25);color:var(--red);}
+.card.sw .cav{background:rgba(255,170,0,.1);border-color:rgba(255,170,0,.22);color:var(--amber);}
+.card.sk .cav{background:rgba(0,230,118,.08);border-color:rgba(0,230,118,.2);color:var(--green);}
+.card:hover .cav{transform:scale(1.05);box-shadow:0 4px 12px rgba(0,0,0,.3);}
 .cinfo{flex:1;min-width:0;}
 .ctop{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:4px;}
-.cid{font-family:"Bebas Neue",sans-serif;font-size:1rem;letter-spacing:2px;}
-.ctech{font-size:.82rem;font-weight:500;color:var(--ink2);margin-bottom:3px;}
-.cmeta{display:flex;gap:12px;flex-wrap:wrap;font-size:.67rem;color:var(--ink3);}
+.cid{font-family:"Bebas Neue",sans-serif;font-size:1.05rem;letter-spacing:2px;color:var(--ink);}
+.ctech{font-size:.85rem;font-weight:600;color:var(--ink);margin-bottom:4px;letter-spacing:.3px;}
+.cmeta{display:flex;gap:14px;flex-wrap:wrap;font-size:.7rem;color:var(--ink2);}
 .tag{font-family:"JetBrains Mono",monospace;font-size:.52rem;letter-spacing:1px;padding:2px 7px;border-radius:3px;text-transform:uppercase;}
 .t-pms{background:rgba(255,80,0,.12);color:var(--or2);border:1px solid rgba(255,80,0,.22);}
 .t-pli{background:rgba(0,230,118,.07);color:var(--green);border:1px solid rgba(0,230,118,.18);}
@@ -127,7 +130,7 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
 .t-sk{background:rgba(0,230,118,.07);color:var(--green);border:1px solid rgba(0,230,118,.16);}
 .t-sd{background:var(--s3);color:var(--ink4);border:1px solid var(--bd2);}
 .cright{border-left:1px solid var(--bd);padding:12px 15px;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;}
-.cdn{font-family:"Bebas Neue",sans-serif;font-size:1.6rem;letter-spacing:2px;line-height:1;text-align:right;}
+.cdn{font-family:"Bebas Neue",sans-serif;font-size:1.75rem;letter-spacing:2px;line-height:1;text-align:right;}
 .card.su .cdn{color:var(--red);}
 .card.sw .cdn{color:var(--amber);}
 .card.sk .cdn{color:var(--green);}
@@ -320,6 +323,7 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
     <div class="tb-sep"></div>
     <span class="tb-pill" id="tbPill">Percutions 48h</span>
     <div class="tb-right">
+      <span id="lastUpdate" style="font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:1.5px;color:var(--ink4);"></span>
       <button class="btn-sm" onclick="doRef(this)" id="btnRef"><span class="sp">↻</span> Actualiser</button>
     </div>
   </div>
@@ -777,6 +781,29 @@ function toast(msg,cls=""){
 initData(RAW);
 updK();
 rAcc();
+
+// CHARGEMENT AUTO dès l'ouverture
+(async () => {
+  const btn = document.getElementById("btnRef");
+  if(btn) btn.classList.add("loading");
+  let txt = null;
+  try {
+    const r = await fetch("/.netlify/functions/sheets", {signal: AbortSignal.timeout(10000)});
+    if(r.ok){ const t = await r.text(); if(t && t.length > 20 && !t.startsWith("<")) txt = t; }
+  } catch(e) {}
+  if(txt){
+    parseAndLoad(txt);
+    const now = new Date().toLocaleTimeString("fr-FR");
+    document.getElementById("sbSync").innerHTML = `Sync <span>${now}</span>`;
+    document.getElementById("stxt").innerHTML = `Dernière sync · <strong>${now}</strong> · <strong>${D.length}</strong> dossiers`;
+    document.getElementById("lastUpdate").textContent = "Mis à jour à " + now;
+    document.getElementById("lastUpdate").style.color = "var(--green)";
+  } else {
+    document.getElementById("lastUpdate").textContent = "Données locales (05/03)";
+    document.getElementById("lastUpdate").style.color = "var(--amber)";
+  }
+  if(btn) btn.classList.remove("loading");
+})();
 </script>
 </body>
 </html>
