@@ -26,6 +26,124 @@ body::before{content:"";position:fixed;inset:0;
     radial-gradient(ellipse 500px 400px at 50% 110%,rgba(10,132,255,.04) 0%,transparent 50%);
   pointer-events:none;z-index:0;}
 
+/* ─── LOGIN SCREEN ─── */
+.login-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;}
+.login-screen::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 800px 600px at 50% 30%,rgba(255,85,0,.1) 0%,transparent 60%),radial-gradient(ellipse 600px 400px at 80% 80%,rgba(191,90,242,.07) 0%,transparent 55%);pointer-events:none;}
+.login-logo{font-family:"Bebas Neue",sans-serif;font-size:3rem;letter-spacing:4px;color:var(--or);margin-bottom:4px;text-shadow:0 0 40px rgba(255,85,0,.4);}
+.login-sub{font-family:"JetBrains Mono",monospace;font-size:.55rem;letter-spacing:4px;color:var(--ink3);margin-bottom:36px;text-transform:uppercase;}
+.login-cards{display:flex;gap:16px;width:100%;max-width:520px;flex-wrap:wrap;justify-content:center;}
+.login-card{flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid var(--bd2);border-radius:20px;padding:28px 24px;cursor:pointer;transition:all .22s;text-align:center;position:relative;}
+.login-card:hover{background:rgba(255,255,255,.07);border-color:rgba(255,85,0,.25);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.4);}
+.login-card.admin-card{border-color:rgba(255,85,0,.18);}
+.login-card.ca-card{border-color:rgba(10,132,255,.18);}
+.login-card-ico{font-size:2.2rem;margin-bottom:12px;}
+.login-card-name{font-family:"Bebas Neue",sans-serif;font-size:1.3rem;letter-spacing:2px;margin-bottom:6px;}
+.login-card.admin-card .login-card-name{color:var(--or2);}
+.login-card.ca-card .login-card-name{color:#0a84ff;}
+.login-card-desc{font-size:.65rem;color:var(--ink3);line-height:1.6;}
+.login-card-badge{position:absolute;top:14px;right:14px;padding:3px 8px;border-radius:6px;font-family:"JetBrains Mono",monospace;font-size:.5rem;letter-spacing:1px;}
+.login-card.admin-card .login-card-badge{background:rgba(255,85,0,.15);color:var(--or2);border:1px solid rgba(255,85,0,.2);}
+.login-card.ca-card .login-card-badge{background:rgba(10,132,255,.12);color:#0a84ff;border:1px solid rgba(10,132,255,.2);}
+/* Code modal */
+.code-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;}
+.code-modal.open{opacity:1;pointer-events:all;}
+.code-box{background:var(--s2);border:1px solid rgba(255,85,0,.25);border-radius:20px;padding:32px 28px;width:100%;max-width:340px;text-align:center;}
+.code-box-title{font-family:"Bebas Neue",sans-serif;font-size:1.4rem;letter-spacing:2px;color:var(--or2);margin-bottom:8px;}
+.code-box-sub{font-size:.7rem;color:var(--ink3);margin-bottom:24px;}
+.code-input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:12px;padding:14px;font-family:"JetBrains Mono",monospace;font-size:1.1rem;text-align:center;letter-spacing:4px;outline:none;margin-bottom:8px;transition:border-color .18s;}
+.code-input:focus{border-color:rgba(255,85,0,.4);}
+.code-error{font-size:.65rem;color:var(--red);min-height:18px;margin-bottom:12px;}
+.code-btn{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,var(--or),#cc4400);border:none;color:#fff;font-family:"JetBrains Mono",monospace;font-size:.65rem;letter-spacing:2px;cursor:pointer;transition:all .18s;margin-bottom:10px;}
+.code-btn:hover{opacity:.85;}
+.code-cancel{width:100%;padding:10px;border-radius:10px;background:transparent;border:1px solid var(--bd2);color:var(--ink3);font-family:"JetBrains Mono",monospace;font-size:.6rem;cursor:pointer;transition:all .15s;}
+.code-cancel:hover{background:rgba(255,255,255,.05);}
+/* Profil badge dans topbar */
+.tb-profil{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid var(--bd2);cursor:pointer;transition:all .15s;}
+.tb-profil:hover{background:rgba(255,255,255,.09);}
+.tb-profil-dot{width:7px;height:7px;border-radius:50%;}
+.tb-profil-dot.admin{background:var(--or);box-shadow:0 0 6px var(--or);}
+.tb-profil-dot.ca{background:#0a84ff;box-shadow:0 0 6px #0a84ff;}
+.tb-profil-name{font-family:"JetBrains Mono",monospace;font-size:.55rem;letter-spacing:1px;color:var(--ink2);}
+/* Masquer éléments admin pour CA */
+.admin-only{display:none;}
+body.is-admin .admin-only{display:flex;}
+body.is-admin .admin-only-block{display:block;}
+
+/* ─── NOUVELLES FONCTIONNALITÉS ─── */
+
+/* Indicateur global */
+.global-indicator{display:flex;align-items:center;gap:6px;padding:5px 11px;border-radius:10px;border:1px solid var(--bd2);background:rgba(255,255,255,.04);cursor:default;}
+.gi-dot{width:9px;height:9px;border-radius:50%;transition:all .4s;}
+.gi-dot.green{background:#30d158;box-shadow:0 0 8px #30d158;}
+.gi-dot.amber{background:#ffcc00;box-shadow:0 0 8px #ffcc00;}
+.gi-dot.red{background:#ff2d55;box-shadow:0 0 8px #ff2d55;animation:pulse-dot 1.2s infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+.gi-label{font-family:"JetBrains Mono",monospace;font-size:.52rem;letter-spacing:1px;color:var(--ink2);}
+
+/* Boutons icônes topbar */
+.tb-icon-btn{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.05);border:1px solid var(--bd2);color:var(--ink2);cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
+.tb-icon-btn:hover{background:rgba(255,255,255,.1);}
+.tb-icon-btn.active{background:rgba(255,85,0,.15);border-color:rgba(255,85,0,.3);}
+
+/* Recherche rapide */
+.quick-search-bar{display:none;padding:8px 24px 8px;border-bottom:1px solid var(--bd);background:var(--s1);position:relative;}
+.quick-search-bar.open{display:block;}
+.quick-search-bar input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,85,0,.3);color:#fff;border-radius:12px;padding:11px 16px;font-family:"Inter",sans-serif;font-size:.9rem;outline:none;}
+.qs-results{position:absolute;top:100%;left:24px;right:24px;background:var(--s2);border:1px solid var(--bd2);border-radius:14px;max-height:320px;overflow-y:auto;z-index:200;box-shadow:var(--sh2);}
+.qs-item{display:flex;align-items:center;gap:12px;padding:10px 16px;cursor:pointer;border-bottom:1px solid var(--bd);transition:background .12s;}
+.qs-item:hover{background:rgba(255,85,0,.08);}
+.qs-item:last-child{border-bottom:none;}
+.qs-id{font-family:"JetBrains Mono",monospace;font-size:.65rem;color:var(--or2);width:90px;flex-shrink:0;}
+.qs-info{flex:1;font-size:.8rem;font-weight:500;}
+.qs-meta{font-size:.65rem;color:var(--ink3);}
+.qs-status{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* Mode jour */
+body.day-mode{--bg:#f0f0f5;--s1:#ffffff;--s2:#f5f5fa;--s3:#ebebf0;--s4:#e0e0e8;--ink:#1a1a2e;--ink2:rgba(26,26,46,.85);--ink3:rgba(26,26,46,.45);--ink4:rgba(26,26,46,.2);--bd:rgba(0,0,0,.08);--bd2:rgba(0,0,0,.12);}
+body.day-mode::before{background:radial-gradient(ellipse 900px 700px at 90% -5%,rgba(255,85,0,.06) 0%,transparent 55%);}
+
+/* Techniciens grid */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.tech-card-mgr{background:rgba(255,255,255,.04);border:1px solid var(--bd);border-radius:14px;padding:16px;transition:all .18s;}
+.tech-card-mgr.inactive{opacity:.45;border-style:dashed;}
+.tech-card-mgr-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.tech-av-lg{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--or),#cc4400);display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:1.1rem;color:#fff;flex-shrink:0;}
+.tech-av-lg.inactive{background:linear-gradient(135deg,#555,#333);}
+.tech-name-lg{font-weight:600;font-size:.88rem;flex:1;}
+.tech-id-sm{font-family:"JetBrains Mono",monospace;font-size:.55rem;color:var(--ink3);}
+.tech-toggle{width:42px;height:24px;border-radius:12px;border:none;cursor:pointer;position:relative;transition:all .2s;flex-shrink:0;}
+.tech-toggle.on{background:var(--green);}
+.tech-toggle.off{background:rgba(255,255,255,.12);}
+.tech-toggle::after{content:"";position:absolute;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:all .2s;}
+.tech-toggle.on::after{left:21px;}
+.tech-toggle.off::after{left:3px;}
+.tech-stats-row{display:flex;gap:8px;margin-bottom:10px;}
+.tech-stat-sm{flex:1;background:rgba(255,255,255,.04);border-radius:8px;padding:6px;text-align:center;}
+.tech-stat-n{font-family:"Bebas Neue",sans-serif;font-size:1.1rem;color:var(--or2);}
+.tech-stat-l{font-size:.5rem;color:var(--ink3);text-transform:uppercase;letter-spacing:1px;}
+.tech-note-area{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--bd);color:var(--ink);border-radius:8px;padding:8px 10px;font-family:"Inter",sans-serif;font-size:.72rem;resize:none;outline:none;line-height:1.5;}
+
+/* Alertes historique */
+.alert-histo-item{background:rgba(255,255,255,.03);border:1px solid var(--bd);border-radius:12px;padding:14px 16px;margin-bottom:10px;transition:all .15s;}
+.alert-histo-item:hover{background:rgba(255,255,255,.05);}
+.alert-histo-top{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.alert-histo-tech{font-weight:600;font-size:.85rem;}
+.alert-histo-id{font-family:"JetBrains Mono",monospace;font-size:.6rem;color:var(--or2);}
+.alert-histo-time{font-family:"JetBrains Mono",monospace;font-size:.55rem;color:var(--ink3);margin-left:auto;}
+.alert-histo-msg{font-size:.72rem;color:var(--ink3);line-height:1.5;background:rgba(255,255,255,.03);border-radius:8px;padding:8px 10px;}
+.alert-histo-empty{text-align:center;padding:48px;font-family:"JetBrains Mono",monospace;font-size:.6rem;color:var(--ink4);letter-spacing:2px;}
+
+/* Login amélioré */
+.login-screen{background:var(--bg);animation:fadeInLogin .4s ease;}
+@keyframes fadeInLogin{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+.login-version{font-family:"JetBrains Mono",monospace;font-size:.5rem;color:var(--ink4);margin-bottom:32px;letter-spacing:3px;}
+
+/* CA read-only — masquer boutons action */
+body.is-ca .alert-btn,
+body.is-ca .btn-wa,
+body.is-ca .pcbtn,
+body.is-ca .popup-contact{display:none!important;}
+
 /* ─── SIDEBAR ─── */
 .sidebar{
   position:fixed;left:0;top:0;bottom:0;width:68px;z-index:100;
@@ -375,6 +493,38 @@ body::before{content:"";position:fixed;inset:0;
 }
 .btn-wa:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(37,211,102,.4);}
 .btn-wa:active{transform:translateY(0);}
+/* HISTORIQUE */
+.histo-mgr{background:rgba(255,255,255,.03);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:16px;}
+.histo-mgr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.histo-mgr-title{font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:3px;color:var(--ink3);text-transform:uppercase;}
+.histo-add-btn{padding:7px 14px;border-radius:9px;background:rgba(48,209,88,.12);border:1px solid rgba(48,209,88,.28);color:var(--green);cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:1px;transition:all .18s;}
+.histo-add-btn:hover{background:rgba(48,209,88,.22);}
+.onglets-list{display:flex;flex-direction:column;gap:7px;}
+.onglet-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;}
+.onglet-item.active{border-color:rgba(255,85,0,.3);background:rgba(255,85,0,.06);}
+.onglet-dot{width:8px;height:8px;border-radius:50%;background:var(--ink3);flex-shrink:0;}
+.onglet-item.active .onglet-dot{background:var(--or);box-shadow:0 0 6px var(--or);}
+.onglet-label{font-weight:600;font-size:.82rem;flex:1;}
+.onglet-date{font-family:"JetBrains Mono",monospace;font-size:.58rem;color:var(--ink3);}
+.onglet-count{font-family:"JetBrains Mono",monospace;font-size:.58rem;color:var(--or2);}
+.onglet-del{width:24px;height:24px;border-radius:6px;background:transparent;border:none;color:var(--ink4);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.onglet-del:hover{background:rgba(255,45,85,.15);color:var(--red);}
+.onglet-setactive{padding:4px 10px;border-radius:7px;background:rgba(255,85,0,.1);border:1px solid rgba(255,85,0,.2);color:var(--or2);cursor:pointer;font-size:.65rem;font-family:"JetBrains Mono",monospace;transition:all .15s;flex-shrink:0;}
+.onglet-setactive:hover{background:rgba(255,85,0,.2);}
+.onglet-empty{font-family:"JetBrains Mono",monospace;font-size:.6rem;color:var(--ink4);text-align:center;padding:16px;letter-spacing:2px;}
+/* ATABS */
+.atabs{display:flex;gap:6px;margin-bottom:16px;}
+.atab{flex:1;padding:10px;border-radius:11px;border:1px solid var(--bd);background:rgba(255,255,255,.04);color:var(--ink3);cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;transition:all .18s;}
+.atab.on{background:rgba(255,85,0,.12);border-color:rgba(255,85,0,.28);color:var(--or2);}
+.apanel{display:none;}
+.apanel.on{display:block;}
+/* HISTO KPI */
+.histo-kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.histo-kpi{background:rgba(255,255,255,.04);border:1px solid var(--bd);border-radius:13px;padding:14px;text-align:center;}
+.histo-kpi-n{font-family:"Bebas Neue",sans-serif;font-size:2rem;color:var(--or2);}
+.histo-kpi-l{font-size:.58rem;color:var(--ink3);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px;}
+.histo-empty{text-align:center;padding:40px 20px;font-family:"JetBrains Mono",monospace;font-size:.6rem;color:var(--ink4);letter-spacing:2px;text-transform:uppercase;border:1px dashed rgba(255,255,255,.06);border-radius:14px;margin-bottom:14px;}
+
 /* ALERTE BUTTON */
 .alert-btn{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:9px;background:rgba(255,45,85,.12);border:1px solid rgba(255,45,85,.28);color:var(--red);cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:.56rem;letter-spacing:1px;text-transform:uppercase;transition:all .18s;flex-shrink:0;}
 .alert-btn:hover{background:rgba(255,45,85,.25);border-color:rgba(255,45,85,.5);}
@@ -488,6 +638,39 @@ body::before{content:"";position:fixed;inset:0;
   </div>
 </div>
 
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-logo">RETS<em style="font-style:normal;color:#fff;">ALERTE</em></div>
+  <div class="login-sub">Supervision des percutions</div>
+  <div class="login-version">v3.0 · LOB62</div>
+  <div class="login-cards">
+    <div class="login-card admin-card" onclick="selectProfil('admin')">
+      <div class="login-card-badge">🔐 CODE REQUIS</div>
+      <div class="login-card-ico">👤</div>
+      <div class="login-card-name">Mayer</div>
+      <div class="login-card-desc">Accès complet<br>Gestion des onglets<br>Configuration avancée</div>
+    </div>
+    <div class="login-card ca-card" onclick="selectProfil('ca')">
+      <div class="login-card-badge">🔓 ACCÈS LIBRE</div>
+      <div class="login-card-ico">👥</div>
+      <div class="login-card-name">CA - Gestion du rets</div>
+      <div class="login-card-desc">Consultation uniquement<br>Dossiers & suivi techniciens<br>Sans configuration</div>
+    </div>
+  </div>
+</div>
+
+<!-- CODE MODAL -->
+<div class="code-modal" id="codeModal">
+  <div class="code-box">
+    <div class="code-box-title">🔐 Accès Mayer</div>
+    <div class="code-box-sub">Entrez votre code d'accès</div>
+    <input type="password" class="code-input" id="codeInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')verifyCode()">
+    <div class="code-error" id="codeError"></div>
+    <button class="code-btn" onclick="verifyCode()">VALIDER</button>
+    <button class="code-cancel" onclick="closeCodeModal()">← Retour</button>
+  </div>
+</div>
+
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sb-logo">📡</div>
@@ -498,6 +681,10 @@ body::before{content:"";position:fixed;inset:0;
     <span class="nb amber" id="badge48">0</span>📋
   </button>
   <button class="sbn" onclick="goV('analyse',this)" title="Analyse">📊</button>
+  <button class="sbn admin-only" onclick="goV('techniciens',this)" title="Techniciens" id="sbnTech">👷</button>
+  <button class="sbn admin-only" onclick="goV('alertes',this)" title="Alertes envoyées" id="sbnAlerts">
+    <span class="nb hide" id="badgeAlerts"></span>🚨
+  </button>
   <div class="sb-bot">
     <div class="sb-live"></div>
     <div class="sb-clk" id="clk">--:--:--</div>
@@ -513,9 +700,30 @@ body::before{content:"";position:fixed;inset:0;
     </div>
     <div class="tb-right">
       <div class="tb-update" id="lastUpdate">Connexion...</div>
-      <button class="btn-ref" style="background:rgba(10,132,255,.12);border-color:rgba(10,132,255,.3);color:#0a84ff;" onclick="openGidModal()" title="Changer l'onglet du jour">📅 Onglet</button>
+      <!-- Indicateur global CA -->
+      <div class="global-indicator" id="globalIndicator" title="Situation globale">
+        <div class="gi-dot" id="giDot"></div>
+        <div class="gi-label" id="giLabel">—</div>
+      </div>
+      <!-- Recherche rapide -->
+      <button class="tb-icon-btn" onclick="toggleSearch()" title="Recherche (Ctrl+K)" id="searchToggle">🔍</button>
+      <!-- Son -->
+      <button class="tb-icon-btn" onclick="toggleSound()" title="Notifications sonores" id="soundBtn">🔔</button>
+      <!-- Mode jour/nuit -->
+      <button class="tb-icon-btn" onclick="toggleTheme()" title="Mode jour/nuit" id="themeBtn">🌙</button>
+      <div class="tb-profil" onclick="logoutProfil()" title="Changer de profil" id="profilBadge">
+        <div class="tb-profil-dot admin" id="profilDot"></div>
+        <div class="tb-profil-name" id="profilName">MAYER</div>
+      </div>
+      <button class="btn-ref admin-only" style="background:rgba(10,132,255,.12);border-color:rgba(10,132,255,.3);color:#0a84ff;" onclick="openGidModal()" title="Changer l'onglet du jour">📅 Onglet</button>
       <button class="btn-ref" onclick="doRef(this)" id="btnRef"><span class="sp">↻</span> Actualiser</button>
     </div>
+  </div>
+  <!-- Barre de recherche rapide -->
+  <div class="quick-search-bar" id="quickSearchBar">
+    <input type="text" id="quickSearchInput" placeholder="🔍  Rechercher un dossier, technicien, ville..." oninput="doQuickSearch(this.value)" onkeydown="if(event.key==='Escape')toggleSearch()">
+    <div class="qs-results" id="qsResults"></div>
+  </div>
   </div>
   <div class="content">
     <!-- KPI -->
@@ -572,25 +780,116 @@ body::before{content:"";position:fixed;inset:0;
     </div>
     <!-- ANALYSE -->
     <div class="panel" id="v-analyse">
-      <div class="sum-row" id="sumRow"></div>
-      <div class="a-grid">
-        <div class="chart-card"><div class="chart-ttl">Répartition des statuts</div><canvas id="cDonut" height="240"></canvas></div>
-        <div class="chart-card"><div class="chart-ttl">Types de dossiers</div><canvas id="cType" height="240"></canvas></div>
+
+      <!-- GESTION ONGLETS -->
+      <div class="histo-mgr admin-only-block" id="histoMgr">
+        <div class="histo-mgr-top">
+          <div class="histo-mgr-title">📅 Onglets enregistrés</div>
+          <button class="histo-add-btn" onclick="openAddOnglet()">+ Ajouter un onglet</button>
+        </div>
+        <div id="ongletsList" class="onglets-list"></div>
       </div>
-      <div class="chart-card" style="margin-bottom:14px">
-        <div class="chart-ttl">Timeline — Percutions sur 7 jours</div>
-        <canvas id="cTimeline" height="180"></canvas>
+
+      <!-- TABS ANALYSE / HISTORIQUE -->
+      <div class="atabs">
+        <button class="atab on" onclick="goAtab('aujourdhui',this)">📊 Aujourd'hui</button>
+        <button class="atab" onclick="goAtab('historique',this)">📈 Historique</button>
       </div>
-      <div class="chart-card" style="margin-bottom:14px">
-        <div class="chart-ttl">Performance techniciens</div>
-        <table class="tech-tbl"><thead><tr><th>#</th><th>Technicien</th><th>Percutés</th><th>En cours</th><th>Urgents</th><th>Total</th><th>Volume</th></tr></thead>
-        <tbody id="techBody"></tbody></table>
+
+      <!-- AUJOURD'HUI -->
+      <div id="a-aujourdhui" class="apanel on">
+        <div class="sum-row" id="sumRow"></div>
+        <div class="a-grid">
+          <div class="chart-card"><div class="chart-ttl">Répartition statuts</div><canvas id="cDonut" height="240"></canvas></div>
+          <div class="chart-card"><div class="chart-ttl">Types de dossiers</div><canvas id="cType" height="240"></canvas></div>
+        </div>
+        <div class="chart-card" style="margin-bottom:14px">
+          <div class="chart-ttl">Timeline — Percutions sur 7 jours</div>
+          <canvas id="cTimeline" height="180"></canvas>
+        </div>
+        <div class="chart-card" style="margin-bottom:14px">
+          <div class="chart-ttl">Performance techniciens — Aujourd'hui</div>
+          <table class="tech-tbl"><thead><tr><th>#</th><th>Technicien</th><th>Percutés</th><th>En cours</th><th>Urgents</th><th>Total</th><th>Volume</th></tr></thead>
+          <tbody id="techBody"></tbody></table>
+        </div>
+        <div class="a-grid">
+          <div class="chart-card"><div class="chart-ttl">Top villes</div><canvas id="cVilles" height="260"></canvas></div>
+          <div class="chart-card"><div class="chart-ttl">Distribution délais</div><canvas id="cDelais" height="260"></canvas></div>
+        </div>
       </div>
-      <div class="a-grid">
-        <div class="chart-card"><div class="chart-ttl">Top villes</div><canvas id="cVilles" height="260"></canvas></div>
-        <div class="chart-card"><div class="chart-ttl">Distribution délais</div><canvas id="cDelais" height="260"></canvas></div>
+
+      <!-- HISTORIQUE -->
+      <div id="a-historique" class="apanel">
+        <div id="histoEmpty" class="histo-empty" style="display:none">
+          <div style="font-size:2rem;margin-bottom:12px;">📅</div>
+          <div>Ajoutez plusieurs onglets pour voir l'analyse historique</div>
+          <div style="font-size:.7rem;margin-top:6px;opacity:.5">Minimum 2 jours nécessaires</div>
+        </div>
+        <!-- KPI historiques -->
+        <div class="histo-kpi-row" id="histoKpi"></div>
+        <!-- Graphique percutions par jour -->
+        <div class="chart-card" style="margin-bottom:14px">
+          <div class="chart-ttl">📊 Percutions par jour</div>
+          <canvas id="cHistoJours" height="200"></canvas>
+        </div>
+        <!-- Classement techniciens toutes périodes -->
+        <div class="chart-card" style="margin-bottom:14px">
+          <div class="chart-ttl">🏆 Classement techniciens — Toutes périodes</div>
+          <table class="tech-tbl"><thead><tr><th>#</th><th>Technicien</th><th>Total dossiers</th><th>Jours actifs</th><th>Moy/jour</th></tr></thead>
+          <tbody id="histoTechBody"></tbody></table>
+        </div>
+        <!-- Taux clôture par jour -->
+        <div class="chart-card" style="margin-bottom:14px">
+          <div class="chart-ttl">✅ Volume de dossiers par jour</div>
+          <canvas id="cHistoCloture" height="200"></canvas>
+        </div>
+        <!-- Comparaison semaines -->
+        <div class="chart-card" style="margin-bottom:14px">
+          <div class="chart-ttl">📅 Types de dossiers — Évolution</div>
+          <canvas id="cHistoTypes" height="200"></canvas>
+        </div>
       </div>
+
+
+    <!-- TECHNICIENS (admin only) -->
+    <div class="panel" id="v-techniciens">
+      <div class="sec-hd"><div class="sec-ttl">👷 Gestion des techniciens</div><div class="sec-pill" id="techCount">0 actifs</div></div>
+      <div class="tech-grid" id="techGrid"></div>
     </div>
+
+    <!-- ALERTES (admin only) -->
+    <div class="panel" id="v-alertes">
+      <div class="sec-hd">
+        <div class="sec-ttl">🚨 Historique des alertes envoyées</div>
+        <button class="btn-ref" style="font-size:.55rem;padding:5px 12px;" onclick="clearAlertHistory()">🗑 Effacer tout</button>
+      </div>
+      <div id="alertesHistoList"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL AJOUT ONGLET -->
+<div class="alert-modal" id="addOngletModal" onclick="if(event.target===this)closeAddOnglet()">
+  <div class="alert-box" style="border-color:rgba(48,209,88,.25);">
+    <div class="alert-box-title" style="color:var(--green);">📅 Ajouter un onglet</div>
+    <div class="alert-box-sub">Collez le lien CSV de l'onglet publié sur Google Sheets</div>
+
+    <div style="background:rgba(48,209,88,.07);border:1px solid rgba(48,209,88,.12);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:.72rem;color:rgba(255,255,255,.55);line-height:1.8;">
+      <strong style="color:var(--green);display:block;margin-bottom:4px;">Google Sheets → Fichier → Partager → Publier sur le web</strong>
+      Choisir l'onglet → Format CSV → Publier → Copier le lien
+    </div>
+
+    <div class="alert-msg-label">Nom de l'onglet (ex: 07/03/2026)</div>
+    <input type="text" id="ongletLabel" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:11px 14px;font-family:'Inter',sans-serif;font-size:.9rem;outline:none;margin-bottom:14px;" placeholder="07/03/2026">
+
+    <div class="alert-msg-label">Lien CSV Google Sheets</div>
+    <textarea class="alert-msg-area" id="ongletUrl" style="height:70px;font-family:'JetBrains Mono',monospace;font-size:.62rem;" placeholder="https://docs.google.com/spreadsheets/d/e/...output=csv"></textarea>
+
+    <div id="ongletTestResult" style="font-size:.72rem;margin-bottom:14px;min-height:18px;"></div>
+
+    <button class="alert-send-btn" style="background:linear-gradient(135deg,var(--green),#1a8a3a);" onclick="saveOnglet()">ENREGISTRER CET ONGLET</button>
+    <button class="alert-cancel-btn" onclick="closeAddOnglet()">Annuler</button>
   </div>
 </div>
 
@@ -600,6 +899,8 @@ body::before{content:"";position:fixed;inset:0;
     <button class="mbn on" onclick="goV('accueil',this)"><span class="mbn-dot hide" id="mobDot"></span><span class="mbn-ico">🏠</span><span class="mbn-lbl">Accueil</span></button>
     <button class="mbn" onclick="goV('dossiers',this)"><span class="mbn-ico">📋</span><span class="mbn-lbl">Dossiers</span></button>
     <button class="mbn" onclick="goV('analyse',this)"><span class="mbn-ico">📊</span><span class="mbn-lbl">Analyse</span></button>
+    <button class="mbn admin-only" onclick="goV('techniciens',this)"><span class="mbn-ico">👷</span><span class="mbn-lbl">Techs</span></button>
+    <button class="mbn admin-only" onclick="goV('alertes',this)"><span class="mbn-ico">🚨</span><span class="mbn-lbl">Alertes</span></button>
   </div>
 </nav>
 
@@ -720,6 +1021,85 @@ function applyGid(){
   doRef(document.getElementById("btnRef"));
 }
 
+// ─── PROFIL SYSTEM ───
+const ADMIN_CODE = "adminrets";
+let currentProfil = null; // 'admin' | 'ca'
+
+function initProfil(){
+  const saved = sessionStorage.getItem("rProfil");
+  if(saved === "admin" || saved === "ca"){
+    applyProfil(saved, false);
+  } else {
+    document.getElementById("loginScreen").style.display = "flex";
+    document.getElementById("loginScreen").style.opacity = "1";
+  }
+}
+
+function selectProfil(type){
+  if(type === "admin"){
+    document.getElementById("codeInput").value = "";
+    document.getElementById("codeError").textContent = "";
+    document.getElementById("codeModal").classList.add("open");
+    setTimeout(()=>document.getElementById("codeInput").focus(), 150);
+  } else {
+    applyProfil("ca", true);
+  }
+}
+
+function verifyCode(){
+  const val = document.getElementById("codeInput").value.trim();
+  if(val === ADMIN_CODE){
+    document.getElementById("codeModal").classList.remove("open");
+    applyProfil("admin", true);
+  } else {
+    document.getElementById("codeError").textContent = "Code incorrect, réessayez";
+    document.getElementById("codeInput").value = "";
+    document.getElementById("codeInput").focus();
+    setTimeout(()=>document.getElementById("codeError").textContent="", 2500);
+  }
+}
+
+function closeCodeModal(){
+  document.getElementById("codeModal").classList.remove("open");
+}
+
+function applyProfil(type, save){
+  currentProfil = type;
+  if(save) sessionStorage.setItem("rProfil", type);
+  // Cacher l'écran de login
+  const ls = document.getElementById("loginScreen");
+  ls.style.transition = "opacity .3s";
+  ls.style.opacity = "0";
+  setTimeout(()=>ls.style.display="none", 300);
+  // Appliquer classe sur body
+  document.body.classList.remove("is-admin", "is-ca");
+  document.body.classList.add(type === "admin" ? "is-admin" : "is-ca");
+  // Mettre à jour badge profil
+  const dot = document.getElementById("profilDot");
+  const name = document.getElementById("profilName");
+  if(type === "admin"){
+    dot.className = "tb-profil-dot admin";
+    name.textContent = "MAYER";
+  } else {
+    dot.className = "tb-profil-dot ca";
+    name.textContent = "CA";
+  }
+  // Charger les données
+  doRef(document.getElementById("btnRef"));
+}
+
+function logoutProfil(){
+  if(!confirm("Changer de profil ?")) return;
+  sessionStorage.removeItem("rProfil");
+  currentProfil = null;
+  document.body.classList.remove("is-admin", "is-ca");
+  const ls = document.getElementById("loginScreen");
+  ls.style.display = "flex";
+  ls.style.opacity = "0";
+  ls.style.transition = "opacity .3s";
+  setTimeout(()=>ls.style.opacity="1", 10);
+}
+
 // ─── STORAGE ───
 let D=[],fil="tous",sortCol="percution",sortDir=1,popD=null;
 let contacts=JSON.parse(localStorage.getItem("rcontacts")||"{}");
@@ -758,6 +1138,8 @@ async function sendAlert(){
     if(r.ok||r.status===200){
       sentAlerts[alertDossier.id]={at:new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}),msg};
       saveSentAlerts();
+      // Enregistrer dans l'historique
+      recordAlert(alertDossier, msg);
       toast(`✓ Alerte envoyee a ${alertDossier.tech}`,"t-green");
       closeAlertModal();
       rAcc();if(document.getElementById("v-dossiers").classList.contains("on"))rDos();
@@ -783,13 +1165,17 @@ setInterval(()=>doRef(document.getElementById("btnRef")),2*60*1000);
 const PAGES={accueil:"Percutions 48 prochaines heures",dossiers:"Tous les dossiers",analyse:"Statistiques & Analyse"};
 function goV(id,btn){
   document.querySelectorAll(".panel").forEach(p=>p.classList.remove("on"));
-  document.getElementById("v-"+id).classList.add("on");
+  const panel = document.getElementById("v-"+id);
+  if(panel) panel.classList.add("on");
   document.querySelectorAll(".sbn,.mbn").forEach(b=>b.classList.remove("on"));
   document.querySelectorAll(".sbn,.mbn").forEach(b=>{if(b.getAttribute("onclick")&&b.getAttribute("onclick").includes("'"+id+"'"))b.classList.add("on");});
-  document.getElementById("tbPage").textContent=PAGES[id];
+  const allPages = {...PAGES, ...PAGES_EXT};
+  document.getElementById("tbPage").textContent = allPages[id]||id;
   if(id==="dossiers")rDos();
   if(id==="accueil")rAcc();
   if(id==="analyse")rAnalyse();
+  if(id==="techniciens")renderTechniciens();
+  if(id==="alertes")renderAlertes();
 }
 
 // ─── STATUS ───
@@ -964,11 +1350,110 @@ function updK(){
 // ─── ALARME ───
 let lastAlarmCount=0;
 function checkAlarm(urg){if(urg.length>lastAlarmCount){playAlarm();toast(`🚨 ${urg.length} percution imminente !`,"t-red");}lastAlarmCount=urg.length;}
-function playAlarm(){try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const play=(f,s,d)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;o.type="square";g.gain.setValueAtTime(0,ctx.currentTime+s);g.gain.linearRampToValueAtTime(.22,ctx.currentTime+s+.02);g.gain.linearRampToValueAtTime(0,ctx.currentTime+s+d);o.start(ctx.currentTime+s);o.stop(ctx.currentTime+s+d+.05);};play(880,0,.12);play(1100,.18,.12);play(880,.36,.12);play(1100,.54,.2);}catch(e){}}
+function playAlarm(){if(!soundOn)return;try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const play=(f,s,d)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;o.type="square";g.gain.setValueAtTime(0,ctx.currentTime+s);g.gain.linearRampToValueAtTime(.22,ctx.currentTime+s+.02);g.gain.linearRampToValueAtTime(0,ctx.currentTime+s+d);o.start(ctx.currentTime+s);o.stop(ctx.currentTime+s+d+.05);};play(880,0,.12);play(1100,.18,.12);play(880,.36,.12);play(1100,.54,.2);}catch(e){}}
 
-// ─── ANALYSE ───
+// ─── ONGLETS HISTORIQUES ───
+// Structure: [{label:"07/03/2026", url:"https://...", data:[], loadedAt:ts, active:bool}]
+let onglets = JSON.parse(localStorage.getItem("rOnglets")||"[]");
+const saveOnglets = () => localStorage.setItem("rOnglets", JSON.stringify(onglets.map(o=>({label:o.label,url:o.url,count:o.count,active:o.active}))));
+
+function renderOngletsList(){
+  const el = document.getElementById("ongletsList");
+  if(!onglets.length){el.innerHTML=`<div class="onglet-empty">AUCUN ONGLET — AJOUTEZ LE PREMIER</div>`;return;}
+  el.innerHTML = onglets.map((o,i)=>`
+    <div class="onglet-item${o.active?" active":""}">
+      <div class="onglet-dot"></div>
+      <div class="onglet-label">${o.label}</div>
+      <div class="onglet-count">${o.count||"?"} dossiers</div>
+      ${!o.active?`<button class="onglet-setactive" onclick="setActiveOnglet(${i})">Charger</button>`:`<span style="font-size:.6rem;color:var(--or);font-family:'JetBrains Mono',monospace;letter-spacing:1px;">ACTIF</span>`}
+      <button class="onglet-del" onclick="deleteOnglet(${i})" title="Supprimer">✕</button>
+    </div>`).join("");
+}
+
+function openAddOnglet(){
+  document.getElementById("ongletLabel").value = new Date().toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit",year:"numeric"});
+  document.getElementById("ongletUrl").value = "";
+  document.getElementById("ongletTestResult").innerHTML = "";
+  document.getElementById("addOngletModal").classList.add("open");
+}
+function closeAddOnglet(){document.getElementById("addOngletModal").classList.remove("open");}
+
+async function saveOnglet(){
+  const label = document.getElementById("ongletLabel").value.trim();
+  const url   = document.getElementById("ongletUrl").value.trim();
+  const res   = document.getElementById("ongletTestResult");
+  if(!label||!url){res.innerHTML=`<span style="color:var(--red)">Remplissez les deux champs</span>`;return;}
+  if(!url.includes("docs.google.com")&&!url.includes("output=csv")){res.innerHTML=`<span style="color:var(--amber)">L'URL ne ressemble pas à un lien Google Sheets CSV</span>`;return;}
+  res.innerHTML=`<span style="color:var(--amber)">Chargement en cours...</span>`;
+  // Tester l'URL
+  let txt=null;
+  try{const r=await fetch(url,{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}
+  if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(url),{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
+  if(!txt){res.innerHTML=`<span style="color:var(--red)">❌ Impossible de charger ce lien. Vérifiez qu'il est bien publié.</span>`;return;}
+  // Parser pour compter les lignes
+  const lines = txt.replace(/^\uFEFF/,"").trim().split(/\r?\n/);
+  const count = lines.length - 1;
+  // Désactiver les autres si c'est le premier ou si on veut l'activer
+  const isFirst = onglets.length === 0;
+  if(isFirst) onglets.forEach(o=>o.active=false);
+  // Extraire le gid de l'URL
+  const gidM = url.match(/[?&]gid=(\d+)/);
+  const gid = gidM ? gidM[1] : null;
+  onglets.push({label, url, gid, count, active:isFirst, addedAt:Date.now()});
+  // Trier par date label
+  onglets.sort((a,b)=>a.label.localeCompare(b.label));
+  saveOnglets();
+  // Si c'est le premier ou si aucun actif, charger automatiquement
+  if(isFirst || !onglets.some(o=>o.active)){
+    const idx = onglets.findIndex(o=>o.label===label);
+    if(idx>=0) setActiveOnglet(idx);
+  }
+  closeAddOnglet();
+  toast(`✅ Onglet "${label}" ajouté (${count} dossiers)`,"t-green");
+  renderOngletsList();
+  if(onglets.length>=2) rHistorique();
+}
+
+async function setActiveOnglet(i){
+  onglets.forEach((o,j)=>o.active=(j===i));
+  saveOnglets();
+  renderOngletsList();
+  // Mettre à jour currentGid et recharger
+  const o = onglets[i];
+  if(o.gid){
+    currentGid = o.gid;
+    currentSheetsLabel = o.label;
+    localStorage.setItem("rgid", o.gid);
+    localStorage.setItem("rgidLabel", o.label);
+    document.getElementById("tbPage").textContent = "Onglet : "+o.label;
+  }
+  toast(`📅 Onglet "${o.label}" chargé`,"t-green");
+  doRef(document.getElementById("btnRef"));
+}
+
+function deleteOnglet(i){
+  const wasActive = onglets[i].active;
+  onglets.splice(i,1);
+  if(wasActive && onglets.length>0) onglets[onglets.length-1].active=true;
+  saveOnglets();
+  renderOngletsList();
+  if(onglets.length>=2) rHistorique();
+  toast("Onglet supprimé","t-amber");
+}
+
+// ─── ATABS ───
+function goAtab(id,btn){
+  document.querySelectorAll(".apanel").forEach(p=>p.classList.remove("on"));
+  document.getElementById("a-"+id).classList.add("on");
+  document.querySelectorAll(".atab").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");
+  if(id==="historique") rHistorique();
+}
+
+// ─── ANALYSE AUJOURD'HUI ───
 function rAnalyse(){
   if(!D.length)return;
+  renderOngletsList();
   const done=D.filter(d=>st(d.percution)==="done").length,active=D.filter(d=>st(d.percution)!=="done").length,techs=[...new Set(D.map(d=>d.tech))].length;
   document.getElementById("sumRow").innerHTML=`<div class="sum-card"><div class="sum-val">${done}</div><div class="sum-lbl">Percutés</div></div><div class="sum-card"><div class="sum-val">${active}</div><div class="sum-lbl">Actifs</div></div><div class="sum-card"><div class="sum-val">${techs}</div><div class="sum-lbl">Techniciens</div></div>`;
   drawDonut("cDonut",[{l:"Urgent",v:D.filter(d=>st(d.percution)==="urgent").length,c:"#ff2d55"},{l:"Bientôt",v:D.filter(d=>st(d.percution)==="warning").length,c:"#ffcc00"},{l:"Planifié",v:D.filter(d=>st(d.percution)==="ok").length,c:"#30d158"},{l:"Percuté",v:done,c:"rgba(255,255,255,.08)"}]);
@@ -978,12 +1463,139 @@ function rAnalyse(){
   const tlC=days.map((day,i)=>{const next=i<days.length-1?days[i+1]:new Date(day.getTime()+86400000);return D.filter(d=>d.percution>=day&&d.percution<next).length;});
   drawLine("cTimeline",days.map(d=>d.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit"})),tlC,"#ff5500");
   const tm={};D.forEach(d=>{if(!tm[d.tech])tm[d.tech]={n:d.tech,tot:0,done:0,urg:0};tm[d.tech].tot++;if(st(d.percution)==="done")tm[d.tech].done++;if(st(d.percution)==="urgent")tm[d.tech].urg++;});
-  const ta=Object.values(tm).sort((a,b)=>b.done-a.done),mx=Math.max(...ta.map(t=>t.done),1);
+  const ta=Object.values(tm).sort((a,b)=>b.tot-a.tot),mx=Math.max(...ta.map(t=>t.done),1);
   document.getElementById("techBody").innerHTML=ta.map((t,i)=>{const pct=Math.round((t.done/mx)*100),rc=i===0?"r1":i===1?"r2":i===2?"r3":"rn";return`<tr><td><span class="rnk ${rc}">${i+1}</span></td><td><div style="display:flex;align-items:center;gap:9px"><div class="tav">${ini(t.n)}</div><span style="font-weight:600">${t.n}</span></div></td><td><strong style="color:var(--or2)">${t.done}</strong></td><td>${t.tot-t.done}</td><td>${t.urg>0?`<strong style="color:var(--red)">${t.urg}</strong>`:"<span style='opacity:.3'>0</span>"}</td><td>${t.tot}</td><td><div class="barmini"><div class="barfill" style="width:${pct}%"></div></div></td></tr>`;}).join("");
   const vm={};D.forEach(d=>{vm[d.ville]=(vm[d.ville]||0)+1;});const va=Object.entries(vm).sort((a,b)=>b[1]-a[1]).slice(0,8);
   drawBars("cVilles",va.map(v=>v[0]),va.map(v=>v[1]),"#ff5500");
   const bk={"≤24h":0,"48h":0,"72h":0,"96h+":0};D.forEach(d=>{if(d.delai<=24)bk["≤24h"]++;else if(d.delai<=48)bk["48h"]++;else if(d.delai<=72)bk["72h"]++;else bk["96h+"]++;});
   drawBars("cDelais",Object.keys(bk),Object.values(bk),"#ff7a3d");
+}
+
+// ─── ANALYSE HISTORIQUE ───
+async function rHistorique(){
+  if(onglets.length < 2){
+    document.getElementById("histoEmpty").style.display="block";
+    document.getElementById("histoKpi").innerHTML="";
+    return;
+  }
+  document.getElementById("histoEmpty").style.display="none";
+  // Charger les données de chaque onglet
+  const allData = await loadAllOnglets();
+  if(!allData.length) return;
+
+  // KPI globaux
+  const totalDossiers = allData.reduce((s,j)=>s+j.dossiers.length,0);
+  const totalTechs = new Set(allData.flatMap(j=>j.dossiers.map(d=>d.tech))).size;
+  const maxJour = allData.reduce((best,j)=>j.dossiers.length>best.count?{label:j.label,count:j.dossiers.length}:best,{label:"",count:0});
+  document.getElementById("histoKpi").innerHTML=`
+    <div class="histo-kpi"><div class="histo-kpi-n">${totalDossiers}</div><div class="histo-kpi-l">Dossiers total</div></div>
+    <div class="histo-kpi"><div class="histo-kpi-n">${totalTechs}</div><div class="histo-kpi-l">Techniciens</div></div>
+    <div class="histo-kpi"><div class="histo-kpi-n">${allData.length}</div><div class="histo-kpi-l">Jours analysés</div></div>`;
+
+  // Graphique percutions par jour
+  const labels = allData.map(j=>j.label);
+  const counts = allData.map(j=>j.dossiers.length);
+  drawBars("cHistoJours", labels, counts, "#ff5500");
+
+  // Volume par jour (même données mais avec ligne)
+  drawLine("cHistoCloture", labels, counts, "#30d158");
+
+  // Types par jour (PMS vs PLI)
+  const pmsData = allData.map(j=>j.dossiers.filter(d=>!d.actprod.includes("PLI")&&!d.actprod.includes("ESC")).length);
+  const pliData = allData.map(j=>j.dossiers.filter(d=>d.actprod.includes("PLI")||d.actprod.includes("ESC")).length);
+  drawDoubleBar("cHistoTypes", labels, [{label:"PMS/PMR",values:pmsData,color:"#ff5500"},{label:"PLI/ESC",values:pliData,color:"#0a84ff"}]);
+
+  // Classement techniciens toutes périodes
+  const techStats = {};
+  allData.forEach(jour=>{
+    const joursActifs = new Set();
+    jour.dossiers.forEach(d=>{
+      if(!techStats[d.tech]) techStats[d.tech]={tot:0,jours:new Set()};
+      techStats[d.tech].tot++;
+      techStats[d.tech].jours.add(jour.label);
+    });
+  });
+  const techArr = Object.entries(techStats)
+    .map(([n,v])=>({n,tot:v.tot,jours:v.jours.size,moy:(v.tot/v.jours.size).toFixed(1)}))
+    .sort((a,b)=>b.tot-a.tot);
+  document.getElementById("histoTechBody").innerHTML = techArr.map((t,i)=>{
+    const rc=i===0?"r1":i===1?"r2":i===2?"r3":"rn";
+    return`<tr>
+      <td><span class="rnk ${rc}">${i+1}</span></td>
+      <td><div style="display:flex;align-items:center;gap:9px"><div class="tav">${ini(t.n)}</div><span style="font-weight:600">${t.n}</span></div></td>
+      <td><strong style="color:var(--or2)">${t.tot}</strong></td>
+      <td>${t.jours}</td>
+      <td><strong style="color:var(--green)">${t.moy}</strong></td>
+    </tr>`;
+  }).join("");
+}
+
+async function loadAllOnglets(){
+  const result = [];
+  for(const o of onglets){
+    let txt = null;
+    try{const r=await fetch(o.url,{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}
+    if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(o.url),{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
+    if(txt){
+      const dossiers = parseCsvToDossiers(txt);
+      result.push({label:o.label, dossiers});
+    }
+  }
+  return result.sort((a,b)=>a.label.localeCompare(b.label));
+}
+
+function parseCsvToDossiers(txt){
+  txt=txt.replace(/^\uFEFF/,"");
+  const lines=txt.trim().split(/\r?\n/);if(lines.length<2)return[];
+  const firstLine=lines[0];
+  const sep=firstLine.includes("\t")?"\t":firstLine.includes(";")?";":",";
+  const norm=s=>s.replace(/"/g,"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  const H=firstLine.split(sep).map(norm);
+  const itech=H.findIndex(h=>h.includes("technicien")||h.includes("nom tech")||h==="nom");
+  const iap=H.findIndex(h=>h.includes("act")||h.includes("prod"));
+  const ind=H.findIndex(h=>norm(h)==="nd"||h.includes("nd"));
+  const ipl=H.findIndex(h=>h.includes("planifi"));
+  const icp=H.findIndex(h=>h==="cp");
+  const ivil=H.findIndex(h=>h.includes("ville"));
+  const icre=H.findIndex(h=>h.includes("cree")||h.includes("creation"));
+  const raw=[];
+  for(let n=1;n<lines.length;n++){
+    const c=lines[n].split(sep).map(x=>x.replace(/"/g,"").trim());
+    if(c.length<3)continue;
+    const g=i=>i>=0?(c[i]||"").trim():"";
+    const nd=g(ind).replace(/^0+/,"");
+    if(!nd)continue;
+    raw.push({id:nd,tech:(g(itech)||"N/A").toUpperCase(),actprod:g(iap).toUpperCase(),cp:g(icp),ville:g(ivil).toUpperCase(),planifiee:g(ipl),date_creation:g(icre),delai:48});
+  }
+  return raw;
+}
+
+// ─── DOUBLE BAR CHART ───
+function drawDoubleBar(id,labels,series){
+  const c=document.getElementById(id);if(!c)return;
+  const ctx=c.getContext("2d"),dpr=window.devicePixelRatio||1,W=c.parentElement.offsetWidth,H=200;
+  c.width=W*dpr;c.height=H*dpr;c.style.height=H+"px";ctx.scale(dpr,dpr);ctx.clearRect(0,0,W,H);
+  const max=Math.max(...series.flatMap(s=>s.values),1);
+  const pad={t:20,r:20,b:38,l:36},cW=W-pad.l-pad.r,cH=H-pad.t-pad.b;
+  for(let i=0;i<=4;i++){const y=pad.t+cH-(i/4)*cH;ctx.strokeStyle="rgba(255,255,255,.05)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(pad.l+cW,y);ctx.stroke();}
+  const gap=cW/labels.length,bw=gap*.38,offset=bw*.55;
+  labels.forEach((lbl,i)=>{
+    series.forEach((s,si)=>{
+      const bh=(s.values[i]/max)*cH;
+      const x=pad.l+i*gap+(gap/2)+(si===0?-offset:offset)-bw/2;
+      const y=pad.t+cH-bh;
+      ctx.fillStyle=s.color;ctx.beginPath();ctx.roundRect?ctx.roundRect(x,y,bw,bh,3):ctx.rect(x,y,bw,bh);ctx.fill();
+    });
+    ctx.fillStyle="rgba(255,255,255,.22)";ctx.font="9px Inter,sans-serif";ctx.textAlign="center";
+    ctx.fillText(lbl.length>6?lbl.slice(0,5)+"…":lbl,pad.l+i*gap+gap/2,pad.t+cH+15);
+  });
+  // Légende
+  series.forEach((s,i)=>{
+    const lx=pad.l+i*90;
+    ctx.fillStyle=s.color;ctx.fillRect(lx,6,10,8);
+    ctx.fillStyle="rgba(255,255,255,.5)";ctx.font="9px Inter,sans-serif";ctx.textAlign="left";
+    ctx.fillText(s.label,lx+14,13);
+  });
 }
 
 // ─── CANVAS ───
@@ -1081,6 +1693,8 @@ function parseAndLoad(txt){
   }
   if(raw.length>0){
     initData(raw);updK();rAcc();
+    updateGlobalIndicator();
+    updateAlertBadge();
     toast(`✅ ${raw.length} dossiers chargés`,"t-green");
   } else {
     toast("⚠️ Données non reconnues — vérifiez le format","t-amber");
@@ -1117,23 +1731,204 @@ function toast(msg,cls=""){
 // ─── INIT ───
 initData(RAW);updK();rAcc();
 
-// CHARGEMENT AUTO
-(async()=>{
-  const btn=document.getElementById("btnRef"),upEl=document.getElementById("lastUpdate");
-  if(btn)btn.classList.add("loading");
-  let txt=null;
-  try{const r=await fetch("/.netlify/functions/sheets",{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}
-  if(txt){
-    parseAndLoad(txt);
-    const now=new Date().toLocaleTimeString("fr-FR");
-    if(upEl){upEl.textContent="Sync "+now;upEl.className="tb-update ok";}
-    document.getElementById("stxt").innerHTML=`Sync · <strong>${now}</strong> · <strong>${D.length}</strong> dossiers`;
-  }else{
-    if(upEl){upEl.textContent="Données locales";upEl.className="tb-update warn";}
-    document.getElementById("stxt").innerHTML=`Données locales · <strong>${D.length}</strong> dossiers`;
+// ─── THEME MODE ───
+let isDayMode = localStorage.getItem("rTheme") === "day";
+function applyTheme(){
+  document.body.classList.toggle("day-mode", isDayMode);
+  document.getElementById("themeBtn").textContent = isDayMode ? "☀️" : "🌙";
+}
+function toggleTheme(){
+  isDayMode = !isDayMode;
+  localStorage.setItem("rTheme", isDayMode ? "day" : "night");
+  applyTheme();
+}
+applyTheme();
+
+// ─── SOUND ───
+let soundOn = localStorage.getItem("rSound") !== "off";
+function applySoundBtn(){
+  const btn = document.getElementById("soundBtn");
+  if(btn){ btn.textContent = soundOn ? "🔔" : "🔕"; btn.classList.toggle("active", !soundOn); }
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  localStorage.setItem("rSound", soundOn ? "on" : "off");
+  applySoundBtn();
+  toast(soundOn ? "🔔 Sons activés" : "🔕 Sons désactivés", soundOn ? "t-green" : "t-amber");
+}
+applySoundBtn();
+
+// ─── RECHERCHE RAPIDE ───
+let searchOpen = false;
+function toggleSearch(){
+  searchOpen = !searchOpen;
+  const bar = document.getElementById("quickSearchBar");
+  const btn = document.getElementById("searchToggle");
+  bar.classList.toggle("open", searchOpen);
+  btn.classList.toggle("active", searchOpen);
+  if(searchOpen) setTimeout(()=>document.getElementById("quickSearchInput").focus(), 80);
+  else { document.getElementById("quickSearchInput").value=""; document.getElementById("qsResults").innerHTML=""; }
+}
+document.addEventListener("keydown", e => {
+  if((e.ctrlKey||e.metaKey) && e.key==="k"){ e.preventDefault(); toggleSearch(); }
+  if(e.key==="Escape" && searchOpen) toggleSearch();
+});
+function doQuickSearch(q){
+  const res = document.getElementById("qsResults");
+  if(!q.trim()){ res.innerHTML=""; return; }
+  const ql = q.toLowerCase();
+  const found = D.filter(d => `${d.id} ${d.tech} ${d.ville} ${d.actprod}`.toLowerCase().includes(ql)).slice(0,10);
+  if(!found.length){ res.innerHTML=`<div style="padding:16px;text-align:center;font-size:.7rem;color:var(--ink3);">Aucun résultat</div>`; return; }
+  const colors = {urgent:"#ff2d55",warning:"#ffcc00",ok:"#30d158",done:"rgba(255,255,255,.2)"};
+  res.innerHTML = found.map(d => {
+    const s = st(d.percution), col = colors[s]||"#888";
+    return `<div class="qs-item" onclick="openDossierFromSearch('${d.id}')">
+      <div class="qs-status" style="background:${col};box-shadow:0 0 6px ${col}"></div>
+      <div class="qs-id">${d.id}</div>
+      <div style="flex:1"><div class="qs-info">${d.tech} — ${d.ville}</div><div class="qs-meta">${d.actprod} · ${fm(d.percution)}</div></div>
+    </div>`;
+  }).join("");
+}
+function openDossierFromSearch(id){
+  toggleSearch();
+  const d = D.find(x=>x.id===id);
+  if(d){ goV('dossiers', document.querySelector('.sbn[onclick*="dossiers"]')||document.querySelector('.mbn[onclick*="dossiers"]')); setTimeout(()=>openPopup(d), 200); }
+}
+
+// ─── INDICATEUR GLOBAL CA ───
+function updateGlobalIndicator(){
+  const urgent = D.filter(d=>st(d.percution)==="urgent").length;
+  const warning = D.filter(d=>st(d.percution)==="warning").length;
+  const dot = document.getElementById("giDot");
+  const label = document.getElementById("giLabel");
+  if(!dot) return;
+  if(urgent > 0){ dot.className="gi-dot red"; label.textContent="CRITIQUE"; label.style.color="var(--red)"; }
+  else if(warning > 2){ dot.className="gi-dot amber"; label.textContent="ATTENTION"; label.style.color="var(--amber)"; }
+  else { dot.className="gi-dot green"; label.textContent="CONTRÔLE"; label.style.color="var(--green)"; }
+}
+
+// ─── GESTION TECHNICIENS ───
+const TECH_LIST = [
+  {nom:"ALHAN Grynia",id:"435E2@LOB62"},{nom:"BALKAYA Rodi",id:"8499A@LOB62"},
+  {nom:"BELLINI Remy",id:"VC861@LOB62"},{nom:"BEN DHAOU Kevin",id:"ZSEXO@LOB62"},
+  {nom:"BEN YAHIA Adel",id:"765F9@LOB62"},{nom:"CAMARA Aboudou",id:"FC7F0@LOB62"},
+  {nom:"CHAABIHI Thomas",id:"GSA4J@LOB62"},{nom:"CHAIEB Hedi",id:"Q9ZVL@LOB62"},
+  {nom:"CHALBI Fadi",id:"FBDF0@LOB62"},{nom:"DANABACHE Ali",id:"3870D@LOB62"},
+  {nom:"FETTACHE Daniel",id:"DMJD8@LOB62"},{nom:"HAMMACHE Ilyas",id:"T25ZN@LOB62"},
+  {nom:"IBOUROI Ibrahim",id:"ENP8M@LOB62"},{nom:"ITRISSO Antouifou",id:"TVEMH@LOB62"},
+  {nom:"KARTLI Rochdi",id:"AME9X@LOB62"},{nom:"LA MARCA Guillaume",id:"6E041@LOB62"},
+  {nom:"MOKLI Thomas",id:"LNDSZ@LOB62"},{nom:"PRAT Thomas",id:"MFANQ@LOB62"},
+  {nom:"RAGOT Remi",id:"9FD11@LOB62"},{nom:"RODIEL Ethan",id:"LPNMZ@LOB62"},
+  {nom:"SAIDALI Nasser",id:"MYFDU@LOB62"},{nom:"TABOUCHI Bilel",id:"N1STX@LOB62"},
+  {nom:"YEKKEN Rayane",id:"DDBD4@LOB62"},{nom:"ZAKARIA Lamhamdi",id:"FCCQ2@LOB62"}
+];
+let techConfig = JSON.parse(localStorage.getItem("rTechConfig")||"{}");
+// Init config si vide
+TECH_LIST.forEach(t=>{ if(!techConfig[t.nom]) techConfig[t.nom]={active:true,note:""}; });
+const saveTechConfig = ()=>localStorage.setItem("rTechConfig",JSON.stringify(techConfig));
+
+function renderTechniciens(){
+  const grid = document.getElementById("techGrid");
+  const actifs = TECH_LIST.filter(t=>techConfig[t.nom]?.active!==false).length;
+  document.getElementById("techCount").textContent = `${actifs} actifs`;
+  grid.innerHTML = TECH_LIST.map(t=>{
+    const cfg = techConfig[t.nom]||{active:true,note:""};
+    const dossiersTech = D.filter(d=>d.tech.toUpperCase().includes(t.nom.split(" ")[0].toUpperCase()));
+    const urgents = dossiersTech.filter(d=>st(d.percution)==="urgent").length;
+    const enCours = dossiersTech.filter(d=>st(d.percution)!=="done").length;
+    const initials = t.nom.split(" ").map(p=>p[0]).slice(0,2).join("");
+    return `<div class="tech-card-mgr${cfg.active?"":" inactive"}">
+      <div class="tech-card-mgr-top">
+        <div class="tech-av-lg${cfg.active?"":" inactive"}">${initials}</div>
+        <div style="flex:1">
+          <div class="tech-name-lg">${t.nom}</div>
+          <div class="tech-id-sm">${t.id}</div>
+        </div>
+        <button class="tech-toggle ${cfg.active?"on":"off"}" onclick="toggleTech('${t.nom}')" title="${cfg.active?"Désactiver":"Activer"}"></button>
+      </div>
+      <div class="tech-stats-row">
+        <div class="tech-stat-sm"><div class="tech-stat-n" style="color:${urgents>0?"var(--red)":"var(--or2)"}">${urgents}</div><div class="tech-stat-l">Urgents</div></div>
+        <div class="tech-stat-sm"><div class="tech-stat-n">${enCours}</div><div class="tech-stat-l">En cours</div></div>
+        <div class="tech-stat-sm"><div class="tech-stat-n">${dossiersTech.length}</div><div class="tech-stat-l">Total</div></div>
+      </div>
+      <textarea class="tech-note-area" rows="2" placeholder="Note sur ce technicien..." onchange="saveTechNote('${t.nom}',this.value)">${cfg.note||""}</textarea>
+    </div>`;
+  }).join("");
+}
+function toggleTech(nom){
+  if(!techConfig[nom]) techConfig[nom]={active:true,note:""};
+  techConfig[nom].active = !techConfig[nom].active;
+  saveTechConfig();
+  renderTechniciens();
+  toast(`${nom} : ${techConfig[nom].active?"✅ actif":"⛔ désactivé"}`, techConfig[nom].active?"t-green":"t-amber");
+}
+function saveTechNote(nom,val){
+  if(!techConfig[nom]) techConfig[nom]={active:true,note:""};
+  techConfig[nom].note = val;
+  saveTechConfig();
+}
+
+// ─── ALERTES HISTORIQUE ───
+let alertHistory = JSON.parse(localStorage.getItem("rAlertHistory")||"[]");
+const saveAlertHistory = ()=>localStorage.setItem("rAlertHistory",JSON.stringify(alertHistory));
+
+// Hooker l'envoi d'alerte pour sauvegarder dans l'historique
+const _origSendAlert = window.doSendAlert;
+function recordAlert(dossier, msg){
+  alertHistory.unshift({
+    id: dossier.id, tech: dossier.tech, ville: dossier.ville,
+    msg, sentAt: new Date().toISOString()
+  });
+  if(alertHistory.length > 100) alertHistory = alertHistory.slice(0,100);
+  saveAlertHistory();
+  // Mettre à jour badge
+  updateAlertBadge();
+}
+
+function updateAlertBadge(){
+  const badge = document.getElementById("badgeAlerts");
+  if(!badge) return;
+  const count = alertHistory.length;
+  if(count > 0){ badge.textContent=count>99?"99+":count; badge.classList.remove("hide"); }
+  else badge.classList.add("hide");
+}
+
+function renderAlertes(){
+  const list = document.getElementById("alertesHistoList");
+  if(!alertHistory.length){
+    list.innerHTML=`<div class="alert-histo-empty">AUCUNE ALERTE ENVOYÉE</div>`;
+    return;
   }
-  if(btn)btn.classList.remove("loading");
-})();
+  list.innerHTML = alertHistory.map(a=>{
+    const d = new Date(a.sentAt);
+    const timeStr = d.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit"})+" "+d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+    return `<div class="alert-histo-item">
+      <div class="alert-histo-top">
+        <span style="font-size:1rem">🚨</span>
+        <span class="alert-histo-tech">${a.tech}</span>
+        <span class="alert-histo-id">${a.id}</span>
+        <span style="font-size:.7rem;color:var(--ink3)">📍 ${a.ville}</span>
+        <span class="alert-histo-time">${timeStr}</span>
+      </div>
+      <div class="alert-histo-msg">${a.msg}</div>
+    </div>`;
+  }).join("");
+}
+
+function clearAlertHistory(){
+  if(!confirm("Effacer tout l'historique des alertes ?")) return;
+  alertHistory = [];
+  saveAlertHistory();
+  updateAlertBadge();
+  renderAlertes();
+  toast("Historique effacé","t-amber");
+}
+
+// ─── PAGES SUPPLÉMENTAIRES ───
+const PAGES_EXT = {techniciens:"Gestion des techniciens", alertes:"Historique des alertes"};
+
+// INIT — Afficher écran de connexion
+initProfil();
 </script>
 </body>
 </html>
