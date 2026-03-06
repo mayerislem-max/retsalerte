@@ -772,7 +772,7 @@ async function sendAlert(){
 let pendingContactId=null,pendingContactStatus=null;
 
 function parseDate(s){if(!s)return null;const m=s.match(/^(\d{2})[\/-](\d{2})[\/-](\d{4})(?:\s+(\d{2}):(\d{2}))?$/);return m?new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0)):null;}
-function initData(raw){D=raw.map(r=>{const cr=parseDate(r.date_creation);return{...r,created:cr,percution:cr?new Date(cr.getTime()+r.delai*3600000):null};}).filter(d=>d.percution);}
+function initData(raw){D=raw.map(r=>{const pl=parseDate(r.planifiee);const cr=parseDate(r.date_creation);return{...r,created:cr,percution:pl||null};}).filter(d=>d.percution);}
 
 // ─── CLOCK ───
 setInterval(()=>document.getElementById("clk").textContent=new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit",second:"2-digit"}),1000);
