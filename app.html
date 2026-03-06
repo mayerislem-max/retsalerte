@@ -366,6 +366,7 @@ function stTag(s){const L={urgent:"URGENT",warning:"BIENTÔT",ok:"PLANIFIÉ",don
 // ── LOGIN ──
 function populateSelect(){
   const sel=document.getElementById('techSelect');
+  if(!sel)return;
   const techs=[...new Set(D.map(d=>d.tech).filter(Boolean).sort())];
   techs.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});
 }
@@ -644,7 +645,6 @@ function toast(msg,cls=''){
 
 // ── INIT ──
 initData(RAW);
-populateSelect();
 
 // Auto-login si déjà connecté
 const savedUser=localStorage.getItem('ruser');
