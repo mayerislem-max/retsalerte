@@ -348,7 +348,7 @@ if(savedInfo){try{currentUserInfo=JSON.parse(savedInfo);}catch(e){}}
 
 // ── PARSE DATE ──
 function parseDate(s){if(!s)return null;const m=s.match(/(\d{2})[\/\-](\d{2})[\/\-](\d{4})(?:\s+(\d{2}):(\d{2}))?/);return m?new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0)):null;}
-function initData(raw){D=raw.map(r=>{const cr=parseDate(r.date_creation);return{...r,created:cr,percution:cr?new Date(cr.getTime()+r.delai*3600000):null};}).filter(d=>d.percution);}
+function initData(raw){D=raw.map(r=>{const pl=parseDate(r.planifiee);const cr=parseDate(r.date_creation);return{...r,created:cr,percution:pl||null};}).filter(d=>d.percution);}
 
 const st=p=>{const h=(p-new Date())/3600000;return h<0?"done":h<=.5?"urgent":h<=2?"warning":"ok";};
 const cd=p=>{const d=p-new Date();if(d<0)return{t:"PERCUTE",s:"",mins:-1};const h=Math.floor(d/3600000),m=String(Math.floor((d%3600000)/60000)).padStart(2,"0");return{t:`${h}h ${m}m`,s:"restant",mins:Math.floor(d/60000)};};
