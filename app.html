@@ -253,12 +253,16 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--ink);displa
     <div class="hdr-info">
       <div class="hdr-title">RETS<em>ALERTE</em></div>
       <div class="hdr-user" id="hdrUser">Chargement...</div>
+      <div id="hdrOnglet" style="font-size:.55rem;color:rgba(255,255,255,.35);font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-top:1px;"></div>
     </div>
     <div class="hdr-right">
       <div class="sync-dot" id="syncDot" title="Sync auto 2min"></div>
       <button class="hdr-btn" id="gidAppBtn" onclick="openAppGidModal()" title="Changer l'onglet du jour" style="display:none;">📅</button>
       <button class="hdr-btn" id="notifBtn" onclick="toggleNotif()" title="Notifications">🔔</button>
     </div>
+  </div>
+  <div id="noGidBanner" style="display:none;background:rgba(255,204,0,.12);border-bottom:1px solid rgba(255,204,0,.3);padding:8px 16px;font-size:.7rem;color:#ffcc00;font-family:'JetBrains Mono',monospace;text-align:center;">
+    ⚠ Onglet non configuré — demandez à l'admin de configurer l'onglet du jour
   </div>
 
   <div class="tabs">
@@ -403,6 +407,13 @@ function startApp(){
   document.getElementById("loginScreen").style.display="none";
   const app=document.getElementById("appShell");
   app.style.display="flex";app.style.flexDirection="column";app.style.height="100%";
+  // Onglet label
+  const hdrOnglet=document.getElementById("hdrOnglet");
+  if(hdrOnglet) hdrOnglet.textContent="📅 "+getCurrentGidLabel();
+  // Banner si GID non configuré (onglet par défaut)
+  const noGid=!localStorage.getItem("rgid")&&!localStorage.getItem("appGid");
+  const banner=document.getElementById("noGidBanner");
+  if(banner) banner.style.display=noGid&&!isAdmin?"flex":"none";
   // Bouton GID admin
   const gidBtn=document.getElementById("gidAppBtn");
   if(gidBtn) gidBtn.style.display=isAdmin?"flex":"none";
@@ -481,9 +492,15 @@ function playAlertSound(){
 
 // ── UPDATE APP ──
 function updateApp(){
-  if(!currentUser&&!isGuest)return;
+  if(!currentUser&&!isGuest&&!isAdmin)return;
   const user=currentUser;
-  const myDoss=user?D.filter(d=>d.tech&&d.tech.toUpperCase()===user.toUpperCase()):D;
+  // Filtre robuste : nom exact OU contenu dans le champ tech (gère "NOM Prénom" ou "NOM")
+  const myDoss=user?D.filter(d=>{
+    if(!d.tech)return false;
+    const t=d.tech.toUpperCase().trim();
+    const u=user.toUpperCase().trim();
+    return t===u || t.startsWith(u+" ") || t.endsWith(" "+u) || t.includes(" "+u+" ");
+  }):D;
   const allUrg=D.filter(d=>st(d.percution)==="urgent");
 
   // Header user
@@ -740,6 +757,10 @@ async function saveAppGid(){
   localStorage.setItem("appGidLabel",label);
   const hdrUser=document.getElementById("hdrUser");
   if(hdrUser&&isAdmin) hdrUser.textContent="👑 Admin · "+label;
+  const hdrOnglet=document.getElementById("hdrOnglet");
+  if(hdrOnglet) hdrOnglet.textContent="📅 "+label;
+  const banner=document.getElementById("noGidBanner");
+  if(banner) banner.style.display="none";
   closeAppGidModal();
   await loadSheets();
 }
