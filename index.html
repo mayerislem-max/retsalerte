@@ -138,11 +138,37 @@ body.day-mode::before{background:radial-gradient(ellipse 900px 700px at 90% -5%,
 @keyframes fadeInLogin{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
 .login-version{font-family:"JetBrains Mono",monospace;font-size:.5rem;color:var(--ink4);margin-bottom:32px;letter-spacing:3px;}
 
-/* CA read-only — masquer boutons action */
-body.is-ca .alert-btn,
-body.is-ca .btn-wa,
+/* Date création sur carte */
+.cmeta-cree{display:inline-flex;align-items:center;gap:4px;font-size:.62rem;color:rgba(255,255,255,.35);font-family:"JetBrains Mono",monospace;letter-spacing:.5px;margin-top:4px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:2px 7px;}
+
+/* Bouton WA mini sur carte */
+.btn-wa-mini{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.25);color:#25d366;cursor:pointer;font-size:.8rem;transition:all .15s;flex-shrink:0;}
+.btn-wa-mini:hover{background:rgba(37,211,102,.22);transform:translateY(-1px);}
+
+/* CA : masquer seulement alerte et contact status — garder WA et notif */
 body.is-ca .pcbtn,
-body.is-ca .popup-contact{display:none!important;}
+body.is-ca .popup-contact-ttl,
+body.is-ca .contact-box{display:none!important;}
+
+/* Mode jour — palette améliorée */
+body.day-mode{
+  --bg:#f2f3f7;--s1:#ffffff;--s2:#eef0f5;--s3:#e4e6ed;--s4:#d8dae3;
+  --ink:#1a1a2e;--ink2:rgba(26,26,46,.82);--ink3:rgba(26,26,46,.48);--ink4:rgba(26,26,46,.22);
+  --bd:rgba(0,0,0,.09);--bd2:rgba(0,0,0,.14);
+  --or:#e04a00;--or2:#cc4400;--or3:#ff6620;
+}
+body.day-mode::before{
+  background:radial-gradient(ellipse 900px 600px at 90% -5%,rgba(255,85,0,.07) 0%,transparent 55%),
+  radial-gradient(ellipse 600px 400px at -5% 90%,rgba(191,90,242,.04) 0%,transparent 55%);
+}
+body.day-mode .topbar{background:rgba(242,243,247,.97);}
+body.day-mode .sidebar{background:rgba(255,255,255,.97);}
+body.day-mode .card{box-shadow:0 2px 12px rgba(0,0,0,.08);}
+body.day-mode .kpi{box-shadow:0 4px 20px rgba(0,0,0,.08);}
+body.day-mode .cdn{color:var(--ink);}
+body.day-mode .cid{color:var(--or2);}
+body.day-mode .tb-update{color:var(--ink3);}
+body.day-mode .cmeta-cree{color:var(--ink3);background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.08);}
 
 /* ─── SIDEBAR ─── */
 .sidebar{
@@ -1224,6 +1250,8 @@ function cardHTML(d,i){
   const blink=(c.mins>=0&&c.mins<=15)?" blink":"";
   const alertSent=sentAlerts[d.id];
   const alertBtn=`<button class="alert-btn${alertSent?" sent":""}" onclick="event.stopPropagation();openAlertModal('${d.id}')" title="Envoyer alerte au technicien">${alertSent?"✓ Alerte envoyee":"🚨 Alerter"}</button>`;
+  const waBtn=`<button class="btn-wa-mini" onclick="event.stopPropagation();sendWhatsApp(D.find(x=>x.id==='${d.id}'))" title="WhatsApp">📱</button>`;
+  const creeLbl = d.date_creation ? `<span class="cmeta-cree">📝 Créé le ${d.date_creation}</span>` : "";
   return`<div class="card ${sc}" style="animation:cardIn .4s cubic-bezier(.34,1.1,.64,1) ${i*.045}s both" onclick="openPopup('${d.id}')">
     <div class="cbar"></div>
     <div class="cbody">
@@ -1232,7 +1260,8 @@ function cardHTML(d,i){
         <div class="ctop"><span class="cid" title="Cliquer pour copier" onclick="event.stopPropagation();copyND('0${d.id}',this)">0${d.id}</span>${tTag(d.actprod)}${stTag(s)}</div>
         <div class="ctech">👷 ${d.tech}</div>
         <div class="cmeta"><span>📍 ${d.ville}${d.cp&&d.cp!=="—"?" ("+d.cp+")":""}</span><span>📅 ${d.planifiee||"—"}</span><span>⚡ ${fm(d.percution)}</span></div>
-        <div style="margin-top:8px;">${alertBtn}</div>
+        ${creeLbl}
+        <div class="card-actions" style="margin-top:8px;display:flex;gap:6px;align-items:center;">${alertBtn}${waBtn}</div>
       </div>
     </div>
     <div class="cright">
