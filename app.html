@@ -370,14 +370,22 @@ function populateSelect(){
   techs.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});
 }
 function doLogin(){
-  const input=document.getElementById('loginInput').value.trim().toUpperCase();
+  const raw=document.getElementById('loginInput').value||'';
+  const input=raw.trim().toUpperCase().replace(/\s/g,'');
   const errEl=document.getElementById('loginError');
   if(!input){toast('⚠️ Entrez votre identifiant','t-amber');return;}
-  const user=USERS[input];
+  // Cherche exact ou sans espaces
+  let user=USERS[input];
+  // Fallback: cherche parmi toutes les clés en ignorant espaces
   if(!user){
+    const k=Object.keys(USERS).find(k=>k.replace(/\s/g,'')===input);
+    if(k)user=USERS[k];
+  }
+  if(!user){
+    errEl.textContent='❌ Identifiant non reconnu : '+input;
     errEl.style.display='block';
     document.getElementById('loginInput').style.borderColor='var(--red)';
-    setTimeout(()=>{errEl.style.display='none';document.getElementById('loginInput').style.borderColor='';},3000);
+    setTimeout(()=>{errEl.style.display='none';document.getElementById('loginInput').style.borderColor='';},4000);
     return;
   }
   errEl.style.display='none';
@@ -616,8 +624,6 @@ function parseAndLoad(txt){
   else toast('⚠️ Données non reconnues','t-amber');
 }
 
-}
-
 // ── TOAST ──
 function copyND(nd,el){
   navigator.clipboard.writeText(nd).then(()=>{
@@ -642,6 +648,8 @@ populateSelect();
 
 // Auto-login si déjà connecté
 const savedUser=localStorage.getItem('ruser');
+const savedUserInfo=localStorage.getItem('ruserinfo');
+if(savedUserInfo)try{currentUserInfo=JSON.parse(savedUserInfo);}catch(e){}
 if(savedUser){currentUser=savedUser;startApp();}
 </script>
 </body>
