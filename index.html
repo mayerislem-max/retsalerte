@@ -886,48 +886,44 @@ function parseAndLoad(txt){
   txt=txt.replace(/^\uFEFF/,"");
   const lines=txt.trim().split(/\r?\n/);
   if(lines.length<2)return;
-  // Détecte séparateur
-  const sep=lines[0].includes(";")?";":",";
-  const H=lines[0].split(sep).map(h=>h.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/"/g,""));
-  
-  // Index colonnes — supporte les 2 formats
+  // Détecte séparateur : TAB en priorité, puis ; puis ,
+  const firstLine=lines[0];
+  const sep=firstLine.includes("\t")?"\t":firstLine.includes(";")?";":","
+  const norm=s=>s.replace(/"/g,"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  const H=firstLine.split(sep).map(norm);
+  // Format exact: Planifiée, Nom technicien, Act/Prod, CP, Ville site, ND, Créée
   const ipl  = H.findIndex(h=>h.includes("planifi"));
-  const itech= H.findIndex(h=>h.includes("technicien")||h.includes("nom tech"));
+  const itech= H.findIndex(h=>h.includes("technicien")||h.includes("nom tech")||h==="nom");
   const iap  = H.findIndex(h=>h.includes("act")||h.includes("prod"));
-  const icp  = H.findIndex(h=>h==="cp"||h==='"cp"');
+  const icp  = H.findIndex(h=>h==="cp");
   const ivil = H.findIndex(h=>h.includes("ville"));
-  const ind  = H.findIndex(h=>h==="nd"||h.includes('"nd"')||h.includes("dossier")||h.includes("numero"));
+  const ind  = H.findIndex(h=>norm(h)==="nd"||h.includes("nd"));
   const icre = H.findIndex(h=>h.includes("cree")||h.includes("creation"));
-
-  function pdate(s){
-    if(!s||s==="—")return null;
-    s=s.replace(/"/g,"").trim();
-    const m=s.match(/(\d{2})[\/\-](\d{2})[\/\-](\d{4})(?:\s+(\d{2}):(\d{2}))?/);
-    return m?new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0)):null;
-  }
-
   const raw=[];
   for(let n=1;n<lines.length;n++){
     const c=lines[n].split(sep).map(x=>x.replace(/"/g,"").trim());
     if(c.length<3)continue;
-    const g=i=>i>=0?(c[i]||"").replace(/"/g,"").trim():"";
-    const pl=g(ipl),cr=g(icre);
-    const dp=pdate(pl),dc=pdate(cr);
-    const delai=48; // Percution = date création + 48h (fixe)
-    const nd=g(ind).replace(/^0+/,""); // retire les 0 du début
+    const g=i=>i>=0?(c[i]||"").trim():"";
+    const nd=g(ind).replace(/^0+/,"");
     if(!nd)continue;
     raw.push({
       id:nd,
-      tech:g(itech).toUpperCase()||"N/A",
+      tech:(g(itech)||"N/A").toUpperCase(),
       actprod:g(iap).toUpperCase(),
       cp:g(icp),
       ville:g(ivil).toUpperCase(),
-      date_creation:cr,
-      planifiee:pl,
-      delai:delai
+      date_creation:g(icre),
+      planifiee:g(ipl),
+      delai:48
     });
   }
-  if(raw.length>0){initData(raw);updK();rAcc();toast(`✅ ${raw.length} dossiers chargés depuis Sheets`,"t-green");}
+  if(raw.length>0){
+    initData(raw);updK();rAcc();
+    toast(`✅ ${raw.length} dossiers chargés`,"t-green");
+  } else {
+    toast("⚠️ Données non reconnues — vérifiez le format","t-amber");
+    console.log("Headers détectés:",H,"sep:["+sep+"]");
+  }
 }
 
 // ─── TOAST ───
