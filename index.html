@@ -189,7 +189,9 @@ body::before{content:"";position:fixed;inset:0;
 .card:hover .cav{transform:scale(1.07);}
 .cinfo{flex:1;min-width:0;}
 .ctop{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px;}
-.cid{font-family:"Bebas Neue",sans-serif;font-size:1.05rem;letter-spacing:2px;}
+.cid{font-family:"Bebas Neue",sans-serif;font-size:1.05rem;letter-spacing:2px;cursor:pointer;transition:color .15s;}
+.cid:hover{color:var(--or2);}
+.cid-copied{color:var(--green)!important;}
 .ctech{font-size:.85rem;font-weight:600;color:var(--ink2);margin-bottom:4px;}
 .cmeta{display:flex;gap:14px;flex-wrap:wrap;font-size:.7rem;color:var(--ink3);}
 .tag{font-family:"JetBrains Mono",monospace;font-size:.52rem;letter-spacing:1px;padding:3px 8px;border-radius:6px;text-transform:uppercase;transition:all .15s;}
@@ -329,7 +331,9 @@ body::before{content:"";position:fixed;inset:0;
 .popup{background:rgba(26,26,30,.98);border:1px solid rgba(255,255,255,.1);border-radius:22px;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.8);animation:popIn .32s cubic-bezier(.34,1.2,.64,1);}
 @keyframes popIn{from{opacity:0;transform:scale(.92) translateY(22px)}to{opacity:1;transform:scale(1) translateY(0)}}
 .popup-hd{display:flex;align-items:flex-start;justify-content:space-between;padding:22px 24px 18px;border-bottom:1px solid rgba(255,255,255,.06);}
-.popup-id{font-family:"Bebas Neue",sans-serif;font-size:1.8rem;letter-spacing:5px;line-height:1;}
+.popup-id{font-family:"Bebas Neue",sans-serif;font-size:1.8rem;letter-spacing:5px;line-height:1;cursor:pointer;transition:color .15s;}
+.popup-id:hover{color:var(--or2);}
+.popup-id-copied{color:var(--green)!important;}
 .popup-close{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--ink3);cursor:pointer;width:34px;height:34px;border-radius:10px;transition:all .18s;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
 .popup-close:hover{background:rgba(255,45,85,.15);border-color:rgba(255,45,85,.3);color:var(--red);}
 .popup-body{padding:22px 24px;}
@@ -676,7 +680,7 @@ function cardHTML(d,i){
     <div class="cbody">
       <div class="cav">${ini(d.tech)}</div>
       <div class="cinfo">
-        <div class="ctop"><span class="cid">${d.id}</span>${tTag(d.actprod)}${stTag(s)}</div>
+        <div class="ctop"><span class="cid" title="Cliquer pour copier" onclick="event.stopPropagation();copyND('0${d.id}',this)">0${d.id}</span>${tTag(d.actprod)}${stTag(s)}</div>
         <div class="ctech">👷 ${d.tech}</div>
         <div class="cmeta"><span>📍 ${d.ville}${d.cp&&d.cp!=="—"?" ("+d.cp+")":""}</span><span>📅 ${d.planifiee||"—"}</span><span>⚡ ${fm(d.percution)}</span></div>
       </div>
@@ -720,7 +724,8 @@ function openPopup(id){
   const d=D.find(x=>x.id===id);if(!d)return;popD=d;
   const s=st(d.percution),c=cd(d.percution);
   const col={urgent:"var(--red)",warning:"var(--amber)",ok:"var(--green)",done:"var(--ink3)"}[s];
-  document.getElementById("pop-id").textContent=d.id;
+  document.getElementById("pop-id").textContent="0"+d.id;
+  document.getElementById("pop-id").onclick=function(){copyND("0"+d.id,this);};
   document.getElementById("pop-tags").innerHTML=tTag(d.actprod)+stTag(s);
   const cdEl=document.getElementById("pop-cd");cdEl.textContent=c.t;cdEl.style.color=col;
   if(c.mins>=0&&c.mins<=15)cdEl.classList.add("blink");else cdEl.classList.remove("blink");
@@ -886,6 +891,25 @@ function parseAndLoad(txt){
 }
 
 // ─── TOAST ───
+function copyND(nd,el){
+  navigator.clipboard.writeText(nd).then(()=>{
+    const orig=el.textContent;
+    el.textContent="✓ Copié !";
+    el.classList.add(el.classList.contains('popup-id')?'popup-id-copied':'cid-copied');
+    setTimeout(()=>{
+      el.textContent=orig;
+      el.classList.remove('popup-id-copied','cid-copied');
+    },1500);
+  }).catch(()=>{
+    // fallback
+    const t=document.createElement('textarea');
+    t.value=nd;document.body.appendChild(t);t.select();
+    document.execCommand('copy');document.body.removeChild(t);
+    const orig=el.textContent;
+    el.textContent="✓ Copié !";
+    setTimeout(()=>{el.textContent=orig;},1500);
+  });
+}
 function toast(msg,cls=""){
   const b=document.getElementById("toasts"),el=document.createElement("div");
   el.className="toast "+cls;el.textContent=msg;b.appendChild(el);
