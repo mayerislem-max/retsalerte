@@ -357,7 +357,7 @@ if(savedInfo){try{currentUserInfo=JSON.parse(savedInfo);}catch(e){}}
 
 // ── PARSE DATE ──
 function parseDate(s){if(!s)return null;const m=s.match(/(\d{2})[\/\-](\d{2})[\/\-](\d{4})(?:\s+(\d{2}):(\d{2}))?/);return m?new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0)):null;}
-function initData(raw){D=raw.map(r=>{const pl=parseDate(r.planifiee);const cr=parseDate(r.date_creation);return{...r,created:cr,percution:pl||null};}).filter(d=>d.percution);}
+function initData(raw){D=raw.map(r=>{const pl=parseDate(r.planifiee);const cr=parseDate(r.date_creation);const percution=cr?new Date(cr.getTime()+(r.delai||48)*3600000):(pl||null);return{...r,created:cr,percution};}).filter(d=>d.percution);}
 
 const st=p=>{const h=(p-new Date())/3600000;return h<0?"done":h<=.5?"urgent":h<=2?"warning":"ok";};
 const cd=p=>{const d=p-new Date();if(d<0)return{t:"PERCUTE",s:"",mins:-1};const h=Math.floor(d/3600000),m=String(Math.floor((d%3600000)/60000)).padStart(2,"0");return{t:`${h}h ${m}m`,s:"restant",mins:Math.floor(d/60000)};};
@@ -664,13 +664,27 @@ function checkAndNotify(){
 }
 
 // ── POINT 3 : Sync auto 2min + indicateur ──
+async function fetchWithProxies(url){
+  const proxies=[
+    u=>u,
+    u=>"https://corsproxy.io/?"+encodeURIComponent(u),
+    u=>"https://api.allorigins.win/raw?url="+encodeURIComponent(u),
+    u=>"https://thingproxy.freeboard.io/fetch/"+u,
+    u=>"https://cors-anywhere.herokuapp.com/"+u
+  ];
+  for(const proxy of proxies){
+    try{
+      const r=await fetch(proxy(url),{signal:AbortSignal.timeout(10000)});
+      if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))return t;}
+    }catch(e){}
+  }
+  return null;
+}
 async function loadSheets(){
   const dot=document.getElementById("syncDot");
   if(dot)dot.style.background="#ffcc00";
   const url=getSheetsUrl();
-  let txt=null;
-  try{const r=await fetch(url,{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}
-  if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(url),{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
+  let txt=await fetchWithProxies(url);
   if(txt){parseAndLoad(txt);if(dot){dot.style.background="var(--green)";dot.style.boxShadow="0 0 6px var(--green)";}}
   else{if(dot){dot.style.background="var(--amber)";dot.style.boxShadow="0 0 6px var(--amber)";}}
 }
@@ -746,8 +760,8 @@ async function saveAppGid(){
   btn.textContent="Vérification..."; btn.disabled=true;
   const url=`${SHEETS_BASE}?gid=${gid}&single=true&output=csv`;
   let ok=false;
-  try{const r=await fetch(url,{signal:AbortSignal.timeout(6000)});const t=await r.text();if(r.ok&&t&&!t.startsWith("<")&&t.length>20)ok=true;}catch(e){}
-  if(!ok){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(url),{signal:AbortSignal.timeout(6000)});const t=await r.text();if(r.ok&&t&&!t.startsWith("<")&&t.length>20)ok=true;}catch(e){}}
+  const txt=await fetchWithProxies(url);
+  if(txt&&txt.length>20)ok=true;
   btn.textContent="ENREGISTRER"; btn.disabled=false;
   if(!ok){document.getElementById("appGidStatus").textContent="❌ Lien inaccessible — vérifiez la publication";document.getElementById("appGidStatus").style.color="var(--red)";return;}
   localStorage.setItem("rgid",gid);
