@@ -590,7 +590,8 @@ function updateApp(){
     if(!d.tech)return false;
     const t=d.tech.toUpperCase().trim();
     const u=user.toUpperCase().trim();
-    return t===u || t.startsWith(u+" ") || t.endsWith(" "+u) || t.includes(" "+u+" ");
+    // Matcher: "BALKAYA" dans "BALKAYA RODI" ou "RODI BALKAYA" ou exact
+    return t===u || t.startsWith(u+" ") || t.endsWith(" "+u) || t.includes(" "+u+" ") || t.includes(u);
   }):D;
   const allUrg=D.filter(d=>st(d.percution)==="urgent");
 
@@ -787,20 +788,27 @@ function parseAndLoad(txt){
   const norm=s=>s.replace(/"/g,"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
   const H=firstLine.split(sep).map(norm);
   const ipl=H.findIndex(h=>h.includes("planifi"));
-  const itech=H.findIndex(h=>h.includes("technicien")||h.includes("nom tech")||h==="nom");
+  const itech=H.findIndex(h=>h==="nom technicien"||h.includes("nom tech")||h==="nom");
+  const iprenom=H.findIndex(h=>h==="prenom technicien"||h.includes("prenom tech")||h==="prenom");
   const iap=H.findIndex(h=>h.includes("act")||h.includes("prod"));
   const icp=H.findIndex(h=>h==="cp");
   const ivil=H.findIndex(h=>h.includes("ville"));
-  const ind=H.findIndex(h=>norm(h)==="nd"||h.includes("nd"));
-  const icre=H.findIndex(h=>h.includes("cree")||h.includes("creation"));
+  // ND = colonne "nd" exacte OU colonne "n°" (index 1 dans export brut)
+  let ind=H.findIndex(h=>h==="nd");
+  if(ind<0) ind=H.findIndex(h=>h==="n°"||h==="numero");
+  const icre=H.findIndex(h=>h.includes("cree")||h.includes("creation")||h==="creee");
   const raw=[];
   for(let n=1;n<lines.length;n++){
     const c=lines[n].split(sep).map(x=>x.replace(/"/g,"").trim());
     if(c.length<3)continue;
     const g=i=>i>=0?(c[i]||"").trim():"";
-    const nd=g(ind).replace(/^0+/,"");
-    if(!nd)continue;
-    raw.push({id:nd,tech:(g(itech)||"N/A").toUpperCase(),actprod:g(iap).toUpperCase(),cp:g(icp),ville:g(ivil).toUpperCase(),date_creation:g(icre),planifiee:g(ipl),delai:48});
+    // ND : colonne dédiée sinon colonne 1 (N° dossier export brut)
+    const nd=(ind>=0?g(ind):g(1)).replace(/^0+/,"");
+    if(!nd||nd.length<5)continue;
+    // Tech : NOM seul ou NOM+PRENOM si deux colonnes séparées
+    let tech=g(itech).toUpperCase();
+    if(iprenom>=0&&g(iprenom)) tech=(tech+" "+g(iprenom).toUpperCase()).trim();
+    raw.push({id:nd,tech:tech||"N/A",actprod:g(iap).toUpperCase(),cp:g(icp),ville:g(ivil).toUpperCase(),date_creation:g(icre),planifiee:g(ipl),delai:48});
   }
   if(raw.length>0){initData(raw);if(currentUser||isGuest)updateApp();}
 }
