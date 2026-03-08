@@ -1046,8 +1046,22 @@ function applyGid(){
   localStorage.setItem("rgidLabel",label);
   document.getElementById("tbPage").textContent="Onglet : "+label;
   closeGidModal();
-  toast("✅ Onglet mis à jour — chargement...","t-green");
+  toast("\u2705 Onglet mis \u00e0 jour \u2014 chargement...","t-green");
+  // \u2500\u2500 SYNC CONFIG vers tous les appareils techniciens \u2500\u2500
+  pushConfigToTechs(newGid, label);
   doRef(document.getElementById("btnRef"));
+}
+
+// Pousse le nouveau GID via ntfy topic global retsalerte_CONFIG
+async function pushConfigToTechs(gid, label){
+  try{
+    await fetch("https://ntfy.sh/retsalerte_CONFIG",{
+      method:"POST",
+      headers:{"Title":"CONFIG_UPDATE","Priority":"low","Tags":"gear"},
+      body:JSON.stringify({gid, label})
+    });
+    toast("\ud83d\udce1 Config sync\u00e9e vers les techniciens","t-green");
+  }catch(e){console.warn("Sync config:",e);}
 }
 
 // ─── PROFIL SYSTEM ───
