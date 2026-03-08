@@ -435,17 +435,39 @@ function startApp(){
 // ── POINT 5 : Poll ntfy.sh pour notifications superviseur ──
 function getNtfyTopic(){
   if(!currentUserInfo)return null;
-  // Topic unique par technicien ex: retsalerte_HAMMACHE
-  return "retsalerte_"+(currentUserInfo.nom||"").toUpperCase().replace(/\s/g,"_").replace(/[^A-Z0-9_]/g,"");
+  // Topic basé sur nom complet "NOM Prénom" → retsalerte_NOM_PRENOM (identique au site superviseur)
+  const fullName=((currentUserInfo.nom||"")+" "+(currentUserInfo.prenom||"")).trim();
+  return "retsalerte_"+fullName.toUpperCase().replace(/\s/g,"_").replace(/[^A-Z0-9_]/g,"");
 }
+let ntfyEventSource=null;
 async function startNtfyPoll(){
   const topic=getNtfyTopic();
   if(!topic)return;
-  // Poll toutes les 30 secondes
-  setInterval(()=>checkNtfy(topic),30*1000);
-  checkNtfy(topic);
+  // D'abord récupérer les messages manqués (5 dernières minutes)
+  checkNtfyMissed(topic);
+  // Puis connexion SSE permanente pour alertes instantanées
+  connectNtfySSE(topic);
 }
-async function checkNtfy(topic){
+function connectNtfySSE(topic){
+  if(ntfyEventSource){ntfyEventSource.close();}
+  try{
+    ntfyEventSource=new EventSource(`https://ntfy.sh/${topic}/sse`);
+    ntfyEventSource.onmessage=function(e){
+      try{
+        const msg=JSON.parse(e.data);
+        if(msg.event==="message"){handleNtfyMessage(msg);}
+      }catch(ex){}
+    };
+    ntfyEventSource.onerror=function(){
+      // Reconnexion automatique après 10s si la connexion coupe
+      setTimeout(()=>connectNtfySSE(topic),10000);
+    };
+  }catch(e){
+    // Fallback : poll toutes les 30s si SSE non supporté
+    setInterval(()=>checkNtfyMissed(topic),30*1000);
+  }
+}
+async function checkNtfyMissed(topic){
   try{
     const since=lastPushCheck||Math.floor(Date.now()/1000)-300;
     const url=`https://ntfy.sh/${topic}/json?since=${since}&poll=1`;
@@ -458,20 +480,21 @@ async function checkNtfy(topic){
     for(const line of lines){
       try{
         const msg=JSON.parse(line);
-        if(msg.event==="message"){
-          showPushBanner(msg.title||"Alerte superviseur",msg.message||msg.body||"");
-          if(Notification.permission==="granted"){
-            new Notification(msg.title||"RetsAlerte - Alerte",{
-              body:msg.message||msg.body||"",
-              icon:"icon-192.png",
-              requireInteraction:true,
-              vibrate:[300,100,300,100,300]
-            });
-          }
-        }
+        if(msg.event==="message"){handleNtfyMessage(msg);}
       }catch(e){}
     }
   }catch(e){}
+}
+function handleNtfyMessage(msg){
+  showPushBanner(msg.title||"Alerte superviseur",msg.message||msg.body||"");
+  if(Notification.permission==="granted"){
+    new Notification(msg.title||"RetsAlerte - Alerte",{
+      body:msg.message||msg.body||"",
+      icon:"icon-192.png",
+      requireInteraction:true,
+      vibrate:[300,100,300,100,300]
+    });
+  }
 }
 function showPushBanner(title,body){
   const b=document.getElementById("pushBanner");
