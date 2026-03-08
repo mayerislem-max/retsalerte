@@ -193,6 +193,11 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--ink);displa
 .toast.t-red{border-left-color:var(--red);}
 .toast.t-green{border-left-color:var(--green);}
 .toast.t-amber{border-left-color:var(--amber);}
+
+/* ── DEBUG ── */
+#debugPanel{background:rgba(255,85,0,.12);border:1px solid rgba(255,85,0,.4);border-radius:12px;padding:12px;margin:10px 13px;font-family:"JetBrains Mono",monospace;font-size:.6rem;color:rgba(255,255,255,.8);line-height:1.8;display:none;}
+#debugPanel.show{display:block;}
+#debugToggle{width:100%;padding:6px;background:rgba(255,85,0,.15);border:1px solid rgba(255,85,0,.3);color:var(--or2);border-radius:8px;font-size:.6rem;font-family:"JetBrains Mono",monospace;cursor:pointer;margin:8px 0;}
 </style>
 </head>
 <body>
@@ -264,6 +269,11 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--ink);displa
   <div id="noGidBanner" style="display:none;background:rgba(255,204,0,.12);border-bottom:1px solid rgba(255,204,0,.3);padding:8px 16px;font-size:.7rem;color:#ffcc00;font-family:'JetBrains Mono',monospace;text-align:center;">
     ⚠ Onglet non configuré — demandez à l'admin de configurer l'onglet du jour
   </div>
+
+  
+  <!-- DEBUG -->
+  <button id="debugToggle" onclick="toggleDebug()" style="display:none;">🔍 DEBUG</button>
+  <div id="debugPanel"></div>
 
   <div class="tabs">
     <button class="tab on" onclick="goTab('mes',this)">
@@ -452,6 +462,7 @@ function startApp(){
   // Bouton GID admin
   const gidBtn=document.getElementById("gidAppBtn");
   if(gidBtn) gidBtn.style.display=isAdmin?"flex":"none";
+  const dbgBtn=document.getElementById("debugToggle");if(dbgBtn)dbgBtn.style.display="block";
   // Nom affiché dans header
   const hdrUser=document.getElementById("hdrUser");
   if(hdrUser){
@@ -772,13 +783,31 @@ async function fetchWithProxies(url){
   }
   return null;
 }
+function toggleDebug(){
+  const p=document.getElementById("debugPanel");
+  p.classList.toggle("show");
+}
+function dbg(msg){
+  const p=document.getElementById("debugPanel");
+  if(p){p.innerHTML+="<div>"+msg+"</div>";p.classList.add("show");}
+  console.log("[DEBUG]",msg);
+}
 async function loadSheets(){
   const dot=document.getElementById("syncDot");
   if(dot)dot.style.background="#ffcc00";
   const url=getSheetsUrl();
+  dbg("🔗 GID="+getCurrentGid());
+  dbg("📡 URL="+url.slice(0,80)+"...");
   let txt=await fetchWithProxies(url);
-  if(txt){parseAndLoad(txt);if(dot){dot.style.background="var(--green)";dot.style.boxShadow="0 0 6px var(--green)";}}
-  else{if(dot){dot.style.background="var(--amber)";dot.style.boxShadow="0 0 6px var(--amber)";}}
+  if(txt){
+    dbg("✅ CSV reçu: "+txt.length+" chars");
+    dbg("1ère ligne: "+txt.split("\n")[0].slice(0,80));
+    parseAndLoad(txt);
+    if(dot){dot.style.background="var(--green)";dot.style.boxShadow="0 0 6px var(--green)";}
+  } else {
+    dbg("❌ Échec chargement CSV");
+    if(dot){dot.style.background="var(--amber)";dot.style.boxShadow="0 0 6px var(--amber)";}
+  }
 }
 function parseAndLoad(txt){
   txt=txt.replace(/^\uFEFF/,"");
@@ -810,7 +839,16 @@ function parseAndLoad(txt){
     if(iprenom>=0&&g(iprenom)) tech=(tech+" "+g(iprenom).toUpperCase()).trim();
     raw.push({id:nd,tech:tech||"N/A",actprod:g(iap).toUpperCase(),cp:g(icp),ville:g(ivil).toUpperCase(),date_creation:g(icre),planifiee:g(ipl),delai:48});
   }
-  if(raw.length>0){initData(raw);if(currentUser||isGuest)updateApp();}
+  dbg("📊 Lignes parsées: "+raw.length);
+  if(raw.length>0){
+    dbg("Ex: ND="+raw[0].id+" tech="+raw[0].tech+" cree="+raw[0].date_creation);
+    dbg("User actuel: "+(currentUser||"(aucun)"));
+    const match=currentUser?raw.filter(r=>r.tech.toUpperCase().includes(currentUser.toUpperCase())):[];
+    dbg("Dossiers pour cet user: "+match.length);
+    initData(raw);if(currentUser||isGuest)updateApp();
+  } else {
+    dbg("⚠️ Aucune ligne parsée ! Vérif colonnes");
+  }
 }
 
 // ── UTILS ──
