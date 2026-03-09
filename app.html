@@ -788,16 +788,20 @@ function checkAndNotify(){
 // ── POINT 3 : Sync auto 2min + indicateur ──
 async function fetchWithProxies(url){
   const proxies=[
-    u=>u,
     u=>"https://corsproxy.io/?"+encodeURIComponent(u),
     u=>"https://api.allorigins.win/raw?url="+encodeURIComponent(u),
+    u=>"https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(u),
     u=>"https://thingproxy.freeboard.io/fetch/"+u,
+    u=>u,
     u=>"https://cors-anywhere.herokuapp.com/"+u
   ];
   for(const proxy of proxies){
     try{
-      const r=await fetch(proxy(url),{signal:AbortSignal.timeout(10000)});
-      if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))return t;}
+      const r=await fetch(proxy(url),{signal:AbortSignal.timeout(12000)});
+      if(r.ok){
+        const t=await r.text();
+        if(t&&t.length>20&&(t.includes(",")||t.includes(";"))&&!t.startsWith("<!"))return t;
+      }
     }catch(e){}
   }
   return null;
