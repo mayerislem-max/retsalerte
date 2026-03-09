@@ -359,6 +359,25 @@ window.addEventListener("DOMContentLoaded",()=>{
   if(p){p.classList.add("show");p.innerHTML="<div>⏳ Démarrage app...</div>";}
 });
 
+const RAW_FALLBACK=[
+  {id:"492526823",tech:"HAFIDHOU",actprod:"PLIFTH",cp:"05230",ville:"LA BATIE-NEUVE",date_creation:"08/03/2026 18:25",planifiee:"09/03/2026 16:00",delai:48},
+  {id:"490438754",tech:"LA MARCA",actprod:"PMSFTH",cp:"13200",ville:"ARLES",date_creation:"08/03/2026 16:55",planifiee:"10/03/2026 09:15",delai:48},
+  {id:"490470648",tech:"LA MARCA",actprod:"PMSFTH",cp:"13200",ville:"ARLES",date_creation:"08/03/2026 12:03",planifiee:"10/03/2026 13:15",delai:48},
+  {id:"491272533",tech:"ZOUBERT",actprod:"PMSFTH",cp:"13008",ville:"MARSEILLE 08",date_creation:"08/03/2026 18:30",planifiee:"10/03/2026 13:00",delai:48},
+  {id:"442271011",tech:"KHEDIM",actprod:"PLIFTH",cp:"13790",ville:"ROUSSET",date_creation:"08/03/2026 11:50",planifiee:"10/03/2026 10:45",delai:48},
+  {id:"491885617",tech:"ABS FTTH",actprod:"PMSFTH",cp:"13011",ville:"MARSEILLE 11",date_creation:"08/03/2026 09:34",planifiee:"10/03/2026 20:00",delai:48},
+  {id:"442761368",tech:"CHERIKI",actprod:"ESCFTH",cp:"13130",ville:"BERRE-L ETANG",date_creation:"08/03/2026 17:33",planifiee:"10/03/2026 08:00",delai:48},
+  {id:"492462911",tech:"BA",actprod:"PLIFTH",cp:"05100",ville:"BRIANCON",date_creation:"08/03/2026 18:50",planifiee:"10/03/2026 12:00",delai:48},
+  {id:"442588889",tech:"ALHAN",actprod:"PMSFTH",cp:"13610",ville:"LE PUY-STE-REPARADE",date_creation:"08/03/2026 12:32",planifiee:"10/03/2026 08:45",delai:48},
+  {id:"442835508",tech:"MOKLI",actprod:"PMSFTH",cp:"13600",ville:"CEYRESTE",date_creation:"08/03/2026 18:32",planifiee:"10/03/2026 11:00",delai:48},
+  {id:"442090824",tech:"RODIEL",actprod:"PMSFTH",cp:"13110",ville:"PORT-DE-BOUC",date_creation:"08/03/2026 11:06",planifiee:"10/03/2026 08:00",delai:48},
+  {id:"491834224",tech:"CHAIEB",actprod:"PMSFTH",cp:"13016",ville:"MARSEILLE 16",date_creation:"08/03/2026 10:32",planifiee:"10/03/2026 13:00",delai:48},
+  {id:"442863058",tech:"BELLINI",actprod:"PMSFTH",cp:"13800",ville:"ISTRES",date_creation:"08/03/2026 12:57",planifiee:"10/03/2026 15:00",delai:48},
+  {id:"442189871",tech:"BEN MEKKI",actprod:"PLIFTH",cp:"13400",ville:"AUBAGNE",date_creation:"08/03/2026 18:35",planifiee:"10/03/2026 12:00",delai:48},
+  {id:"490507709",tech:"CA GTK LOT 1",actprod:"PMSFTH",cp:"13129",ville:"ARLES",date_creation:"08/03/2026 18:28",planifiee:"10/03/2026 09:30",delai:48},
+  {id:"490583911",tech:"ALHAN",actprod:"PLIFTH",cp:"13560",ville:"SENAS",date_creation:"08/03/2026 11:50",planifiee:"11/03/2026 08:15",delai:48},
+  {id:"491916450",tech:"BEN DHAOU",actprod:"PMSFTH",cp:"13012",ville:"MARSEILLE 12",date_creation:"08/03/2026 18:34",planifiee:"10/03/2026 14:00",delai:48}
+];
 const USERS={"435E2@LOB62":{"nom":"ALHAN","prenom":"Grynia","identifiant":"435E2@LOB62"},"8499A@LOB62":{"nom":"BALKAYA","prenom":"Rodi","identifiant":"8499A@LOB62"},"VC861@LOB62":{"nom":"BELLINI","prenom":"Remy","identifiant":"VC861@LOB62"},"ZSEXO@LOB62":{"nom":"BEN DHAOU","prenom":"Kevin","identifiant":"ZSEXO@LOB62"},"765F9@LOB62":{"nom":"BEN YAHIA","prenom":"Adel","identifiant":"765F9@LOB62"},"FC7F0@LOB62":{"nom":"CAMARA","prenom":"Aboudou","identifiant":"FC7F0@LOB62"},"GSA4J@LOB62":{"nom":"CHAABIHI","prenom":"Thomas","identifiant":"GSA4J@LOB62"},"Q9ZVL@LOB62":{"nom":"CHAIEB","prenom":"Hedi","identifiant":"Q9ZVL@LOB62"},"FBDF0@LOB62":{"nom":"CHALBI","prenom":"Fadi","identifiant":"FBDF0@LOB62"},"3870D@LOB62":{"nom":"DANABACHE","prenom":"Ali","identifiant":"3870D@LOB62"},"DMJD8@LOB62":{"nom":"FETTACHE","prenom":"Daniel","identifiant":"DMJD8@LOB62"},"T25ZN@LOB62":{"nom":"HAMMACHE","prenom":"Ilyas","identifiant":"T25ZN@LOB62"},"ENP8M@LOB62":{"nom":"IBOUROI","prenom":"Ibrahim","identifiant":"ENP8M@LOB62"},"TVEMH@LOB62":{"nom":"ITRISSO","prenom":"Antouifou","identifiant":"TVEMH@LOB62"},"AME9X@LOB62":{"nom":"KARTLI","prenom":"Rochdi","identifiant":"AME9X@LOB62"},"6E041@LOB62":{"nom":"LA MARCA","prenom":"Guillaume","identifiant":"6E041@LOB62"},"LNDSZ@LOB62":{"nom":"MOKLI","prenom":"Thomas","identifiant":"LNDSZ@LOB62"},"MFANQ@LOB62":{"nom":"PRAT","prenom":"Thomas","identifiant":"MFANQ@LOB62"},"9FD11@LOB62":{"nom":"RAGOT","prenom":"Remi","identifiant":"9FD11@LOB62"},"LPNMZ@LOB62":{"nom":"RODIEL","prenom":"Ethan","identifiant":"LPNMZ@LOB62"},"MYFDU@LOB62":{"nom":"SAIDALI","prenom":"Nasser","identifiant":"MYFDU@LOB62"},"N1STX@LOB62":{"nom":"TABOUCHI","prenom":"Bilel","identifiant":"N1STX@LOB62"},"DDBD4@LOB62":{"nom":"YEKKEN","prenom":"Rayane","identifiant":"DDBD4@LOB62"},"FCCQ2@LOB62":{"nom":"ZAKARIA","prenom":"Lamhamdi","identifiant":"FCCQ2@LOB62"}};
 
 const SHEETS_BASE="https://docs.google.com/spreadsheets/d/e/2PACX-1vRtxvbeKkUnyJ4CAi6kTtmQJtslPcbSsH4t8ZzUDfXcUIHFXrG3igkB5AvoyqntV8EzycO1hIDh-z4t/pub";
@@ -820,8 +839,14 @@ async function loadSheets(){
     parseAndLoad(txt);
     if(dot){dot.style.background="var(--green)";dot.style.boxShadow="0 0 6px var(--green)";}
   } else {
-    dbg("❌ Échec chargement CSV");
+    dbg("❌ Échec chargement CSV — utilisation données locales");
     if(dot){dot.style.background="var(--amber)";dot.style.boxShadow="0 0 6px var(--amber)";}
+    // Fallback sur données intégrées
+    if(RAW_FALLBACK&&RAW_FALLBACK.length>0){
+      dbg("📦 Fallback: "+RAW_FALLBACK.length+" dossiers locaux");
+      initData(RAW_FALLBACK);
+      if(currentUser||isGuest)updateApp();
+    }
   }
 }
 function parseAndLoad(txt){
