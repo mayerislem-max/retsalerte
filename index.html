@@ -1686,10 +1686,22 @@ function drawLine(id,labels,values,color){
 async function doRef(btn){
   if(!btn)return;btn.classList.add("loading");
   let txt=null;
-  // Essai 1 : direct Google Sheets (CORS public)
-  try{const r=await fetch(getSheetsUrl(),{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}
-  // Essai 2 : proxy CORS public si direct échoue
-  if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(getSheetsUrl()),{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
+  const url=getSheetsUrl();
+  const proxies=[
+    ()=>"https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec",
+    u=>"https://api.allorigins.win/raw?url="+encodeURIComponent(u),
+    u=>"https://corsproxy.io/?"+encodeURIComponent(u),
+    u=>"https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(u),
+    u=>u
+  ];
+  for(const p of proxies){
+    if(txt)break;
+    try{
+      const pu=p(url);
+      const r=await fetch(pu,{signal:AbortSignal.timeout(10000)});
+      if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<")&&!t.startsWith("error"))txt=t;}
+    }catch(e){}
+  }
   const upEl=document.getElementById("lastUpdate");
   if(txt){
     parseAndLoad(txt);
