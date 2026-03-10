@@ -808,7 +808,7 @@ function checkAndNotify(){
 async function fetchWithProxies(url){
   // 1. Essayer le proxy GAS (aucun CORS)
   try{
-    const r=await fetch("https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec");
+    const r=await fetch("https://api.allorigins.win/raw?url=https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec");
     const t=await r.text();
     if(t&&t.length>10&&!t.startsWith("<")&&!t.startsWith("error")){
       dbg&&dbg("✅ GAS proxy OK");
