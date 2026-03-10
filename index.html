@@ -988,7 +988,7 @@ body.day-mode .cmeta-cree{color:var(--ink3);background:rgba(0,0,0,.04);border-co
 
 <script>
 window.onerror=function(msg,src,line,col,err){
-  document.body.innerHTML='<div style="color:red;padding:40px;font-family:monospace;font-size:13px;background:#111;position:fixed;inset:0;z-index:99999;overflow:auto"><h2 style="color:#ff3b30">❌ ERREUR JS</h2><b>'+msg+'</b><br><br>Ligne: '+line+' | Col: '+col+'<br><br><pre style="white-space:pre-wrap;color:#ff9f0a">'+(err&&err.stack?err.stack:'')+'</pre></div>';
+  document.body.innerHTML='<div style="color:red;padding:40px;font-family:monospace;font-size:13px;background:#111;position:fixed;inset:0;z-index:99999;overflow:auto"><h2>❌ ERREUR JS</h2><b>'+msg+'</b><br>Ligne: '+line+'<br><pre>'+(err&&err.stack||'')+'</pre></div>';
   return false;
 };
 const RAW=[{"id":"492526823","tech":"HAFIDHOU","actprod":"PLIFTH","cp":"05230","ville":"LA BATIE-NEUVE","date_creation":"08/03/2026 18:25","planifiee":"09/03/2026 16:00","delai":48},{"id":"490438754","tech":"LA MARCA","actprod":"PMSFTH","cp":"13200","ville":"ARLES","date_creation":"08/03/2026 16:55","planifiee":"10/03/2026 09:15","delai":48},{"id":"490470648","tech":"LA MARCA","actprod":"PMSFTH","cp":"13200","ville":"ARLES","date_creation":"08/03/2026 12:03","planifiee":"10/03/2026 13:15","delai":48},{"id":"491272533","tech":"ZOUBERT","actprod":"PMSFTH","cp":"13008","ville":"MARSEILLE 08","date_creation":"08/03/2026 18:30","planifiee":"10/03/2026 13:00","delai":48},{"id":"442271011","tech":"KHEDIM","actprod":"PLIFTH","cp":"13790","ville":"ROUSSET","date_creation":"08/03/2026 11:50","planifiee":"10/03/2026 10:45","delai":48},{"id":"491885617","tech":"ABS FTTH","actprod":"PMSFTH","cp":"13011","ville":"MARSEILLE 11","date_creation":"08/03/2026 09:34","planifiee":"10/03/2026 20:00","delai":48},{"id":"442761368","tech":"CHERIKI","actprod":"ESCFTH","cp":"13130","ville":"BERRE-L'ETANG","date_creation":"08/03/2026 17:33","planifiee":"10/03/2026 08:00","delai":48},{"id":"492462911","tech":"BA","actprod":"PLIFTH","cp":"05100","ville":"BRIANCON","date_creation":"08/03/2026 18:50","planifiee":"10/03/2026 12:00","delai":48},{"id":"442588889","tech":"ALHAN","actprod":"PMSFTH","cp":"13610","ville":"LE PUY-STE-REPARADE","date_creation":"08/03/2026 12:32","planifiee":"10/03/2026 08:45","delai":48},{"id":"442835508","tech":"MOKLI","actprod":"PMSFTH","cp":"13600","ville":"CEYRESTE","date_creation":"08/03/2026 18:32","planifiee":"10/03/2026 11:00","delai":48},{"id":"442090824","tech":"RODIEL","actprod":"PMSFTH","cp":"13110","ville":"PORT-DE-BOUC","date_creation":"08/03/2026 11:06","planifiee":"10/03/2026 08:00","delai":48},{"id":"491834224","tech":"CHAIEB","actprod":"PMSFTH","cp":"13016","ville":"MARSEILLE 16","date_creation":"08/03/2026 10:32","planifiee":"10/03/2026 13:00","delai":48},{"id":"442863058","tech":"BELLINI","actprod":"PMSFTH","cp":"13800","ville":"ISTRES","date_creation":"08/03/2026 12:57","planifiee":"10/03/2026 15:00","delai":48},{"id":"442189871","tech":"BEN MEKKI","actprod":"PLIFTH","cp":"13400","ville":"AUBAGNE","date_creation":"08/03/2026 18:35","planifiee":"10/03/2026 12:00","delai":48},{"id":"490507709","tech":"CA GTK LOT 1","actprod":"PMSFTH","cp":"13129","ville":"ARLES","date_creation":"08/03/2026 18:28","planifiee":"10/03/2026 09:30","delai":48},{"id":"490583911","tech":"ALHAN","actprod":"PLIFTH","cp":"13560","ville":"SENAS","date_creation":"08/03/2026 11:50","planifiee":"11/03/2026 08:15","delai":48},{"id":"491916450","tech":"BEN DHAOU","actprod":"PMSFTH","cp":"13012","ville":"MARSEILLE 12","date_creation":"08/03/2026 18:34","planifiee":"10/03/2026 14:00","delai":48}];
@@ -1437,7 +1437,7 @@ async function saveOnglet(){
   // Tester l'URL
   let txt=null;
   // GAS proxy (no CORS)
-  try{const r=await fetch("https://api.allorigins.win/raw?url="+encodeURIComponent("https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec"),{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("error")&&!t.startsWith("{"))txt=t;}}catch(e){}}
+  try{const r=await fetch("https://api.allorigins.win/raw?url="+encodeURIComponent("https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec"),{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("error")&&!t.startsWith("{"))txt=t;}}catch(e){}
   if(!txt){try{const r=await fetch(url,{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
   if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(url),{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
   if(!txt){res.innerHTML=`<span style="color:var(--red)">❌ Impossible de charger ce lien. Vérifiez qu'il est bien publié.</span>`;return;}
@@ -1721,22 +1721,22 @@ async function doRef(btn){
   }
   if(btn)btn.classList.remove("loading");
 }
-}
 function parseAndLoad(txt){
   txt=txt.replace(/^\uFEFF/,"");
   const lines=txt.trim().split(/\r?\n/);
   if(lines.length<2)return;
+  // Détecte séparateur : TAB en priorité, puis ; puis ,
   const firstLine=lines[0];
   const sep=firstLine.includes("\t")?"\t":firstLine.includes(";")?";":",";
   const norm=s=>s.replace(/"/g,"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
   const H=firstLine.split(sep).map(norm);
-  const itech=H.findIndex(h=>h.includes("technicien")||h.includes("nom tech")||h==="nom");
-  const iap  =H.findIndex(h=>h.includes("act")||h.includes("prod"));
-  const icp  =H.findIndex(h=>h==="cp");
-  const ivil =H.findIndex(h=>h.includes("ville"));
-  const ind  =H.findIndex(h=>norm(h)==="nd"||h.includes("nd"));
-  const icre =H.findIndex(h=>h.includes("cree")||h.includes("creation"));
-  const ipl  =H.findIndex(h=>h.includes("planifi"));
+  const ipl=H.findIndex(h=>h.includes("planifi"));
+  const itech= H.findIndex(h=>h.includes("technicien")||h.includes("nom tech")||h==="nom");
+  const iap  = H.findIndex(h=>h.includes("act")||h.includes("prod"));
+  const icp  = H.findIndex(h=>h==="cp");
+  const ivil = H.findIndex(h=>h.includes("ville"));
+  const ind  = H.findIndex(h=>norm(h)==="nd"||h.includes("nd"));
+  const icre = H.findIndex(h=>h.includes("cree")||h.includes("creation"));
   const raw=[];
   for(let n=1;n<lines.length;n++){
     const c=lines[n].split(sep).map(x=>x.replace(/"/g,"").trim());
@@ -2000,6 +2000,9 @@ window.addEventListener("load", function(){
     doRef(document.getElementById("btnRef"));
   }, 1500);
 });
+
+}
+}
 </script>
 </body>
 </html>
