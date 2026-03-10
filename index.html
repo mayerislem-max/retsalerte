@@ -1013,9 +1013,9 @@ function sendWhatsApp(dossier){
 }
 
 // ─── ONGLET DU JOUR (GID) ───
-const SHEETS_BASE="https://docs.google.com/spreadsheets/d/e/2PACX-1vRtxvbeKkUnyJ4CAi6kTtmQJtslPcbSsH4t8ZzUDfXcUIHFXrG3igkB5AvoyqntV8EzycO1hIDh-z4t/pub";
-let currentGid=localStorage.getItem("rgid")||"1659270752";
-let currentSheetsLabel=localStorage.getItem("rgidLabel")||"rets 09-03";
+const SHEETS_BASE="https://docs.google.com/spreadsheets/d/e/2PACX-1vTp5akRIobYOz6JdfLBYIMs2K9dUZvwAdNu8-JWfmHzWKT4Srgv1-yDxM_3BB2ClXYQI9mutrRagcBD/pub";
+let currentGid=localStorage.getItem("rgid")||"901370948";
+let currentSheetsLabel=localStorage.getItem("rgidLabel")||"rets";
 function getSheetsUrl(){return `${SHEETS_BASE}?gid=${currentGid}&single=true&output=csv`;}
 
 function openGidModal(){
