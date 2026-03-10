@@ -1687,14 +1687,14 @@ function drawLine(id,labels,values,color){
 async function doRef(btn){
   if(btn)btn.classList.add("loading");
   let txt=null;
-  const url=getSheetsUrl();
+  const DIRECT_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTp5akRIobYOz6JdfLBYIMs2K9dUZvwAdNu8-JWfmHzWKT4Srgv1-yDxM_3BB2ClXYQI9mutrRagcBD/pub?gid="+currentGid+"&single=true&output=csv";
   const GAS="https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec";
-  // Essai 1 : GAS proxy direct
-  if(!txt){try{const r=await fetch(GAS,{signal:AbortSignal.timeout(12000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("error")&&!t.startsWith("{"))txt=t;}}catch(e){}}
-  // Essai 2 : Sheets pub directe
-  if(!txt){try{const r=await fetch(url,{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<"))txt=t;}}catch(e){}}
+  // Essai 1 : URL Sheets pub directe (Google autorise CORS sur les docs publiés)
+  if(!txt){try{const r=await fetch(DIRECT_URL,{signal:AbortSignal.timeout(15000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("<!"))txt=t;}else{console.warn("Sheets direct status:",r.status);}}catch(e){console.warn("Sheets direct:",e.message);}}
+  // Essai 2 : GAS proxy direct
+  if(!txt){try{const r=await fetch(GAS,{signal:AbortSignal.timeout(12000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("error")&&!t.startsWith("{"))txt=t;}else{console.warn("GAS status:",r.status);}}catch(e){console.warn("GAS:",e.message);}}
   // Essai 3 : corsproxy.io
-  if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(url),{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<"))txt=t;}}catch(e){}}
+  if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(DIRECT_URL),{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<"))txt=t;}else{console.warn("corsproxy status:",r.status);}}catch(e){console.warn("corsproxy:",e.message);}}
   const upEl=document.getElementById("lastUpdate");
   if(txt){
     parseAndLoad(txt);
