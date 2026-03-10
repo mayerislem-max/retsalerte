@@ -1018,6 +1018,15 @@ function sendWhatsApp(dossier){
 const SHEETS_BASE="https://docs.google.com/spreadsheets/d/e/2PACX-1vTp5akRIobYOz6JdfLBYIMs2K9dUZvwAdNu8-JWfmHzWKT4Srgv1-yDxM_3BB2ClXYQI9mutrRagcBD/pub";
 let currentGid=localStorage.getItem("rgid")||"901370948";
 let currentSheetsLabel=localStorage.getItem("rgidLabel")||"rets";
+// Indicateur visuel si gid par defaut (non configure)
+function checkGidStatus(){
+  const isDefault = !localStorage.getItem("rgid") || localStorage.getItem("rgid")==="901370948";
+  const upEl=document.getElementById("lastUpdate");
+  if(isDefault && upEl && !upEl.textContent.includes("Sync")){
+    upEl.textContent="Config requise";
+    upEl.className="tb-update warn";
+  }
+}
 function getSheetsUrl(){return `${SHEETS_BASE}?gid=${currentGid}&single=true&output=csv`;}
 
 function openGidModal(){
@@ -1707,6 +1716,8 @@ function drawLine(id,labels,values,color){
 async function doRef(btn){
   if(btn)btn.classList.add("loading");
   let txt=null;
+  // Debug: affiche le gid utilise
+  console.log("[doRef] Sync avec gid="+currentGid+" label="+currentSheetsLabel);
   const DIRECT_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTp5akRIobYOz6JdfLBYIMs2K9dUZvwAdNu8-JWfmHzWKT4Srgv1-yDxM_3BB2ClXYQI9mutrRagcBD/pub?gid="+currentGid+"&single=true&output=csv";
   const GAS="https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec?gid="+currentGid;
   // Essai 1 : URL Sheets pub directe
@@ -1731,6 +1742,7 @@ async function doRef(btn){
 function parseAndLoad(txt){
   txt=txt.replace(/^\uFEFF/,"");
   const lines=txt.trim().split(/\r?\n/);
+  console.log("[parseAndLoad] Lignes CSV recues:",lines.length,"| Ligne 1:",lines[0],"| Ligne 2:",lines[1]||"");
   if(lines.length<2)return;
   // Détecte séparateur : TAB en priorité, puis ; puis ,
   const firstLine=lines[0];
@@ -1812,7 +1824,7 @@ function toast(msg,cls=""){
 }
 
 // ─── INIT ───
-initData(RAW);updK();rAcc();
+initData(RAW);updK();rAcc();setTimeout(checkGidStatus,800);
 
 // ─── THEME MODE ───
 let isDayMode = localStorage.getItem("rTheme") === "day";
@@ -2015,9 +2027,20 @@ initProfil();
 
 // ── AUTO-LOAD AU DÉMARRAGE ──
 window.addEventListener("load", function(){
-  setTimeout(()=>{
-    doRef(document.getElementById("btnRef"));
-  }, 1500);
+  const gidSaved = localStorage.getItem("rgid");
+  const gidOK = gidSaved && gidSaved !== "901370948";
+  if(gidOK){
+    // GID configure par l utilisateur -> sync auto
+    setTimeout(()=>{ doRef(document.getElementById("btnRef")); }, 1500);
+  } else {
+    // Pas de GID -> on garde les donnees RAW, on signale
+    setTimeout(()=>{
+      const stxt = document.getElementById("stxt");
+      if(stxt) stxt.innerHTML = "<strong style=\"color:var(--amber)\">Onglet non configure</strong> &middot; Cliquez sur <strong>Onglet</strong> pour activer la synchro live";
+      const upEl = document.getElementById("lastUpdate");
+      if(upEl){ upEl.textContent="Donnees locales"; upEl.className="tb-update warn"; }
+    }, 600);
+  }
 });
 </script>
 </body>
