@@ -680,7 +680,7 @@ body.day-mode .cmeta-cree{color:var(--ink3);background:rgba(0,0,0,.04);border-co
       <div class="login-card-desc">Accès complet<br>Gestion des onglets<br>Configuration avancée</div>
     </div>
     <div class="login-card ca-card" onclick="selectProfil('ca')">
-      <div class="login-card-badge">🔓 ACCÈS LIBRE</div>
+      <div class="login-card-badge">🔐 CODE REQUIS</div>
       <div class="login-card-ico">👥</div>
       <div class="login-card-name">CA - Gestion du rets</div>
       <div class="login-card-desc">Consultation uniquement<br>Dossiers & suivi techniciens<br>Sans configuration</div>
@@ -1078,6 +1078,7 @@ async function pushConfigToTechs(gid, label){
 
 // ─── PROFIL SYSTEM ───
 const ADMIN_CODE = "adminrets";
+const CA_CODE = "Rets2026";
 let currentProfil = null; // 'admin' | 'ca'
 
 function initProfil(){
@@ -1094,20 +1095,36 @@ function selectProfil(type){
   if(type === "admin"){
     document.getElementById("codeInput").value = "";
     document.getElementById("codeError").textContent = "";
+    document.getElementById("codeModal").dataset.profilType = "admin";
+    document.getElementById("codeModal").querySelector(".code-box-title").textContent = "\ud83d\udd10 Acc\u00e8s Mayer";
+    document.getElementById("codeModal").querySelector(".code-box-sub").textContent = "Entrez votre code d'acc\u00e8s";
     document.getElementById("codeModal").classList.add("open");
     setTimeout(()=>document.getElementById("codeInput").focus(), 150);
   } else {
-    applyProfil("ca", true);
+    // CA aussi necessite un code
+    document.getElementById("codeInput").value = "";
+    document.getElementById("codeError").textContent = "";
+    document.getElementById("codeModal").dataset.profilType = "ca";
+    document.getElementById("codeModal").querySelector(".code-box-title").textContent = "Acces CA";
+    document.getElementById("codeModal").querySelector(".code-box-sub").textContent = "Entrez le code d acces CA";
+    document.getElementById("codeModal").classList.add("open");
+    setTimeout(()=>document.getElementById("codeInput").focus(), 150);
   }
 }
 
 function verifyCode(){
   const val = document.getElementById("codeInput").value.trim();
-  if(val === ADMIN_CODE){
+  const profilType = document.getElementById("codeModal").dataset.profilType || "admin";
+  const expectedCode = profilType === "ca" ? CA_CODE : ADMIN_CODE;
+  if(val === expectedCode){
     document.getElementById("codeModal").classList.remove("open");
-    applyProfil("admin", true);
+    // Reset modal title for next use
+    document.getElementById("codeModal").querySelector(".code-box-title").textContent = "Acces Mayer";
+    document.getElementById("codeModal").querySelector(".code-box-sub").textContent = "Entrez votre code d acces";
+    document.getElementById("codeModal").dataset.profilType = "admin";
+    applyProfil(profilType, true);
   } else {
-    document.getElementById("codeError").textContent = "Code incorrect, réessayez";
+    document.getElementById("codeError").textContent = "Code incorrect, reessayez";
     document.getElementById("codeInput").value = "";
     document.getElementById("codeInput").focus();
     setTimeout(()=>document.getElementById("codeError").textContent="", 2500);
