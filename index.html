@@ -1432,7 +1432,9 @@ async function saveOnglet(){
   res.innerHTML=`<span style="color:var(--amber)">Chargement en cours...</span>`;
   // Tester l'URL
   let txt=null;
-  try{const r=await fetch(url,{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}
+  // GAS proxy (no CORS)
+  try{const r=await fetch("https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec",{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}
+  if(!txt){try{const r=await fetch(url,{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
   if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(url),{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
   if(!txt){res.innerHTML=`<span style="color:var(--red)">❌ Impossible de charger ce lien. Vérifiez qu'il est bien publié.</span>`;return;}
   // Parser pour compter les lignes
