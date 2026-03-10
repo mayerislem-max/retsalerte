@@ -1433,7 +1433,7 @@ async function saveOnglet(){
   // Tester l'URL
   let txt=null;
   // GAS proxy (no CORS)
-  try{const r=await fetch("https://api.allorigins.win/raw?url=https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec",{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}
+  try{const r=await fetch("https://api.allorigins.win/raw?url="+encodeURIComponent("https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec"),{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("error")&&!t.startsWith("{"))txt=t;}}catch(e){}
   if(!txt){try{const r=await fetch(url,{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
   if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(url),{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
   if(!txt){res.innerHTML=`<span style="color:var(--red)">❌ Impossible de charger ce lien. Vérifiez qu'il est bien publié.</span>`;return;}
@@ -1687,23 +1687,21 @@ async function doRef(btn){
   if(btn)btn.classList.add("loading");
   let txt=null;
   const url=getSheetsUrl();
-  // Proxy 1 : GAS via allorigins (contourne CORS + auth Google)
+  // Proxy 1: GAS via allorigins (pas de CORS)
   const gasWrapped="https://api.allorigins.win/raw?url="+encodeURIComponent("https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec");
-  // Proxy 2 : URL Sheets directe via allorigins
-  const sheetsWrapped="https://api.allorigins.win/raw?url="+encodeURIComponent(url);
-  // Proxy 3 : corsproxy.io sur URL Sheets
-  const corsProxy="https://corsproxy.io/?"+encodeURIComponent(url);
-  // Proxy 4 : codetabs
-  const codetabs="https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(url);
-
-  for(const pu of [gasWrapped, sheetsWrapped, corsProxy, codetabs]){
+  // Proxy 2-4: URL Sheets directe via proxies publics
+  const proxies=[
+    gasWrapped,
+    "https://api.allorigins.win/raw?url="+encodeURIComponent(url),
+    "https://corsproxy.io/?"+encodeURIComponent(url),
+    "https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(url),
+    url
+  ];
+  for(const pu of proxies){
     if(txt)break;
     try{
       const r=await fetch(pu,{signal:AbortSignal.timeout(12000)});
-      if(r.ok){
-        const t=await r.text();
-        if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("error")&&!t.startsWith("{"))txt=t;
-      }
+      if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("error")&&!t.startsWith("{"))txt=t;}
     }catch(e){}
   }
   const upEl=document.getElementById("lastUpdate");
@@ -1716,8 +1714,6 @@ async function doRef(btn){
   }else{
     if(upEl){upEl.textContent="Données locales";upEl.className="tb-update warn";}
     toast("⚠️ Données locales");
-    // Fallback RAW
-    if(typeof RAW!=="undefined"&&RAW.length>0&&D.length===0){initData(RAW);rDos&&rDos();updK();}
   }
   if(btn)btn.classList.remove("loading");
 }
@@ -1991,7 +1987,15 @@ const PAGES_EXT = {techniciens:"Gestion des techniciens", alertes:"Historique de
 // INIT — Afficher écran de connexion
 initProfil();
 
-// Auto-load géré par applyProfil
-}</script>
+// ── AUTO-LOAD AU DÉMARRAGE ──
+window.addEventListener("load", function(){
+  setTimeout(()=>{
+    doRef(document.getElementById("btnRef"));
+  }, 1500);
+});
+
+}
+}
+</script>
 </body>
 </html>
