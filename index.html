@@ -1197,8 +1197,20 @@ async function sendAlert(){
 // ─── PENDING CONTACT ACTION ───
 let pendingContactId=null,pendingContactStatus=null;
 
-function parseDate(s){if(!s)return null;const m=s.match(/^(\d{2})[\/-](\d{2})[\/-](\d{4})(?:\s+(\d{2}):(\d{2}))?$/);return m?new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0)):null;}
-function initData(raw){D=raw.map(r=>{const pl=parseDate(r.planifiee);const cr=parseDate(r.date_creation);const percution=cr?new Date(cr.getTime()+(r.delai||48)*3600000):(pl||null);return{...r,created:cr,percution};}).filter(d=>d.percution);}
+function parseDate(s){
+  if(!s)return null;
+  s=String(s).trim();
+  // Format DD/MM/YYYY HH:MM ou DD-MM-YYYY
+  let m=s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+  if(m)return new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0));
+  // Format YYYY-MM-DD
+  m=s.match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);
+  if(m)return new Date(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0));
+  // Timestamp JS
+  const d=new Date(s);
+  return isNaN(d)?null:d;
+}
+function initData(raw){D=raw.map(r=>{const pl=parseDate(r.planifiee);const cr=parseDate(r.date_creation);const percution=cr?new Date(cr.getTime()+(r.delai||48)*3600000):(pl||new Date(0));return{...r,created:cr,percution};});}
 
 // ─── CLOCK ───
 setInterval(()=>document.getElementById("clk").textContent=new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit",second:"2-digit"}),1000);
