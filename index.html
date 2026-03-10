@@ -1070,7 +1070,7 @@ const ADMIN_CODE = "adminrets";
 let currentProfil = null; // 'admin' | 'ca'
 
 function initProfil(){
-  const saved = sessionStorage.getItem("rProfil");
+  const saved = localStorage.getItem("rProfil");
   if(saved === "admin" || saved === "ca"){
     applyProfil(saved, false);
   } else {
@@ -1109,7 +1109,7 @@ function closeCodeModal(){
 
 function applyProfil(type, save){
   currentProfil = type;
-  if(save) sessionStorage.setItem("rProfil", type);
+  if(save) localStorage.setItem("rProfil", type);
   const ls = document.getElementById("loginScreen");
   ls.style.transition = "opacity .3s";
   ls.style.opacity = "0";
@@ -1133,7 +1133,7 @@ function applyProfil(type, save){
 
 function logoutProfil(){
   if(!confirm("Changer de profil ?")) return;
-  sessionStorage.removeItem("rProfil");
+  localStorage.removeItem("rProfil");
   currentProfil = null;
   document.body.classList.remove("is-admin", "is-ca");
   const ls = document.getElementById("loginScreen");
