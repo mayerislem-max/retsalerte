@@ -691,8 +691,8 @@ body.day-mode .cmeta-cree{color:var(--ink3);background:rgba(0,0,0,.04);border-co
 <!-- CODE MODAL -->
 <div class="code-modal" id="codeModal">
   <div class="code-box">
-    <div class="code-box-title">🔐 Accès Mayer</div>
-    <div class="code-box-sub">Entrez votre code d'accès</div>
+    <div class="code-box-title" id="codeBoxTitle">Acces Mayer</div>
+    <div class="code-box-sub" id="codeBoxSub">Entrez votre code d'acces</div>
     <input type="password" class="code-input" id="codeInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')verifyCode()">
     <div class="code-error" id="codeError"></div>
     <button class="code-btn" onclick="verifyCode()">VALIDER</button>
@@ -1092,39 +1092,33 @@ function initProfil(){
 }
 
 function selectProfil(type){
+  const modal = document.getElementById("codeModal");
+  const titleEl = document.getElementById("codeBoxTitle");
+  const subEl = document.getElementById("codeBoxSub");
+  modal.dataset.profilType = type;
+  document.getElementById("codeInput").value = "";
+  document.getElementById("codeError").textContent = "";
   if(type === "admin"){
-    document.getElementById("codeInput").value = "";
-    document.getElementById("codeError").textContent = "";
-    document.getElementById("codeModal").dataset.profilType = "admin";
-    document.getElementById("codeModal").querySelector(".code-box-title").textContent = "\ud83d\udd10 Acc\u00e8s Mayer";
-    document.getElementById("codeModal").querySelector(".code-box-sub").textContent = "Entrez votre code d'acc\u00e8s";
-    document.getElementById("codeModal").classList.add("open");
-    setTimeout(()=>document.getElementById("codeInput").focus(), 150);
+    if(titleEl) titleEl.textContent = "Acces Mayer";
+    if(subEl) subEl.textContent = "Entrez votre code d'acces admin";
   } else {
-    // CA aussi necessite un code
-    document.getElementById("codeInput").value = "";
-    document.getElementById("codeError").textContent = "";
-    document.getElementById("codeModal").dataset.profilType = "ca";
-    document.getElementById("codeModal").querySelector(".code-box-title").textContent = "Acces CA";
-    document.getElementById("codeModal").querySelector(".code-box-sub").textContent = "Entrez le code d acces CA";
-    document.getElementById("codeModal").classList.add("open");
-    setTimeout(()=>document.getElementById("codeInput").focus(), 150);
+    if(titleEl) titleEl.textContent = "Acces CA";
+    if(subEl) subEl.textContent = "Entrez votre code d'acces CA";
   }
+  modal.classList.add("open");
+  setTimeout(()=>document.getElementById("codeInput").focus(), 150);
 }
 
 function verifyCode(){
   const val = document.getElementById("codeInput").value.trim();
-  const profilType = document.getElementById("codeModal").dataset.profilType || "admin";
+  const modal = document.getElementById("codeModal");
+  const profilType = modal.dataset.profilType || "admin";
   const expectedCode = profilType === "ca" ? CA_CODE : ADMIN_CODE;
   if(val === expectedCode){
-    document.getElementById("codeModal").classList.remove("open");
-    // Reset modal title for next use
-    document.getElementById("codeModal").querySelector(".code-box-title").textContent = "Acces Mayer";
-    document.getElementById("codeModal").querySelector(".code-box-sub").textContent = "Entrez votre code d acces";
-    document.getElementById("codeModal").dataset.profilType = "admin";
+    modal.classList.remove("open");
     applyProfil(profilType, true);
   } else {
-    document.getElementById("codeError").textContent = "Code incorrect, reessayez";
+    document.getElementById("codeError").textContent = "Code incorrect";
     document.getElementById("codeInput").value = "";
     document.getElementById("codeInput").focus();
     setTimeout(()=>document.getElementById("codeError").textContent="", 2500);
