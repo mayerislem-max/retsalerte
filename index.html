@@ -1144,6 +1144,7 @@ function logoutProfil(){
 }
 
 // ─── STORAGE ───
+let soundOn = localStorage.getItem("rSound") !== "off";
 let D=[],fil="tous",sortCol="percution",sortDir=1,popD=null;
 let contacts=JSON.parse(localStorage.getItem("rcontacts")||"{}");
 let sentAlerts=JSON.parse(localStorage.getItem("rsentAlerts")||"{}");
@@ -1687,23 +1688,13 @@ async function doRef(btn){
   if(btn)btn.classList.add("loading");
   let txt=null;
   const url=getSheetsUrl();
-  // Proxy 1: GAS via allorigins (pas de CORS)
-  const gasWrapped="https://api.allorigins.win/raw?url="+encodeURIComponent("https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec");
-  // Proxy 2-4: URL Sheets directe via proxies publics
-  const proxies=[
-    gasWrapped,
-    "https://api.allorigins.win/raw?url="+encodeURIComponent(url),
-    "https://corsproxy.io/?"+encodeURIComponent(url),
-    "https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(url),
-    url
-  ];
-  for(const pu of proxies){
-    if(txt)break;
-    try{
-      const r=await fetch(pu,{signal:AbortSignal.timeout(12000)});
-      if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("error")&&!t.startsWith("{"))txt=t;}
-    }catch(e){}
-  }
+  const GAS="https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec";
+  // Essai 1 : GAS proxy direct
+  if(!txt){try{const r=await fetch(GAS,{signal:AbortSignal.timeout(12000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("error")&&!t.startsWith("{"))txt=t;}}catch(e){}}
+  // Essai 2 : Sheets pub directe
+  if(!txt){try{const r=await fetch(url,{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<"))txt=t;}}catch(e){}}
+  // Essai 3 : corsproxy.io
+  if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(url),{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<"))txt=t;}}catch(e){}}
   const upEl=document.getElementById("lastUpdate");
   if(txt){
     parseAndLoad(txt);
@@ -1805,7 +1796,7 @@ function toggleTheme(){
 applyTheme();
 
 // ─── SOUND ───
-let soundOn = localStorage.getItem("rSound") !== "off";
+
 function applySoundBtn(){
   const btn = document.getElementById("soundBtn");
   if(btn){ btn.textContent = soundOn ? "🔔" : "🔕"; btn.classList.toggle("active", !soundOn); }
