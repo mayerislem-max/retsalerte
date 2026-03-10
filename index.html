@@ -1684,7 +1684,7 @@ function drawLine(id,labels,values,color){
 
 // ─── REFRESH ───
 async function doRef(btn){
-  if(!btn)return;btn.classList.add("loading");
+  if(btn)btn.classList.add("loading");
   let txt=null;
   const url=getSheetsUrl();
   const proxies=[
@@ -1713,7 +1713,7 @@ async function doRef(btn){
     if(upEl){upEl.textContent="Données locales";upEl.className="tb-update warn";}
     toast("⚠️ Données locales");
   }
-  btn.classList.remove("loading");
+  if(btn)btn.classList.remove("loading");
 }
 function parseAndLoad(txt){
   txt=txt.replace(/^\uFEFF/,"");
@@ -1984,6 +1984,13 @@ const PAGES_EXT = {techniciens:"Gestion des techniciens", alertes:"Historique de
 
 // INIT — Afficher écran de connexion
 initProfil();
+
+// ── AUTO-LOAD AU DÉMARRAGE ──
+window.addEventListener("load", function(){
+  setTimeout(()=>{
+    doRef(document.getElementById("btnRef"));
+  }, 1500);
+});
 </script>
 </body>
 </html>
