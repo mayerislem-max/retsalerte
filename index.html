@@ -1687,19 +1687,23 @@ async function doRef(btn){
   if(btn)btn.classList.add("loading");
   let txt=null;
   const url=getSheetsUrl();
-  const proxies=[
-    ()=>"https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec",
-    u=>"https://api.allorigins.win/raw?url="+encodeURIComponent(u),
-    u=>"https://corsproxy.io/?"+encodeURIComponent(u),
-    u=>"https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(u),
-    u=>u
-  ];
-  for(const p of proxies){
+  // Proxy 1 : GAS via allorigins (contourne CORS + auth Google)
+  const gasWrapped="https://api.allorigins.win/raw?url="+encodeURIComponent("https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec");
+  // Proxy 2 : URL Sheets directe via allorigins
+  const sheetsWrapped="https://api.allorigins.win/raw?url="+encodeURIComponent(url);
+  // Proxy 3 : corsproxy.io sur URL Sheets
+  const corsProxy="https://corsproxy.io/?"+encodeURIComponent(url);
+  // Proxy 4 : codetabs
+  const codetabs="https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(url);
+
+  for(const pu of [gasWrapped, sheetsWrapped, corsProxy, codetabs]){
     if(txt)break;
     try{
-      const pu=p(url);
-      const r=await fetch(pu,{signal:AbortSignal.timeout(10000)});
-      if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<")&&!t.startsWith("error"))txt=t;}
+      const r=await fetch(pu,{signal:AbortSignal.timeout(12000)});
+      if(r.ok){
+        const t=await r.text();
+        if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("error")&&!t.startsWith("{"))txt=t;
+      }
     }catch(e){}
   }
   const upEl=document.getElementById("lastUpdate");
@@ -1712,6 +1716,8 @@ async function doRef(btn){
   }else{
     if(upEl){upEl.textContent="Données locales";upEl.className="tb-update warn";}
     toast("⚠️ Données locales");
+    // Fallback RAW
+    if(typeof RAW!=="undefined"&&RAW.length>0&&D.length===0){initData(RAW);rDos&&rDos();updK();}
   }
   if(btn)btn.classList.remove("loading");
 }
@@ -1985,12 +1991,7 @@ const PAGES_EXT = {techniciens:"Gestion des techniciens", alertes:"Historique de
 // INIT — Afficher écran de connexion
 initProfil();
 
-// ── AUTO-LOAD AU DÉMARRAGE ──
-window.addEventListener("load", function(){
-  setTimeout(()=>{
-    doRef(document.getElementById("btnRef"));
-  }, 1500);
-});
-</script>
+// Auto-load géré par applyProfil
+}</script>
 </body>
 </html>
