@@ -1212,7 +1212,7 @@ function parseDate(s){
   const d=new Date(s);
   return isNaN(d)?null:d;
 }
-function initData(raw){D=raw.map(r=>{const pl=parseDate(r.planifiee);const cr=parseDate(r.date_creation);const percution=cr?new Date(cr.getTime()+(r.delai||48)*3600000):(pl||new Date(0));return{...r,created:cr,percution};});}
+function initData(raw){D=raw.map(r=>{const pl=parseDate(r.planifiee);const cr=parseDate(r.date_creation);let percution;if(cr){percution=new Date(cr.getTime()+(r.delai||48)*3600000);}else if(pl){percution=new Date(pl.getTime()+(r.delai||48)*3600000);}else{percution=new Date(Date.now()+48*3600000);}return{...r,created:cr,percution};});}
 
 // ─── CLOCK ───
 setInterval(()=>document.getElementById("clk").textContent=new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit",second:"2-digit"}),1000);
@@ -1709,12 +1709,12 @@ async function doRef(btn){
   let txt=null;
   const DIRECT_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTp5akRIobYOz6JdfLBYIMs2K9dUZvwAdNu8-JWfmHzWKT4Srgv1-yDxM_3BB2ClXYQI9mutrRagcBD/pub?gid="+currentGid+"&single=true&output=csv";
   const GAS="https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec?gid="+currentGid;
-  // Essai 1 : GAS proxy (accès direct au sheet, format garanti)
-  if(!txt){try{const r=await fetch(GAS,{signal:AbortSignal.timeout(15000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("error")&&!t.startsWith("{"))txt=t;}else{console.warn("GAS status:",r.status);}}catch(e){console.warn("GAS:",e.message);}}
-  // Essai 2 : URL Sheets pub directe
+  // Essai 1 : URL Sheets pub directe
   if(!txt){try{const r=await fetch(DIRECT_URL,{signal:AbortSignal.timeout(15000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("<!"))txt=t;}else{console.warn("Sheets direct status:",r.status);}}catch(e){console.warn("Sheets direct:",e.message);}}
-  // Essai 3 : corsproxy.io
+  // Essai 2 : corsproxy.io
   if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(DIRECT_URL),{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<"))txt=t;}else{console.warn("corsproxy status:",r.status);}}catch(e){console.warn("corsproxy:",e.message);}}
+  // Essai 3 : GAS proxy (nécessite redéploiement du script .gs)
+  if(!txt){try{const r=await fetch(GAS,{signal:AbortSignal.timeout(12000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("error")&&!t.startsWith("{"))txt=t;}else{console.warn("GAS status:",r.status);}}catch(e){console.warn("GAS:",e.message);}}
   const upEl=document.getElementById("lastUpdate");
   if(txt){
     parseAndLoad(txt);
@@ -1763,6 +1763,18 @@ function parseAndLoad(txt){
     });
   }
   if(raw.length>0){
+    // Filet de sécurité : si les nouvelles données donnent 0 dossiers dans les 48h
+    // alors que les anciennes en avaient, le parse a probablement raté les dates
+    const testD = raw.map(r=>{const pl=parseDate(r.planifiee);const cr=parseDate(r.date_creation);const percution=cr?new Date(cr.getTime()+(r.delai||48)*3600000):(pl?new Date(pl.getTime()+(r.delai||48)*3600000):new Date(Date.now()+48*3600000));return{...r,percution};});
+    const now=new Date(),e48=new Date(now.getTime()+48*3600000);
+    const newActive=testD.filter(d=>d.percution>=now&&d.percution<=e48).length;
+    const oldActive=D.filter(d=>{const h=(d.percution-now)/3600000;return h>=0&&h<=48;}).length;
+    if(newActive===0&&raw.length>3&&oldActive>0){
+      console.warn("⚠️ Parse suspect : 0 dossiers actifs sur",raw.length,"— données locales conservées. Headers:",H);
+      toast("⚠️ Format Sheets non reconnu — données locales conservées","t-amber");
+      if(btn)btn.classList.remove("loading");
+      return;
+    }
     initData(raw);updK();rAcc();
     updateGlobalIndicator();
     updateAlertBadge();
