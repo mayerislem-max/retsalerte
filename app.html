@@ -7,247 +7,270 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="RetsAlerte">
-<title>RetsAlerte</title>
-<link rel="manifest" href="/retsalerte/manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>RetsAlerte Tech</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0e0e10;--s1:#1a1a1e;--s2:#1f1f24;--s3:#26262c;
-  --or:#ff5500;--or2:#ff7a3d;--or3:#ffaa77;
-  --red:#ff2d55;--amber:#ffcc00;--green:#30d158;--blue:#0a84ff;
-  --ink:#ffffff;--ink2:rgba(255,255,255,.85);--ink3:rgba(255,255,255,.45);--ink4:rgba(255,255,255,.2);
-  --bd:rgba(255,255,255,.07);--bd2:rgba(255,255,255,.12);
-  --safe-top:env(safe-area-inset-top,0px);
-  --safe-bot:env(safe-area-inset-bottom,0px);
+  --bg:#0a0a0c;--s1:#121215;--s2:#18181c;--s3:#1e1e24;
+  --or:#ff5500;--or2:#ff7a3d;--or3:#ff3d00;
+  --red:#ff2d55;--amber:#ffcc00;--green:#30d158;--blue:#0a84ff;--purple:#bf5af2;
+  --ink:#ffffff;--ink2:rgba(255,255,255,.82);--ink3:rgba(255,255,255,.42);--ink4:rgba(255,255,255,.18);
+  --bd:rgba(255,255,255,.06);--bd2:rgba(255,255,255,.11);
+  --safe-top:env(safe-area-inset-top,0px);--safe-bot:env(safe-area-inset-bottom,0px);
+  --r:14px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow:hidden;}
-body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;}
+html,body{height:100%;overflow:hidden;-webkit-tap-highlight-color:transparent;}
+body{font-family:"Syne",sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;}
+
+/* ── NOISE OVERLAY ── */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size:180px;opacity:.6;}
 
 /* ── LOGIN ── */
 #loginScreen{position:fixed;inset:0;z-index:200;background:var(--bg);overflow-y:auto;display:flex;flex-direction:column;}
-.login-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;}
-.login-logo-wrap{position:relative;margin-bottom:24px;}
-.login-hex{width:80px;height:80px;background:linear-gradient(135deg,var(--or),var(--or2));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-size:32px;animation:hexPulse 3s ease-in-out infinite;}
-@keyframes hexPulse{0%,100%{filter:drop-shadow(0 0 8px rgba(255,85,0,.5))}50%{filter:drop-shadow(0 0 22px rgba(255,85,0,1));}}
-.login-title{font-family:"Bebas Neue",sans-serif;font-size:2.4rem;letter-spacing:8px;text-align:center;margin-bottom:4px;}
-.login-title em{color:var(--or);font-style:normal;}
-.login-sub{font-size:.78rem;color:var(--ink3);text-align:center;margin-bottom:36px;letter-spacing:1px;}
-.login-card{width:100%;max-width:360px;background:rgba(255,255,255,.04);border:1px solid var(--bd2);border-radius:20px;padding:28px 24px;}
-.login-label{display:flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:.56rem;letter-spacing:2px;color:var(--ink3);text-transform:uppercase;margin-bottom:10px;}
-.login-label-icon{width:20px;height:20px;border-radius:6px;background:rgba(255,85,0,.15);display:flex;align-items:center;justify-content:center;font-size:.7rem;}
-.login-input{width:100%;background:rgba(255,255,255,.06);border:1.5px solid var(--bd2);color:var(--ink);border-radius:12px;padding:14px 16px;font-family:"JetBrains Mono",monospace;font-size:1rem;letter-spacing:3px;text-transform:uppercase;outline:none;transition:border-color .2s,box-shadow .2s;margin-bottom:6px;}
-.login-input:focus{border-color:var(--or);box-shadow:0 0 0 3px rgba(255,85,0,.12);}
-.login-input::placeholder{color:var(--ink4);letter-spacing:1px;font-size:.8rem;}
-.login-hint{font-size:.65rem;color:var(--ink4);font-family:"JetBrains Mono",monospace;margin-bottom:20px;padding-left:4px;}
-#loginError{color:var(--red);font-size:.65rem;font-family:"JetBrains Mono",monospace;letter-spacing:1px;margin-bottom:14px;display:none;background:rgba(255,45,85,.08);border:1px solid rgba(255,45,85,.2);border-radius:8px;padding:8px 12px;}
-.login-btn{width:100%;padding:15px;border-radius:13px;background:linear-gradient(135deg,var(--or),var(--or2));border:none;color:#fff;cursor:pointer;font-family:"Bebas Neue",sans-serif;font-size:1.15rem;letter-spacing:5px;transition:all .2s;box-shadow:0 6px 24px rgba(255,85,0,.35);}
-.login-btn:active{transform:scale(.97);}
-.login-divider{display:flex;align-items:center;gap:12px;margin:16px 0;}
+.login-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;position:relative;z-index:1;}
+.login-glow{position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(255,85,0,.15) 0%,transparent 70%);pointer-events:none;}
+.login-hex{width:72px;height:72px;background:linear-gradient(135deg,var(--or3),var(--or2));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:20px;animation:hexPulse 3s ease-in-out infinite;}
+@keyframes hexPulse{0%,100%{filter:drop-shadow(0 0 8px rgba(255,85,0,.6))}50%{filter:drop-shadow(0 0 24px rgba(255,85,0,1));}}
+.login-title{font-family:"Bebas Neue",sans-serif;font-size:2.6rem;letter-spacing:10px;text-align:center;margin-bottom:2px;background:linear-gradient(135deg,#fff 40%,var(--or2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.login-sub{font-size:.72rem;color:var(--ink3);text-align:center;margin-bottom:36px;letter-spacing:2px;font-family:"JetBrains Mono",monospace;}
+
+.login-card{width:100%;max-width:360px;background:rgba(255,255,255,.03);border:1px solid var(--bd2);border-radius:22px;padding:28px 24px;backdrop-filter:blur(12px);}
+.login-label{font-family:"JetBrains Mono",monospace;font-size:.52rem;letter-spacing:3px;color:var(--or);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.login-label::before{content:"";width:8px;height:1px;background:var(--or);}
+.login-input{width:100%;background:rgba(255,255,255,.05);border:1.5px solid var(--bd2);color:var(--ink);border-radius:12px;padding:15px 16px;font-family:"JetBrains Mono",monospace;font-size:.95rem;letter-spacing:3px;text-transform:uppercase;outline:none;transition:all .2s;margin-bottom:6px;}
+.login-input:focus{border-color:var(--or);box-shadow:0 0 0 3px rgba(255,85,0,.1);}
+.login-hint{font-size:.62rem;color:var(--ink4);font-family:"JetBrains Mono",monospace;margin-bottom:20px;padding-left:2px;line-height:1.6;}
+#loginError{color:var(--red);font-size:.65rem;font-family:"JetBrains Mono",monospace;letter-spacing:1px;margin-bottom:14px;background:rgba(255,45,85,.07);border:1px solid rgba(255,45,85,.18);border-radius:10px;padding:10px 12px;display:none;}
+.login-btn{width:100%;padding:16px;border-radius:13px;background:linear-gradient(135deg,var(--or3),var(--or2));border:none;color:#fff;cursor:pointer;font-family:"Bebas Neue",sans-serif;font-size:1.1rem;letter-spacing:6px;transition:all .2s;box-shadow:0 8px 28px rgba(255,85,0,.35);position:relative;overflow:hidden;}
+.login-btn::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);pointer-events:none;}
+.login-btn:active{transform:scale(.97);box-shadow:0 4px 16px rgba(255,85,0,.25);}
+.login-divider{display:flex;align-items:center;gap:10px;margin:16px 0;}
 .login-divider::before,.login-divider::after{content:"";flex:1;height:1px;background:var(--bd);}
-.login-divider span{font-size:.65rem;color:var(--ink4);}
-.login-guest{width:100%;padding:12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--bd);color:var(--ink3);cursor:pointer;font-size:.82rem;font-family:"Inter",sans-serif;transition:all .18s;}
-.login-guest:active{background:rgba(255,255,255,.1);}
-.login-footer{margin-top:32px;text-align:center;font-size:.62rem;color:var(--ink4);font-family:"JetBrains Mono",monospace;letter-spacing:1px;}
+.login-divider span{font-size:.6rem;color:var(--ink4);font-family:"JetBrains Mono",monospace;}
+.login-guest{width:100%;padding:13px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--bd);color:var(--ink3);cursor:pointer;font-size:.8rem;font-family:"Syne",sans-serif;font-weight:600;transition:all .18s;}
+.login-guest:active{background:rgba(255,255,255,.08);}
+.login-footer{margin-top:28px;font-size:.58rem;color:var(--ink4);font-family:"JetBrains Mono",monospace;letter-spacing:2px;}
 
 /* ── HEADER ── */
-.hdr{padding:calc(var(--safe-top) + 12px) 16px 12px;background:rgba(14,14,16,.98);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;position:relative;z-index:10;flex-shrink:0;}
-.hdr-hex{width:34px;height:34px;background:var(--or);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-size:14px;animation:hexPulse 4s ease-in-out infinite;flex-shrink:0;}
+.hdr{padding:calc(var(--safe-top) + 14px) 16px 14px;background:rgba(10,10,12,.97);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:12px;position:relative;z-index:10;flex-shrink:0;}
+.hdr-hex{width:36px;height:36px;background:linear-gradient(135deg,var(--or3),var(--or2));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-size:15px;animation:hexPulse 4s ease-in-out infinite;flex-shrink:0;}
 .hdr-info{flex:1;min-width:0;}
-.hdr-title{font-family:"Bebas Neue",sans-serif;font-size:1.15rem;letter-spacing:4px;line-height:1;}
+.hdr-title{font-family:"Bebas Neue",sans-serif;font-size:1.1rem;letter-spacing:5px;line-height:1;}
 .hdr-title em{color:var(--or);font-style:normal;}
-.hdr-user{font-size:.65rem;color:var(--ink3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hdr-user{font-size:.7rem;color:var(--ink2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;}
+.hdr-sub{font-size:.58rem;color:var(--ink4);font-family:"JetBrains Mono",monospace;margin-top:1px;}
 .hdr-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
-.hdr-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid var(--bd);color:var(--ink3);cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all .18s;position:relative;}
-.hdr-btn.active{background:rgba(255,85,0,.15);border-color:rgba(255,85,0,.3);color:var(--or2);}
-.hdr-btn .dot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--bg);animation:badgePop .3s cubic-bezier(.34,1.6,.64,1);}
-@keyframes badgePop{from{transform:scale(0)}to{transform:scale(1)}}
-.sync-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:liveBlink 2s ease-in-out infinite;flex-shrink:0;}
-@keyframes liveBlink{0%,100%{opacity:1}50%{opacity:.2}}
+.hdr-btn{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid var(--bd);color:var(--ink3);cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative;}
+.hdr-btn.active{background:rgba(255,85,0,.14);border-color:rgba(255,85,0,.3);color:var(--or2);}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green);animation:liveBlink 2s ease-in-out infinite;flex-shrink:0;}
+.sync-dot.warn{background:var(--amber);box-shadow:0 0 7px var(--amber);}
+.sync-dot.err{background:var(--red);box-shadow:0 0 7px var(--red);animation:none;}
+@keyframes liveBlink{0%,100%{opacity:1}50%{opacity:.25}}
 
-/* ── TABS ── */
-.tabs{display:flex;background:rgba(14,14,16,.98);border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:9;}
-.tab{flex:1;padding:11px 6px;border:none;background:transparent;color:var(--ink3);cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:.5rem;letter-spacing:1.5px;text-transform:uppercase;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;}
-.tab .t-ico{font-size:1.05rem;}
-.tab.on{color:var(--or2);}
-.tab.on::after{content:"";position:absolute;bottom:0;left:15%;right:15%;height:2px;background:var(--or);border-radius:2px 2px 0 0;}
-.tab .t-badge{min-width:16px;height:16px;border-radius:8px;background:var(--red);color:#fff;font-size:.48rem;padding:0 4px;display:flex;align-items:center;justify-content:center;position:absolute;top:5px;right:calc(50% - 20px);}
-.tab .t-badge.hide{display:none;}
-
-/* ── SCREENS ── */
-.screens{flex:1;overflow:hidden;position:relative;}
-.screen{position:absolute;inset:0;overflow-y:auto;padding:14px 13px calc(var(--safe-bot) + 14px);display:none;}
-.screen.on{display:block;animation:scrIn .22s ease;}
-@keyframes scrIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+/* ── ALERTE PUSH ── */
+.push-banner{display:none;position:relative;z-index:1;margin:12px 13px 0;border-radius:16px;overflow:hidden;cursor:pointer;}
+.push-banner.show{display:block;animation:pushIn .4s cubic-bezier(.34,1.2,.64,1);}
+@keyframes pushIn{from{opacity:0;transform:translateY(-16px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.push-inner{display:flex;align-items:center;gap:14px;background:rgba(255,45,85,.09);border:1.5px solid rgba(255,45,85,.3);border-radius:16px;padding:16px;}
+.push-ico{width:44px;height:44px;border-radius:12px;background:rgba(255,45,85,.15);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;animation:shake .5s ease 3;}
+@keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+.push-txt{flex:1;}
+.push-ttl{font-family:"Bebas Neue",sans-serif;font-size:1rem;letter-spacing:3px;color:var(--red);margin-bottom:3px;}
+.push-body{font-size:.74rem;color:var(--ink2);line-height:1.45;}
+.push-close{color:var(--ink4);font-size:1.1rem;padding:6px;flex-shrink:0;}
+.push-time{font-size:.58rem;color:var(--ink4);font-family:"JetBrains Mono",monospace;margin-top:4px;}
 
 /* ── NOTIF BANNER ── */
-.notif-banner{display:none;align-items:center;gap:12px;background:rgba(255,85,0,.07);border:1px solid rgba(255,85,0,.22);border-radius:13px;padding:14px;margin-bottom:14px;}
+.notif-banner{display:none;background:rgba(255,85,0,.06);border:1px solid rgba(255,85,0,.2);margin:10px 13px 0;border-radius:13px;padding:13px 14px;flex-direction:row;align-items:center;gap:12px;}
 .notif-banner.show{display:flex;animation:scrIn .3s ease;}
-.notif-banner-txt{flex:1;}
-.notif-banner-ttl{font-family:"Bebas Neue",sans-serif;font-size:.9rem;letter-spacing:2px;color:var(--or2);margin-bottom:2px;}
-.notif-banner-sub{font-size:.72rem;color:var(--ink3);line-height:1.4;}
-.notif-allow{padding:8px 14px;border-radius:9px;background:var(--or);border:none;color:#fff;cursor:pointer;font-family:"Bebas Neue",sans-serif;font-size:.8rem;letter-spacing:2px;flex-shrink:0;}
+.notif-txt{flex:1;font-size:.74rem;color:var(--ink3);line-height:1.45;}
+.notif-allow{padding:9px 16px;border-radius:9px;background:var(--or);border:none;color:#fff;cursor:pointer;font-family:"Bebas Neue",sans-serif;font-size:.8rem;letter-spacing:2px;white-space:nowrap;}
 
-/* ── ALERTE PUSH BANNER ── */
-.push-banner{display:none;align-items:center;gap:12px;background:rgba(255,45,85,.08);border:1px solid rgba(255,45,85,.25);border-radius:13px;padding:14px;margin-bottom:14px;cursor:pointer;}
-.push-banner.show{display:flex;animation:scrIn .3s ease;}
-.push-banner-ico{font-size:1.6rem;flex-shrink:0;animation:shake 0.5s ease-in-out 3;}
-@keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
-.push-banner-txt{flex:1;}
-.push-banner-ttl{font-family:"Bebas Neue",sans-serif;font-size:.95rem;letter-spacing:2px;color:var(--red);margin-bottom:2px;}
-.push-banner-sub{font-size:.72rem;color:var(--ink2);line-height:1.4;}
-.push-banner-close{color:var(--ink4);font-size:1.1rem;cursor:pointer;padding:4px;flex-shrink:0;}
+/* ── TABS ── */
+.tabs{display:flex;background:rgba(10,10,12,.97);border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:9;}
+.tab{flex:1;padding:12px 6px 10px;border:none;background:transparent;color:var(--ink4);cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:.46rem;letter-spacing:1.5px;text-transform:uppercase;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;}
+.tab .t-ico{font-size:1.1rem;}
+.tab.on{color:var(--or2);}
+.tab.on::after{content:"";position:absolute;bottom:0;left:20%;right:20%;height:2px;background:linear-gradient(90deg,transparent,var(--or),transparent);border-radius:2px 2px 0 0;}
+.t-badge{min-width:17px;height:17px;border-radius:9px;background:var(--red);color:#fff;font-size:.48rem;padding:0 4px;display:flex;align-items:center;justify-content:center;position:absolute;top:6px;right:calc(50% - 22px);font-family:"JetBrains Mono",monospace;font-weight:700;animation:badgePop .3s cubic-bezier(.34,1.6,.64,1);}
+@keyframes badgePop{from{transform:scale(0)}to{transform:scale(1)}}
+.t-badge.hide{display:none;}
+
+/* ── SCREENS ── */
+.screens{flex:1;overflow:hidden;position:relative;z-index:1;}
+.screen{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 13px calc(var(--safe-bot) + 16px);display:none;}
+.screen.on{display:block;animation:scrIn .22s ease;}
+@keyframes scrIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── KPI ── */
-.kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px;}
-.kpi{border-radius:14px;padding:15px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.06);}
-.kpi.kr{background:linear-gradient(145deg,#2d1520,#180b10);}
-.kpi.ka{background:linear-gradient(145deg,#2a1f08,#160e02);}
-.kpi.kg{background:linear-gradient(145deg,#0c2718,#05130a);}
-.kpi.ko{background:linear-gradient(145deg,#2a1508,#130700);}
-.kpi-n{font-family:"Bebas Neue",sans-serif;font-size:2.6rem;letter-spacing:2px;line-height:1;}
+.kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.kpi{border-radius:16px;padding:16px 14px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.05);}
+.kpi.kr{background:linear-gradient(145deg,#2d1520 0%,#130a0e 100%);}
+.kpi.ka{background:linear-gradient(145deg,#2a1f08 0%,#130d02 100%);}
+.kpi.kg{background:linear-gradient(145deg,#0c2718 0%,#05130a 100%);}
+.kpi.ko{background:linear-gradient(145deg,#1e1a0e 0%,#100d05 100%);}
+.kpi-ico{font-size:1rem;opacity:.5;margin-bottom:8px;display:block;}
+.kpi-n{font-family:"Bebas Neue",sans-serif;font-size:2.8rem;letter-spacing:2px;line-height:1;}
 .kpi.kr .kpi-n{color:var(--red);}
 .kpi.ka .kpi-n{color:var(--amber);}
 .kpi.kg .kpi-n{color:var(--green);}
 .kpi.ko .kpi-n{color:var(--or2);}
-.kpi-l{font-size:.58rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-top:3px;}
+.kpi-l{font-size:.54rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-top:2px;}
+
+/* ── SEC HEADER ── */
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;margin-top:4px;}
+.sec-ttl{font-family:"JetBrains Mono",monospace;font-size:.52rem;letter-spacing:3px;color:var(--ink3);text-transform:uppercase;}
+.sec-pill{font-family:"JetBrains Mono",monospace;font-size:.5rem;color:var(--ink4);background:rgba(255,255,255,.04);border:1px solid var(--bd);padding:3px 10px;border-radius:20px;}
 
 /* ── CARDS ── */
-.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.sec-ttl{font-family:"JetBrains Mono",monospace;font-size:.54rem;letter-spacing:3px;color:var(--ink3);text-transform:uppercase;display:flex;align-items:center;gap:8px;}
-.sec-ttl::before{content:"";width:10px;height:1px;background:var(--or);}
-.sec-pill{font-family:"JetBrains Mono",monospace;font-size:.52rem;color:var(--ink4);background:rgba(255,255,255,.04);border:1px solid var(--bd);padding:3px 9px;border-radius:20px;}
-.card-list{display:flex;flex-direction:column;gap:7px;}
-.card{background:rgba(255,255,255,.04);border:1px solid var(--bd);border-radius:14px;overflow:hidden;display:grid;grid-template-columns:3px 1fr;cursor:pointer;transition:transform .15s,background .15s;}
-.card:active{transform:scale(.985);background:rgba(255,255,255,.06);}
-@keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card-list{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
+.card{background:rgba(255,255,255,.03);border:1px solid var(--bd);border-radius:16px;overflow:hidden;display:grid;grid-template-columns:3px 1fr;cursor:pointer;transition:transform .14s,background .14s;}
+.card:active{transform:scale(.984);background:rgba(255,255,255,.055);}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card.su{border-color:rgba(255,45,85,.22);}
+.card.sw{border-color:rgba(255,204,0,.16);}
+.card.sk{border-color:rgba(48,209,88,.12);}
+.card.sd{opacity:.55;}
 .cbar{}
-.card.su .cbar{background:var(--red);box-shadow:2px 0 10px rgba(255,45,85,.4);}
+.card.su .cbar{background:var(--red);box-shadow:2px 0 12px rgba(255,45,85,.5);}
 .card.sw .cbar{background:var(--amber);}
 .card.sk .cbar{background:var(--green);}
-.card.sd .cbar{background:rgba(255,255,255,.08);}
-.cbody{padding:13px 13px;}
-.ctop{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:5px;}
-.ctech{font-size:.85rem;font-weight:600;color:var(--ink2);margin-bottom:4px;}
-.cmeta{display:flex;flex-direction:column;gap:2px;font-size:.7rem;color:var(--ink3);}
-.cdn-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px;flex-wrap:wrap;gap:8px;}
-.cdn{font-family:"Bebas Neue",sans-serif;font-size:1.5rem;letter-spacing:2px;}
+.card.sd .cbar{background:rgba(255,255,255,.1);}
+.cbody{padding:14px 14px 12px;}
+.ctop{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:7px;}
+.ctech{font-size:.9rem;font-weight:700;color:var(--ink);margin-bottom:5px;display:flex;align-items:center;gap:7px;}
+.ctech-you{font-family:"JetBrains Mono",monospace;font-size:.45rem;letter-spacing:1.5px;background:rgba(255,85,0,.15);border:1px solid rgba(255,85,0,.3);color:var(--or2);padding:2px 7px;border-radius:5px;}
+.cmeta{display:flex;flex-direction:column;gap:3px;font-size:.72rem;color:var(--ink3);}
+.cmeta-row{display:flex;align-items:center;gap:5px;}
+.cdn-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap;gap:8px;}
+.cdn{font-family:"Bebas Neue",sans-serif;font-size:1.6rem;letter-spacing:2px;}
 .card.su .cdn{color:var(--red);}
 .card.sw .cdn{color:var(--amber);}
 .card.sk .cdn{color:var(--green);}
-.card.sd .cdn{color:var(--ink3);}
-@keyframes cdBlink{0%,100%{opacity:1}50%{opacity:.15}}
-.cdn.blink{animation:cdBlink 1s ease-in-out infinite;}
-.cloture-btn{padding:7px 12px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:var(--ink3);cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:.55rem;letter-spacing:1px;text-transform:uppercase;transition:all .18s;display:flex;align-items:center;gap:4px;}
-.cloture-btn:active{transform:scale(.95);}
-.cloture-btn.done{background:rgba(48,209,88,.1);border-color:rgba(48,209,88,.25);color:var(--green);cursor:default;}
-.tag{font-family:"JetBrains Mono",monospace;font-size:.48rem;letter-spacing:1px;padding:2px 7px;border-radius:5px;text-transform:uppercase;}
-.t-pms,.t-pmsfth{background:rgba(255,85,0,.12);color:var(--or2);border:1px solid rgba(255,85,0,.22);}
-.t-pli,.t-plifth{background:rgba(48,209,88,.08);color:var(--green);border:1px solid rgba(48,209,88,.18);}
-.t-esc,.t-escfth{background:rgba(255,204,0,.08);color:var(--amber);border:1px solid rgba(255,204,0,.18);}
-.t-pmr,.t-pmrfth{background:rgba(10,132,255,.08);color:var(--blue);border:1px solid rgba(10,132,255,.18);}
-.t-su{background:rgba(255,45,85,.12);color:var(--red);border:1px solid rgba(255,45,85,.25);}
-.t-sw{background:rgba(255,204,0,.08);color:var(--amber);border:1px solid rgba(255,204,0,.18);}
-.t-sk{background:rgba(48,209,88,.06);color:var(--green);border:1px solid rgba(48,209,88,.15);}
-.t-sd{background:rgba(255,255,255,.04);color:var(--ink3);border:1px solid var(--bd);}
-.cid{font-family:"JetBrains Mono",monospace;font-size:.62rem;cursor:pointer;color:var(--ink3);transition:color .15s;padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.05);}
-.cid:active{color:var(--green);}
-.empty{text-align:center;padding:44px 20px;border:1px dashed rgba(255,255,255,.06);border-radius:14px;font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:3px;color:var(--ink4);text-transform:uppercase;}
-.ei{font-size:1.6rem;margin-bottom:10px;display:block;opacity:.2;}
+.card.sd .cdn{color:var(--ink4);}
+@keyframes cdBlink{0%,100%{opacity:1}50%{opacity:.1}}
+.cdn.blink{animation:cdBlink .9s ease-in-out infinite;}
+.cds{font-family:"JetBrains Mono",monospace;font-size:.52rem;color:var(--ink4);}
+.clot-btn{padding:8px 14px;border-radius:10px;border:1px solid rgba(255,85,0,.25);background:rgba(255,85,0,.08);color:var(--or2);cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:.55rem;letter-spacing:1px;text-transform:uppercase;transition:all .18s;display:flex;align-items:center;gap:5px;font-weight:600;}
+.clot-btn:active{transform:scale(.94);}
+.clot-btn.done{background:rgba(48,209,88,.09);border-color:rgba(48,209,88,.22);color:var(--green);cursor:default;}
+.cid{font-family:"JetBrains Mono",monospace;font-size:.6rem;color:var(--ink4);cursor:pointer;padding:2px 7px;border-radius:6px;background:rgba(255,255,255,.04);transition:all .15s;}
+.cid:active{color:var(--green);background:rgba(48,209,88,.1);}
+.tag{font-family:"JetBrains Mono",monospace;font-size:.46rem;letter-spacing:1px;padding:2px 7px;border-radius:5px;text-transform:uppercase;font-weight:600;}
+.t-pmsfth,.t-pms{background:rgba(255,85,0,.1);color:var(--or2);border:1px solid rgba(255,85,0,.2);}
+.t-plifth,.t-pli{background:rgba(48,209,88,.07);color:var(--green);border:1px solid rgba(48,209,88,.16);}
+.t-escfth,.t-esc{background:rgba(255,204,0,.07);color:var(--amber);border:1px solid rgba(255,204,0,.16);}
+.t-pmrfth,.t-pmr{background:rgba(10,132,255,.07);color:var(--blue);border:1px solid rgba(10,132,255,.16);}
+.t-su{background:rgba(255,45,85,.1);color:var(--red);border:1px solid rgba(255,45,85,.22);}
+.t-sw{background:rgba(255,204,0,.07);color:var(--amber);border:1px solid rgba(255,204,0,.16);}
+.t-sk{background:rgba(48,209,88,.06);color:var(--green);border:1px solid rgba(48,209,88,.14);}
+.t-sd{background:rgba(255,255,255,.04);color:var(--ink4);border:1px solid var(--bd);}
+.empty{text-align:center;padding:48px 20px;border:1px dashed rgba(255,255,255,.07);border-radius:16px;font-family:"JetBrains Mono",monospace;font-size:.56rem;letter-spacing:3px;color:var(--ink4);text-transform:uppercase;line-height:2;}
+.ei{font-size:2rem;display:block;margin-bottom:12px;opacity:.15;}
 
-/* ── PROFIL ── */
-.profil-hero{background:linear-gradient(135deg,rgba(255,85,0,.1),rgba(255,85,0,.04));border:1px solid rgba(255,85,0,.15);border-radius:18px;padding:20px;margin-bottom:14px;text-align:center;}
-.profil-avatar{width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,rgba(255,85,0,.2),rgba(255,85,0,.06));border:1.5px solid rgba(255,85,0,.3);display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:1.5rem;color:var(--or2);margin:0 auto 12px;}
-.profil-name{font-weight:700;font-size:1.05rem;margin-bottom:2px;}
-.profil-id{font-family:"JetBrains Mono",monospace;font-size:.6rem;color:var(--or);letter-spacing:2px;margin-bottom:14px;}
-.profil-logout{padding:9px 22px;border-radius:10px;background:rgba(255,45,85,.1);border:1px solid rgba(255,45,85,.2);color:var(--red);cursor:pointer;font-size:.8rem;font-family:"Inter",sans-serif;font-weight:600;transition:all .18s;}
-.profil-logout:active{background:rgba(255,45,85,.2);}
+/* ── DONE SECTION ── */
+.done-section{margin-top:18px;}
+.done-toggle{width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,.03);border:1px dashed var(--bd);color:var(--ink4);font-size:.7rem;font-family:"JetBrains Mono",monospace;cursor:pointer;text-align:center;transition:all .15s;margin-bottom:8px;}
+.done-toggle:active{background:rgba(255,255,255,.06);}
+#doneList{display:none;}
+#doneList.open{display:flex;flex-direction:column;gap:8px;}
 
 /* ── MODAL CLOTURE ── */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(14px);z-index:500;display:none;align-items:flex-end;justify-content:center;padding-bottom:var(--safe-bot);}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(16px);z-index:500;display:none;align-items:flex-end;justify-content:center;padding-bottom:var(--safe-bot);}
 .overlay.open{display:flex;animation:ovIn .18s ease;}
 @keyframes ovIn{from{opacity:0}to{opacity:1}}
-.modal{background:rgba(22,22,26,.99);border:1px solid rgba(255,255,255,.1);border-radius:24px 24px 0 0;width:100%;max-width:500px;padding:22px;box-shadow:0 -20px 60px rgba(0,0,0,.7);animation:modalUp .3s cubic-bezier(.34,1.2,.64,1);}
+.modal{background:var(--s2);border:1px solid rgba(255,255,255,.09);border-radius:24px 24px 0 0;width:100%;max-width:520px;padding:22px 22px 28px;box-shadow:0 -24px 64px rgba(0,0,0,.7);animation:modalUp .32s cubic-bezier(.34,1.15,.64,1);}
 @keyframes modalUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.modal-handle{width:34px;height:4px;border-radius:2px;background:rgba(255,255,255,.12);margin:0 auto 18px;}
-.modal-title{font-family:"Bebas Neue",sans-serif;font-size:1.35rem;letter-spacing:4px;margin-bottom:4px;}
-.modal-sub{font-size:.72rem;color:var(--ink3);margin-bottom:18px;font-family:"JetBrains Mono",monospace;}
-.modal-status{display:flex;gap:7px;margin-bottom:18px;}
-.msbtn{flex:1;padding:10px 6px;border-radius:11px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--ink3);cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:1px;text-transform:uppercase;transition:all .18s;text-align:center;}
-.msbtn.on.cloture{background:rgba(48,209,88,.12);border-color:rgba(48,209,88,.3);color:var(--green);}
-.msbtn.on.rdv{background:rgba(255,204,0,.1);border-color:rgba(255,204,0,.28);color:var(--amber);}
-.msbtn.on.contact{background:rgba(10,132,255,.1);border-color:rgba(10,132,255,.25);color:var(--blue);}
-.modal-inp{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--ink);border-radius:10px;padding:12px 14px;font-family:"Inter",sans-serif;font-size:.88rem;outline:none;margin-bottom:16px;transition:border-color .15s;}
-.modal-inp:focus{border-color:rgba(255,85,0,.4);box-shadow:0 0 0 3px rgba(255,85,0,.07);}
-.modal-confirm{width:100%;padding:14px;border-radius:13px;background:linear-gradient(135deg,var(--or),var(--or2));border:none;color:#fff;cursor:pointer;font-family:"Bebas Neue",sans-serif;font-size:1.05rem;letter-spacing:4px;transition:all .18s;box-shadow:0 4px 18px rgba(255,85,0,.3);margin-bottom:8px;}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.1);margin:0 auto 20px;}
+.modal-hd{margin-bottom:6px;}
+.modal-title{font-family:"Bebas Neue",sans-serif;font-size:1.4rem;letter-spacing:4px;}
+.modal-sub{font-size:.72rem;color:var(--ink3);font-family:"JetBrains Mono",monospace;margin-bottom:18px;margin-top:2px;}
+.modal-statuses{display:flex;gap:7px;margin-bottom:18px;}
+.msbtn{flex:1;padding:11px 6px;border-radius:12px;border:1px solid var(--bd);background:rgba(255,255,255,.03);color:var(--ink4);cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:.56rem;letter-spacing:1px;text-transform:uppercase;transition:all .18s;text-align:center;font-weight:600;}
+.msbtn.on.cloture{background:rgba(48,209,88,.1);border-color:rgba(48,209,88,.28);color:var(--green);}
+.msbtn.on.rdv{background:rgba(255,204,0,.1);border-color:rgba(255,204,0,.25);color:var(--amber);}
+.msbtn.on.contact{background:rgba(10,132,255,.1);border-color:rgba(10,132,255,.22);color:var(--blue);}
+.modal-inp{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--bd2);color:var(--ink);border-radius:11px;padding:13px 14px;font-family:"Syne",sans-serif;font-size:.88rem;outline:none;margin-bottom:16px;transition:border-color .15s;}
+.modal-inp:focus{border-color:rgba(255,85,0,.4);box-shadow:0 0 0 3px rgba(255,85,0,.06);}
+.modal-confirm{width:100%;padding:15px;border-radius:13px;background:linear-gradient(135deg,var(--or3),var(--or2));border:none;color:#fff;cursor:pointer;font-family:"Bebas Neue",sans-serif;font-size:1.05rem;letter-spacing:5px;transition:all .18s;box-shadow:0 6px 20px rgba(255,85,0,.28);margin-bottom:8px;}
 .modal-confirm:active{transform:scale(.98);}
-.modal-cancel{width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--bd);color:var(--ink3);cursor:pointer;font-size:.82rem;}
+.modal-cancel{width:100%;padding:12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--bd);color:var(--ink3);cursor:pointer;font-size:.82rem;font-family:"Syne",sans-serif;}
+
+/* ── PROFIL ── */
+.profil-hero{background:linear-gradient(135deg,rgba(255,85,0,.09),rgba(255,85,0,.03));border:1px solid rgba(255,85,0,.14);border-radius:20px;padding:24px;margin-bottom:14px;text-align:center;}
+.profil-av{width:70px;height:70px;border-radius:18px;background:linear-gradient(135deg,rgba(255,85,0,.2),rgba(255,85,0,.06));border:2px solid rgba(255,85,0,.25);display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:1.6rem;color:var(--or2);margin:0 auto 14px;}
+.profil-name{font-weight:800;font-size:1.1rem;margin-bottom:3px;}
+.profil-id{font-family:"JetBrains Mono",monospace;font-size:.6rem;color:var(--or);letter-spacing:2px;margin-bottom:6px;}
+.profil-topic{font-family:"JetBrains Mono",monospace;font-size:.52rem;color:var(--ink4);letter-spacing:1px;margin-bottom:16px;background:rgba(255,255,255,.04);padding:4px 10px;border-radius:8px;display:inline-block;}
+.profil-logout{padding:10px 24px;border-radius:11px;background:rgba(255,45,85,.1);border:1px solid rgba(255,45,85,.2);color:var(--red);cursor:pointer;font-size:.82rem;font-weight:700;transition:all .18s;}
+.profil-logout:active{background:rgba(255,45,85,.2);}
+
+/* ── NOTIF STATUS ── */
+.notif-status{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.03);border:1px solid var(--bd);border-radius:13px;padding:14px;margin-bottom:10px;cursor:pointer;}
+.notif-status-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.notif-status-dot.on{background:var(--green);box-shadow:0 0 7px var(--green);}
+.notif-status-dot.off{background:var(--ink4);}
+.notif-status-txt{flex:1;font-size:.78rem;color:var(--ink2);font-weight:600;}
+.notif-status-sub{font-size:.62rem;color:var(--ink4);margin-top:1px;font-family:"JetBrains Mono",monospace;}
+.notif-status-arrow{color:var(--ink4);font-size:.9rem;}
 
 /* ── TOAST ── */
-#toasts{position:fixed;top:calc(var(--safe-top) + 60px);right:12px;display:flex;flex-direction:column;gap:6px;z-index:9999;}
-.toast{background:rgba(22,22,26,.97);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);border-left:3px solid var(--or);border-radius:10px;padding:10px 13px;font-size:.76rem;color:var(--ink2);box-shadow:0 6px 24px rgba(0,0,0,.5);animation:tIn .3s cubic-bezier(.34,1.4,.64,1) both;max-width:260px;}
-@keyframes tIn{from{opacity:0;transform:translateX(20px)}}
-@keyframes tOut{to{opacity:0;transform:translateX(20px)}}
+#toasts{position:fixed;top:calc(var(--safe-top) + 62px);right:12px;display:flex;flex-direction:column;gap:6px;z-index:9999;pointer-events:none;}
+.toast{background:rgba(18,18,22,.97);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.09);border-left:3px solid var(--or);border-radius:11px;padding:10px 14px;font-size:.78rem;color:var(--ink2);box-shadow:0 8px 28px rgba(0,0,0,.5);animation:tIn .3s cubic-bezier(.34,1.4,.64,1) both;max-width:260px;pointer-events:all;}
+@keyframes tIn{from{opacity:0;transform:translateX(22px)}}
+@keyframes tOut{to{opacity:0;transform:translateX(22px)}}
 .toast.out{animation:tOut .2s ease forwards;}
 .toast.t-red{border-left-color:var(--red);}
 .toast.t-green{border-left-color:var(--green);}
 .toast.t-amber{border-left-color:var(--amber);}
-
-/* ── DEBUG ── */
-#debugPanel{background:rgba(255,85,0,.12);border:1px solid rgba(255,85,0,.4);border-radius:12px;padding:12px;margin:10px 13px;font-family:"JetBrains Mono",monospace;font-size:.6rem;color:rgba(255,255,255,.8);line-height:1.8;display:none;}
-#debugPanel.show{display:block;}
-#debugToggle{width:100%;padding:6px;background:rgba(255,85,0,.15);border:1px solid rgba(255,85,0,.3);color:var(--or2);border-radius:8px;font-size:.6rem;font-family:"JetBrains Mono",monospace;cursor:pointer;margin:8px 0;}
 </style>
 </head>
 <body>
-
 <div id="toasts"></div>
 
-<!-- MODAL CLOTURE -->
+<!-- OVERLAY CLOTURE -->
 <div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title" id="modalTitle">Cloturer le dossier</div>
-    <div class="modal-sub" id="modalSub">—</div>
-    <div class="modal-status">
-      <button class="msbtn cloture on" onclick="selStatus('cloture',this)">Cloture DEF</button>
-      <button class="msbtn rdv" onclick="selStatus('rdv',this)">RDV pris</button>
-      <button class="msbtn contact" onclick="selStatus('contact',this)">Contacte</button>
+    <div class="modal-hd">
+      <div class="modal-title">Clôturer le dossier</div>
+      <div class="modal-sub" id="modalSub">—</div>
+    </div>
+    <div class="modal-statuses">
+      <button class="msbtn cloture on" onclick="selStatus('cloture',this)">✓ Clôture DEF</button>
+      <button class="msbtn rdv" onclick="selStatus('rdv',this)">📅 RDV pris</button>
+      <button class="msbtn contact" onclick="selStatus('contact',this)">📞 Contacté</button>
     </div>
     <input class="modal-inp" id="modalNote" placeholder="Commentaire (optionnel)...">
-    <button class="modal-confirm" onclick="confirmCloture()">CONFIRMER</button>
+    <button class="modal-confirm" onclick="confirmCloture()">CONFIRMER LA CLÔTURE</button>
     <button class="modal-cancel" onclick="closeModal()">Annuler</button>
   </div>
 </div>
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-wrap">
-    <div class="login-logo-wrap">
-      <div class="login-hex">📡</div>
-    </div>
-    <div class="login-title">RETS<em>ALERTE</em></div>
-    <div class="login-sub">Application Techniciens FTTH</div>
-
+    <div class="login-glow"></div>
+    <div class="login-hex">📡</div>
+    <div class="login-title">RETSALERTE</div>
+    <div class="login-sub">App Techniciens · LOB62</div>
     <div class="login-card">
-      <div class="login-label">
-        <div class="login-label-icon">🔑</div>
-        Votre identifiant
-      </div>
+      <div class="login-label">Votre identifiant</div>
       <input type="text" class="login-input" id="loginInput"
         placeholder="XXXXX@LOB62"
         autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
         oninput="this.value=this.value.toUpperCase()"
         onkeydown="if(event.key==='Enter')doLogin()">
-      <div class="login-hint">Format : XXXXX@LOB62 (transmis par votre responsable)</div>
-      <div id="loginError">Identifiant non reconnu. Verifiez et reessayez.</div>
-      <button class="login-btn" onclick="doLogin()">ACCEDER A MES DOSSIERS</button>
+      <div class="login-hint">Format : XXXXX@LOB62<br>Transmis par votre responsable.</div>
+      <div id="loginError">❌ Identifiant non reconnu. Vérifiez et réessayez.</div>
+      <button class="login-btn" onclick="doLogin()">ACCÉDER À MES DOSSIERS</button>
       <div class="login-divider"><span>ou</span></div>
-      <button class="login-guest" onclick="doGuest()">Voir tous les dossiers (mode consultation)</button>
+      <button class="login-guest" onclick="doGuest()">👁 Mode consultation — tous les dossiers</button>
     </div>
-
-    <div class="login-footer">RETSALERTE v2.0 &mdash; LOB62 FTTH</div>
+    <div class="login-footer">RETSALERTE v3.0 — LOB62 FTTH</div>
   </div>
 </div>
 
@@ -257,500 +280,542 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--ink);displa
     <div class="hdr-hex">📡</div>
     <div class="hdr-info">
       <div class="hdr-title">RETS<em>ALERTE</em></div>
-      <div class="hdr-user" id="hdrUser">Chargement...</div>
-      <div id="hdrOnglet" style="font-size:.55rem;color:rgba(255,255,255,.35);font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-top:1px;"></div>
+      <div class="hdr-user" id="hdrUser">—</div>
+      <div class="hdr-sub" id="hdrSub">—</div>
     </div>
     <div class="hdr-right">
-      <div class="sync-dot" id="syncDot" title="Sync auto 2min"></div>
-      <button class="hdr-btn" id="gidAppBtn" onclick="openAppGidModal()" title="Changer l'onglet du jour" style="display:none;">📅</button>
-      <button class="hdr-btn" id="notifBtn" onclick="toggleNotif()" title="Notifications">🔔</button>
+      <div class="sync-dot" id="syncDot"></div>
+      <button class="hdr-btn" id="notifBtn" onclick="toggleNotifBtn()" title="Notifications">🔔</button>
+      <button class="hdr-btn" id="gidAppBtn" onclick="openGidModal()" style="display:none;" title="Onglet">📅</button>
     </div>
   </div>
-  <div id="noGidBanner" style="display:none;background:rgba(255,204,0,.12);border-bottom:1px solid rgba(255,204,0,.3);padding:8px 16px;font-size:.7rem;color:#ffcc00;font-family:'JetBrains Mono',monospace;text-align:center;">
-    ⚠ Onglet non configuré — demandez à l'admin de configurer l'onglet du jour
+
+  <!-- PUSH ALERT BANNER -->
+  <div class="push-banner" id="pushBanner" onclick="dismissPush()">
+    <div class="push-inner">
+      <div class="push-ico">🚨</div>
+      <div class="push-txt">
+        <div class="push-ttl" id="pushTitle">ALERTE SUPERVISEUR</div>
+        <div class="push-body" id="pushBody">—</div>
+        <div class="push-time" id="pushTime"></div>
+      </div>
+      <div class="push-close" onclick="event.stopPropagation();dismissPush()">✕</div>
+    </div>
   </div>
 
-  
-  <!-- DEBUG -->
-  <button id="debugToggle" onclick="toggleDebug()" style="display:none;">🔍 DEBUG</button>
-  <div id="debugPanel"></div>
+  <!-- NOTIF BANNER -->
+  <div class="notif-banner" id="notifBanner">
+    <div class="notif-txt">Activez les notifications pour recevoir les alertes du superviseur en temps réel</div>
+    <button class="notif-allow" onclick="requestNotif()">Activer</button>
+  </div>
 
   <div class="tabs">
-    <button class="tab on" onclick="goTab('mes',this)">
-      <span class="t-ico">📋</span>
-      <span>Mes dossiers</span>
+    <button class="tab on" onclick="goTab('mes',this)" id="tabMes">
+      <span class="t-ico">📋</span><span>Mes dossiers</span>
       <span class="t-badge hide" id="tabBadge">0</span>
     </button>
     <button class="tab" onclick="goTab('urgent',this)">
-      <span class="t-ico">🔴</span>
-      <span>Urgents</span>
+      <span class="t-ico">🔴</span><span>Urgents</span>
       <span class="t-badge hide" id="urgBadge">0</span>
     </button>
     <button class="tab" onclick="goTab('tous',this)">
-      <span class="t-ico">🗂</span>
-      <span>Tous</span>
+      <span class="t-ico">🗂</span><span>Tous</span>
     </button>
     <button class="tab" onclick="goTab('profil',this)">
-      <span class="t-ico">👤</span>
-      <span>Profil</span>
+      <span class="t-ico">👤</span><span>Profil</span>
     </button>
   </div>
 
   <div class="screens">
     <!-- MES DOSSIERS -->
     <div class="screen on" id="s-mes">
-      <!-- Banner alerte push superviseur -->
-      <div class="push-banner" id="pushBanner" onclick="dismissPush()">
-        <div class="push-banner-ico">🚨</div>
-        <div class="push-banner-txt">
-          <div class="push-banner-ttl" id="pushBannerTitle">ALERTE SUPERVISEUR</div>
-          <div class="push-banner-sub" id="pushBannerBody">Un dossier va percuter</div>
-        </div>
-        <div class="push-banner-close" onclick="event.stopPropagation();dismissPush()">✕</div>
-      </div>
-      <!-- Banner notif natives -->
-      <div class="notif-banner" id="notifBanner">
-        <div class="notif-banner-txt">
-          <div class="notif-banner-ttl">Activer les notifications</div>
-          <div class="notif-banner-sub">Recevez des alertes en temps reel quand un dossier va percuter</div>
-        </div>
-        <button class="notif-allow" onclick="requestNotif()">Activer</button>
-      </div>
       <div class="kpi-row" id="mesKpi"></div>
-      <div class="sec-hd"><div class="sec-ttl">Mes dossiers actifs</div><div class="sec-pill" id="mesPill">—</div></div>
+      <div class="sec-hd">
+        <div class="sec-ttl">🔥 Mes dossiers actifs</div>
+        <div class="sec-pill" id="mesPill">—</div>
+      </div>
       <div class="card-list" id="mesList"></div>
+      <div class="done-section">
+        <button class="done-toggle" id="doneToggle" onclick="toggleDone()">▾ Voir dossiers percutés</button>
+        <div class="card-list" id="doneList"></div>
+      </div>
     </div>
-
     <!-- URGENTS -->
     <div class="screen" id="s-urgent">
-      <div class="sec-hd"><div class="sec-ttl">Percutions urgentes</div><div class="sec-pill" id="urgPill">—</div></div>
+      <div class="sec-hd"><div class="sec-ttl">⚠ Percutions urgentes — tous techniciens</div><div class="sec-pill" id="urgPill">—</div></div>
       <div class="card-list" id="urgList"></div>
     </div>
-
     <!-- TOUS -->
     <div class="screen" id="s-tous">
-      <div class="sec-hd"><div class="sec-ttl">Tous les dossiers</div><div class="sec-pill" id="tousPill">—</div></div>
+      <div class="sec-hd"><div class="sec-ttl">🗂 Tous les dossiers actifs</div><div class="sec-pill" id="tousPill">—</div></div>
       <div class="card-list" id="tousList"></div>
     </div>
-
     <!-- PROFIL -->
     <div class="screen" id="s-profil">
-      <div class="profil-hero" id="profilHero"></div>
+      <div id="profilHero" class="profil-hero"></div>
       <div class="kpi-row" id="profilStats"></div>
-      <div class="sec-hd"><div class="sec-ttl">Dossiers clotures</div></div>
-      <div class="card-list" id="profilClosed"></div>
+      <div id="notifStatusBlock"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL GID ADMIN -->
+<div id="gidModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9999;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)closeGidModal()">
+  <div style="background:#18181c;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;width:100%;max-width:380px;box-shadow:0 32px 80px rgba(0,0,0,.8);">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:4px;color:var(--or);margin-bottom:4px;">📅 ONGLET DU JOUR</div>
+    <div id="gidStatus" style="font-size:.62rem;color:var(--ink4);font-family:'JetBrains Mono',monospace;margin-bottom:16px;"></div>
+    <input id="gidInput" type="text" placeholder="https://docs.google.com/... ou GID seul"
+      style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,85,0,.3);color:#fff;border-radius:10px;padding:12px 14px;font-size:.78rem;outline:none;margin-bottom:14px;"
+      onkeydown="if(event.key==='Enter')saveGid()">
+    <div style="display:flex;gap:8px;">
+      <button onclick="saveGid()" id="gidSaveBtn" style="flex:1;padding:12px;background:linear-gradient(135deg,var(--or3),var(--or2));border:none;border-radius:10px;color:#fff;font-weight:700;font-size:.8rem;cursor:pointer;font-family:'Bebas Neue',sans-serif;letter-spacing:3px;">CHARGER</button>
+      <button onclick="closeGidModal()" style="padding:12px 14px;background:rgba(255,255,255,.05);border:1px solid var(--bd);border-radius:10px;color:var(--ink3);cursor:pointer;font-size:.8rem;">Annuler</button>
     </div>
   </div>
 </div>
 
 <script>
-// ── DEBUG (défini en premier) ──
-function toggleDebug(){
-  const p=document.getElementById("debugPanel");
-  if(p) p.classList.toggle("show");
+// ─── CONSTANTES ───
+const SHEETS_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTp5akRIobYOz6JdfLBYIMs2K9dUZvwAdNu8-JWfmHzWKT4Srgv1-yDxM_3BB2ClXYQI9mutrRagcBD/pub";
+const DEFAULT_GID = "901370948";
+const NTFY_BASE = "https://ntfy.sh/";
+
+// ─── USERS ───
+const USERS = {
+  "435E2@LOB62":{nom:"ALHAN",prenom:"Grynia",id:"435E2@LOB62"},
+  "8499A@LOB62":{nom:"BALKAYA",prenom:"Rodi",id:"8499A@LOB62"},
+  "VC861@LOB62":{nom:"BELLINI",prenom:"Remy",id:"VC861@LOB62"},
+  "ZSEXO@LOB62":{nom:"BEN DHAOU",prenom:"Kevin",id:"ZSEXO@LOB62"},
+  "765F9@LOB62":{nom:"BEN YAHIA",prenom:"Adel",id:"765F9@LOB62"},
+  "FC7F0@LOB62":{nom:"CAMARA",prenom:"Aboudou",id:"FC7F0@LOB62"},
+  "GSA4J@LOB62":{nom:"CHAABIHI",prenom:"Thomas",id:"GSA4J@LOB62"},
+  "Q9ZVL@LOB62":{nom:"CHAIEB",prenom:"Hedi",id:"Q9ZVL@LOB62"},
+  "FBDF0@LOB62":{nom:"CHALBI",prenom:"Fadi",id:"FBDF0@LOB62"},
+  "3870D@LOB62":{nom:"DANABACHE",prenom:"Ali",id:"3870D@LOB62"},
+  "DMJD8@LOB62":{nom:"FETTACHE",prenom:"Daniel",id:"DMJD8@LOB62"},
+  "T25ZN@LOB62":{nom:"HAMMACHE",prenom:"Ilyas",id:"T25ZN@LOB62"},
+  "ENP8M@LOB62":{nom:"IBOUROI",prenom:"Ibrahim",id:"ENP8M@LOB62"},
+  "TVEMH@LOB62":{nom:"ITRISSO",prenom:"Antouifou",id:"TVEMH@LOB62"},
+  "AME9X@LOB62":{nom:"KARTLI",prenom:"Rochdi",id:"AME9X@LOB62"},
+  "6E041@LOB62":{nom:"LA MARCA",prenom:"Guillaume",id:"6E041@LOB62"},
+  "LNDSZ@LOB62":{nom:"MOKLI",prenom:"Thomas",id:"LNDSZ@LOB62"},
+  "MFANQ@LOB62":{nom:"PRAT",prenom:"Thomas",id:"MFANQ@LOB62"},
+  "9FD11@LOB62":{nom:"RAGOT",prenom:"Remi",id:"9FD11@LOB62"},
+  "LPNMZ@LOB62":{nom:"RODIEL",prenom:"Ethan",id:"LPNMZ@LOB62"},
+  "MYFDU@LOB62":{nom:"SAIDALI",prenom:"Nasser",id:"MYFDU@LOB62"},
+  "N1STX@LOB62":{nom:"TABOUCHI",prenom:"Bilel",id:"N1STX@LOB62"},
+  "DDBD4@LOB62":{nom:"YEKKEN",prenom:"Rayane",id:"DDBD4@LOB62"},
+  "FCCQ2@LOB62":{nom:"ZAKARIA",prenom:"Lamhamdi",id:"FCCQ2@LOB62"}
+};
+
+// ─── ÉTAT ───
+let D = [], currentUser = null, currentUserInfo = null, isGuest = false, isAdmin = false;
+let clotures = JSON.parse(localStorage.getItem("rclotures") || "{}");
+let modalDossier = null, modalStatus = "cloture";
+let doneOpen = false;
+const saveClotures = () => localStorage.setItem("rclotures", JSON.stringify(clotures));
+function getCurrentGid(){ return localStorage.getItem("rgid") || DEFAULT_GID; }
+function getSheetsUrl(){ return `${SHEETS_BASE}?gid=${getCurrentGid()}&single=true&output=csv`; }
+
+// ─── NTFY TOPIC ───
+// CRITIQUE : le topic doit correspondre exactement à ce que le site superviseur envoie
+// Le superviseur envoie vers retsalerte_NOM (champ tech du CSV, ex: HAFIDHOU, LA_MARCA)
+// L'app écoute sur le même topic = nom en majuscules, espaces → underscores
+function getNtfyTopic(){
+  if(!currentUserInfo) return null;
+  // Utilise uniquement le NOM (sans prénom) = correspond au champ "tech" dans le CSV
+  const nom = (currentUserInfo.nom || "").toUpperCase().replace(/\s+/g,"_").replace(/[^A-Z0-9_]/g,"");
+  return "retsalerte_" + nom;
 }
-function dbg(msg){
-  const p=document.getElementById("debugPanel");
-  if(p){p.innerHTML+="<div>"+msg+"</div>";p.classList.add("show");}
-  console.log("[DEBUG]",msg);
+function getNtfyTopicFull(){
+  // Topic secondaire avec NOM_PRENOM pour compatibilité
+  if(!currentUserInfo) return null;
+  const full = ((currentUserInfo.nom||"")+"_"+(currentUserInfo.prenom||"")).toUpperCase().replace(/\s+/g,"_").replace(/[^A-Z0-9_]/g,"");
+  return "retsalerte_" + full;
 }
-window.addEventListener("DOMContentLoaded",()=>{
-  const p=document.getElementById("debugPanel");
-  if(p){p.classList.add("show");p.innerHTML="<div>⏳ Démarrage app...</div>";}
-});
 
-const RAW_FALLBACK=[
-  {id:"492526823",tech:"HAFIDHOU",actprod:"PLIFTH",cp:"05230",ville:"LA BATIE-NEUVE",date_creation:"08/03/2026 18:25",planifiee:"09/03/2026 16:00",delai:48},
-  {id:"490438754",tech:"LA MARCA",actprod:"PMSFTH",cp:"13200",ville:"ARLES",date_creation:"08/03/2026 16:55",planifiee:"10/03/2026 09:15",delai:48},
-  {id:"490470648",tech:"LA MARCA",actprod:"PMSFTH",cp:"13200",ville:"ARLES",date_creation:"08/03/2026 12:03",planifiee:"10/03/2026 13:15",delai:48},
-  {id:"491272533",tech:"ZOUBERT",actprod:"PMSFTH",cp:"13008",ville:"MARSEILLE 08",date_creation:"08/03/2026 18:30",planifiee:"10/03/2026 13:00",delai:48},
-  {id:"442271011",tech:"KHEDIM",actprod:"PLIFTH",cp:"13790",ville:"ROUSSET",date_creation:"08/03/2026 11:50",planifiee:"10/03/2026 10:45",delai:48},
-  {id:"491885617",tech:"ABS FTTH",actprod:"PMSFTH",cp:"13011",ville:"MARSEILLE 11",date_creation:"08/03/2026 09:34",planifiee:"10/03/2026 20:00",delai:48},
-  {id:"442761368",tech:"CHERIKI",actprod:"ESCFTH",cp:"13130",ville:"BERRE-L ETANG",date_creation:"08/03/2026 17:33",planifiee:"10/03/2026 08:00",delai:48},
-  {id:"492462911",tech:"BA",actprod:"PLIFTH",cp:"05100",ville:"BRIANCON",date_creation:"08/03/2026 18:50",planifiee:"10/03/2026 12:00",delai:48},
-  {id:"442588889",tech:"ALHAN",actprod:"PMSFTH",cp:"13610",ville:"LE PUY-STE-REPARADE",date_creation:"08/03/2026 12:32",planifiee:"10/03/2026 08:45",delai:48},
-  {id:"442835508",tech:"MOKLI",actprod:"PMSFTH",cp:"13600",ville:"CEYRESTE",date_creation:"08/03/2026 18:32",planifiee:"10/03/2026 11:00",delai:48},
-  {id:"442090824",tech:"RODIEL",actprod:"PMSFTH",cp:"13110",ville:"PORT-DE-BOUC",date_creation:"08/03/2026 11:06",planifiee:"10/03/2026 08:00",delai:48},
-  {id:"491834224",tech:"CHAIEB",actprod:"PMSFTH",cp:"13016",ville:"MARSEILLE 16",date_creation:"08/03/2026 10:32",planifiee:"10/03/2026 13:00",delai:48},
-  {id:"442863058",tech:"BELLINI",actprod:"PMSFTH",cp:"13800",ville:"ISTRES",date_creation:"08/03/2026 12:57",planifiee:"10/03/2026 15:00",delai:48},
-  {id:"442189871",tech:"BEN MEKKI",actprod:"PLIFTH",cp:"13400",ville:"AUBAGNE",date_creation:"08/03/2026 18:35",planifiee:"10/03/2026 12:00",delai:48},
-  {id:"490507709",tech:"CA GTK LOT 1",actprod:"PMSFTH",cp:"13129",ville:"ARLES",date_creation:"08/03/2026 18:28",planifiee:"10/03/2026 09:30",delai:48},
-  {id:"490583911",tech:"ALHAN",actprod:"PLIFTH",cp:"13560",ville:"SENAS",date_creation:"08/03/2026 11:50",planifiee:"11/03/2026 08:15",delai:48},
-  {id:"491916450",tech:"BEN DHAOU",actprod:"PMSFTH",cp:"13012",ville:"MARSEILLE 12",date_creation:"08/03/2026 18:34",planifiee:"10/03/2026 14:00",delai:48}
-];
-const USERS={"435E2@LOB62":{"nom":"ALHAN","prenom":"Grynia","identifiant":"435E2@LOB62"},"8499A@LOB62":{"nom":"BALKAYA","prenom":"Rodi","identifiant":"8499A@LOB62"},"VC861@LOB62":{"nom":"BELLINI","prenom":"Remy","identifiant":"VC861@LOB62"},"ZSEXO@LOB62":{"nom":"BEN DHAOU","prenom":"Kevin","identifiant":"ZSEXO@LOB62"},"765F9@LOB62":{"nom":"BEN YAHIA","prenom":"Adel","identifiant":"765F9@LOB62"},"FC7F0@LOB62":{"nom":"CAMARA","prenom":"Aboudou","identifiant":"FC7F0@LOB62"},"GSA4J@LOB62":{"nom":"CHAABIHI","prenom":"Thomas","identifiant":"GSA4J@LOB62"},"Q9ZVL@LOB62":{"nom":"CHAIEB","prenom":"Hedi","identifiant":"Q9ZVL@LOB62"},"FBDF0@LOB62":{"nom":"CHALBI","prenom":"Fadi","identifiant":"FBDF0@LOB62"},"3870D@LOB62":{"nom":"DANABACHE","prenom":"Ali","identifiant":"3870D@LOB62"},"DMJD8@LOB62":{"nom":"FETTACHE","prenom":"Daniel","identifiant":"DMJD8@LOB62"},"T25ZN@LOB62":{"nom":"HAMMACHE","prenom":"Ilyas","identifiant":"T25ZN@LOB62"},"ENP8M@LOB62":{"nom":"IBOUROI","prenom":"Ibrahim","identifiant":"ENP8M@LOB62"},"TVEMH@LOB62":{"nom":"ITRISSO","prenom":"Antouifou","identifiant":"TVEMH@LOB62"},"AME9X@LOB62":{"nom":"KARTLI","prenom":"Rochdi","identifiant":"AME9X@LOB62"},"6E041@LOB62":{"nom":"LA MARCA","prenom":"Guillaume","identifiant":"6E041@LOB62"},"LNDSZ@LOB62":{"nom":"MOKLI","prenom":"Thomas","identifiant":"LNDSZ@LOB62"},"MFANQ@LOB62":{"nom":"PRAT","prenom":"Thomas","identifiant":"MFANQ@LOB62"},"9FD11@LOB62":{"nom":"RAGOT","prenom":"Remi","identifiant":"9FD11@LOB62"},"LPNMZ@LOB62":{"nom":"RODIEL","prenom":"Ethan","identifiant":"LPNMZ@LOB62"},"MYFDU@LOB62":{"nom":"SAIDALI","prenom":"Nasser","identifiant":"MYFDU@LOB62"},"N1STX@LOB62":{"nom":"TABOUCHI","prenom":"Bilel","identifiant":"N1STX@LOB62"},"DDBD4@LOB62":{"nom":"YEKKEN","prenom":"Rayane","identifiant":"DDBD4@LOB62"},"FCCQ2@LOB62":{"nom":"ZAKARIA","prenom":"Lamhamdi","identifiant":"FCCQ2@LOB62"}};
-
-const SHEETS_BASE="https://docs.google.com/spreadsheets/d/e/2PACX-1vTp5akRIobYOz6JdfLBYIMs2K9dUZvwAdNu8-JWfmHzWKT4Srgv1-yDxM_3BB2ClXYQI9mutrRagcBD/pub";
-// GID par défaut = onglet rets 09-03 (mis à jour le 09/03/2026)
-const DEFAULT_GID="901370948";
-const DEFAULT_LABEL="rets";
-const CONFIG_URL=`${SHEETS_BASE}?gid=0&single=true&output=csv`;
-function getCurrentGid(){return localStorage.getItem("rgid")||DEFAULT_GID;}
-function getCurrentGidLabel(){return localStorage.getItem("rgidLabel")||DEFAULT_LABEL;}
-function getSheetsUrl(){return `${SHEETS_BASE}?gid=${getCurrentGid()}&single=true&output=csv`;}
-
-// Charge le GID depuis l'onglet config, puis lance le chargement des données
-async function syncConfigAndLoad(){
-  dbg("🔄 syncConfigAndLoad() démarré");
-  // 1. Essayer de lire le GID depuis l'onglet config Google Sheets
-  try{
-    let txt=await fetchWithProxies(CONFIG_URL);
-    if(txt){
-      txt=txt.replace(/^\uFEFF/,"").trim();
-      const lines=txt.split(/\r?\n/);
-      for(const line of lines){
-        const sep=line.includes(";")?";":",";
-        const cols=line.split(sep).map(c=>c.replace(/"/g,"").trim());
-        const gid=cols[0];const label=cols[1]||"";
-        if(gid&&/^\d+$/.test(gid)){
-          const oldGid=getCurrentGid();
-          localStorage.setItem("rgid",gid);
-          localStorage.setItem("rgidLabel",label||gid);
-          if(gid!==oldGid){
-            toast("📅 Onglet mis à jour : "+(label||gid),"t-green");
-            const hdrOnglet=document.getElementById("hdrOnglet");
-            if(hdrOnglet) hdrOnglet.textContent="📅 "+(label||gid);
-          }
-          dbg("✅ Config GID="+gid+" label="+label);
-          break;
-        }
-      }
-    } else { dbg("⚠️ Onglet config inaccessible"); dbg("👉 GID actuel utilisé: "+getCurrentGid()); }
-  }catch(e){ dbg("⚠️ Erreur config: "+e.message); dbg("👉 GID actuel: "+getCurrentGid()); }
-  // 2. Masquer le banner
-  const banner=document.getElementById("noGidBanner");
-  if(banner) banner.style.display="none";
-  // 3. Charger
-  await loadSheets();
+// ─── PARSE DATE ───
+function parseDate(s){
+  if(!s) return null;
+  const m = s.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+  if(m) return new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0));
+  return null;
 }
-const NTFY_BASE="https://ntfy.sh/retsalerte_";
+function initData(raw){
+  D = raw.map(r=>{
+    const pl = parseDate(r.planifiee);
+    const cr = parseDate(r.date_creation);
+    let percution;
+    if(cr){ percution = new Date(cr.getTime() + (r.delai||48)*3600000); }
+    else if(pl){ percution = new Date(pl.getTime() + (r.delai||48)*3600000); }
+    else { percution = new Date(Date.now() + 48*3600000); }
+    return {...r, created:cr, percution};
+  }).filter(d => d.percution);
+}
+const st = p => { const h=(p-new Date())/3600000; return h<0?"done":h<=.5?"urgent":h<=2?"warning":"ok"; };
+const cd = p => {
+  const d = p-new Date();
+  if(d<0) return {t:"PERCUTÉ",s:"",mins:-1};
+  const h=Math.floor(d/3600000), m=String(Math.floor((d%3600000)/60000)).padStart(2,"0");
+  return {t:`${h}h ${m}m`,s:"restant",mins:Math.floor(d/60000)};
+};
+const ini = t => t.split(/\s+/).map(w=>w[0]||"").join("").slice(0,2).toUpperCase()||"??";
+function tTag(ap){ const k=(ap||"").toLowerCase(); const c=k.includes("pli")?"pli":k.includes("esc")?"esc":k.includes("pmr")?"pmr":"pms"; return`<span class="tag t-${c}fth">${ap}</span>`; }
+function stTag(s){ const L={urgent:"URGENT",warning:"BIENTÔT",ok:"PLANIFIÉ",done:"PERCUTÉ"}; return`<span class="tag t-${{urgent:"su",warning:"sw",ok:"sk",done:"sd"}[s]}">${L[s]}</span>`; }
 
-let D=[], currentUser=null, currentUserInfo=null, isGuest=false;
-let clotures=JSON.parse(localStorage.getItem("rclotures")||"{}");
-let modalDossier=null, modalStatus="cloture";
-let lastPushCheck=0;
-const saveClotures=()=>localStorage.setItem("rclotures",JSON.stringify(clotures));
-
-// ── POINT 2 : Connexion permanente ──
-// On lit le localStorage au tout debut
-const savedUser=localStorage.getItem("ruser");
-const savedInfo=localStorage.getItem("ruserinfo");
-if(savedInfo){try{currentUserInfo=JSON.parse(savedInfo);}catch(e){}}
-
-// ── PARSE DATE ──
-function parseDate(s){if(!s)return null;const m=s.match(/(\d{2})[\/\-](\d{2})[\/\-](\d{4})(?:\s+(\d{2}):(\d{2}))?/);return m?new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0)):null;}
-function initData(raw){D=raw.map(r=>{const pl=parseDate(r.planifiee);const cr=parseDate(r.date_creation);const percution=cr?new Date(cr.getTime()+(r.delai||48)*3600000):(pl||null);return{...r,created:cr,percution};}).filter(d=>d.percution);}
-
-const st=p=>{const h=(p-new Date())/3600000;return h<0?"done":h<=.5?"urgent":h<=2?"warning":"ok";};
-const cd=p=>{const d=p-new Date();if(d<0)return{t:"PERCUTE",s:"",mins:-1};const h=Math.floor(d/3600000),m=String(Math.floor((d%3600000)/60000)).padStart(2,"0");return{t:`${h}h ${m}m`,s:"restant",mins:Math.floor(d/60000)};};
-const fm=d=>d?d.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}):"_";
-const ini=t=>t.split(/\s+/).map(w=>w[0]||"").join("").slice(0,2).toUpperCase()||"??";
-function tTag(ap){const k=(ap||"").toLowerCase();const c=k.includes("pli")?"pli":k.includes("esc")?"esc":k.includes("pmr")?"pmr":"pms";return`<span class="tag t-${c}fth">${ap}</span>`;}
-function stTag(s){const L={urgent:"URGENT",warning:"BIENTOT",ok:"PLANIFIE",done:"PERCUTE"};return`<span class="tag t-${{urgent:"su",warning:"sw",ok:"sk",done:"sd"}[s]}">${L[s]}</span>`;}
-
-// ── POINT 1 : LOGIN amélioré ──
-let isAdmin=false;
+// ─── LOGIN ───
 function doLogin(){
-  const inp=document.getElementById("loginInput");
-  if(!inp)return;
-  const v=(inp.value||"").trim().toUpperCase().replace(/\s/g,"");
-  const errEl=document.getElementById("loginError");
-  // Code admin
-  if(v==="ADMINRETS"){
-    isAdmin=true; currentUser=null; currentUserInfo=null; isGuest=false;
-    localStorage.setItem("rAdminMode","1");
-    errEl.style.display="none";
-    startApp(); return;
-  }
-  if(!v){inp.style.borderColor="rgba(255,45,85,.5)";setTimeout(()=>inp.style.borderColor="",1500);return;}
-  const user=USERS[v];
-  if(!user){errEl.style.display="block";inp.style.borderColor="rgba(255,45,85,.5)";setTimeout(()=>{inp.style.borderColor="";},1500);return;}
+  const inp = document.getElementById("loginInput");
+  const v = (inp.value||"").trim().toUpperCase().replace(/\s/g,"");
+  const errEl = document.getElementById("loginError");
+  if(v === "ADMINRETS"){ isAdmin=true; currentUser=null; currentUserInfo=null; isGuest=false; localStorage.setItem("rAdminMode","1"); errEl.style.display="none"; startApp(); return; }
+  if(!v){ inp.style.borderColor="rgba(255,45,85,.5)"; setTimeout(()=>inp.style.borderColor="",1500); return; }
+  const user = USERS[v];
+  if(!user){ errEl.style.display="block"; inp.style.borderColor="rgba(255,45,85,.5)"; setTimeout(()=>inp.style.borderColor="",1500); return; }
   errEl.style.display="none";
-  isAdmin=false;
-  currentUser=user.nom;
-  currentUserInfo=user;
-  isGuest=false;
-  localStorage.setItem("ruser",user.nom);
-  localStorage.setItem("ruserinfo",JSON.stringify(user));
+  isAdmin=false; currentUser=user.nom; currentUserInfo=user; isGuest=false;
+  localStorage.setItem("ruser", v);
+  localStorage.setItem("ruserinfo", JSON.stringify(user));
   startApp();
 }
-function doGuest(){currentUser=null;isGuest=true;startApp();}
+function doGuest(){ currentUser=null; isGuest=true; isAdmin=false; startApp(); }
 function doLogout(){
-  currentUser=null;currentUserInfo=null;isGuest=false;
-  localStorage.removeItem("ruser");localStorage.removeItem("ruserinfo");
+  currentUser=null; currentUserInfo=null; isGuest=false; isAdmin=false;
+  localStorage.removeItem("ruser"); localStorage.removeItem("ruserinfo"); localStorage.removeItem("rAdminMode");
+  stopNtfy();
   document.getElementById("appShell").style.display="none";
-  const ls=document.getElementById("loginScreen");
-  ls.style.display="flex";
+  document.getElementById("loginScreen").style.display="flex";
   document.getElementById("loginInput").value="";
 }
 
-// ── START APP ──
+// ─── START APP ───
 function startApp(){
-  dbg("🚀 startApp() lancé");
-  dbg("👤 user="+( currentUser||"(aucun)")+" guest="+isGuest+" admin="+isAdmin);
   document.getElementById("loginScreen").style.display="none";
-  const app=document.getElementById("appShell");
-  app.style.display="flex";app.style.flexDirection="column";app.style.height="100%";
-  // Onglet label
-  const hdrOnglet=document.getElementById("hdrOnglet");
-  if(hdrOnglet) hdrOnglet.textContent="📅 "+getCurrentGidLabel();
-  // Masquer le banner "onglet non configuré" — la config sera lue depuis Sheets
-  const banner=document.getElementById("noGidBanner");
-  if(banner) banner.style.display="none";
-  // Bouton GID admin
-  const gidBtn=document.getElementById("gidAppBtn");
-  if(gidBtn) gidBtn.style.display=isAdmin?"flex":"none";
-  const dbgBtn=document.getElementById("debugToggle");if(dbgBtn)dbgBtn.style.display="block";
-  // Nom affiché dans header
-  const hdrUser=document.getElementById("hdrUser");
-  if(hdrUser){
-    if(isAdmin) hdrUser.textContent="👑 Admin · "+getCurrentGidLabel();
-    else if(currentUserInfo) hdrUser.textContent=currentUserInfo.prenom+" "+currentUserInfo.nom;
-    else hdrUser.textContent="Mode consultation";
-  }
-  updateApp();
+  const app = document.getElementById("appShell");
+  app.style.display="flex"; app.style.flexDirection="column"; app.style.height="100%";
+
+  // Header
+  const hdrUser = document.getElementById("hdrUser");
+  const hdrSub = document.getElementById("hdrSub");
+  if(isAdmin){ hdrUser.textContent="👑 Admin"; hdrSub.textContent="Vue complète · tous les dossiers"; }
+  else if(currentUserInfo){ hdrUser.textContent=`${currentUserInfo.prenom} ${currentUserInfo.nom}`; hdrSub.textContent=currentUserInfo.id; }
+  else { hdrUser.textContent="Mode consultation"; hdrSub.textContent="Tous les dossiers"; }
+
+  // Bouton onglet admin only
+  document.getElementById("gidAppBtn").style.display = isAdmin?"flex":"none";
+
+  // Notifications
   if(Notification.permission==="default") document.getElementById("notifBanner").classList.add("show");
   if(Notification.permission==="granted") document.getElementById("notifBtn").classList.add("active");
-  syncConfigAndLoad();
-  setInterval(()=>syncConfigAndLoad(),2*60*1000);
-  if(currentUser) startNtfyPoll();
+
+  // Données
+  loadSheets();
+  setInterval(loadSheets, 2*60*1000);
+
+  // Écoute ntfy
+  if(currentUserInfo) startNtfy();
 }
 
-// ── POINT 5 : Poll ntfy.sh pour notifications superviseur ──
-function getNtfyTopic(){
-  if(!currentUserInfo)return null;
-  // Topic basé sur nom complet "NOM Prénom" → retsalerte_NOM_PRENOM (identique au site superviseur)
-  const fullName=((currentUserInfo.nom||"")+" "+(currentUserInfo.prenom||"")).trim();
-  return "retsalerte_"+fullName.toUpperCase().replace(/\s/g,"_").replace(/[^A-Z0-9_]/g,"");
-}
-let ntfyEventSource=null;
-let ntfyConfigSource=null;
-async function startNtfyPoll(){
-  const topic=getNtfyTopic();
-  if(!topic)return;
-  // Messages manqués
-  checkNtfyMissed(topic);
-  // SSE pour alertes superviseur (topic perso)
-  connectNtfySSE(topic);
-  // SSE pour config globale (onglet du jour)
+// ─── NTFY SSE ───
+let sseMain = null, sseConfig = null;
+
+function startNtfy(){
+  stopNtfy();
+  const topic = getNtfyTopic();
+  const topicFull = getNtfyTopicFull();
+  if(!topic) return;
+
+  // Vérifier messages manqués (5 dernières minutes)
+  checkMissedAlerts(topic);
+  if(topicFull !== topic) checkMissedAlerts(topicFull);
+
+  // SSE topic principal (NOM seul = ce que le superviseur envoie)
+  connectSSE(topic);
+
+  // SSE config (onglet du jour)
   connectConfigSSE();
 }
-// Écoute le topic config pour sync automatique du GID
-function connectConfigSSE(){
-  if(ntfyConfigSource){ntfyConfigSource.close();}
+
+function stopNtfy(){
+  if(sseMain){ sseMain.close(); sseMain=null; }
+  if(sseConfig){ sseConfig.close(); sseConfig=null; }
+}
+
+function connectSSE(topic){
   try{
-    ntfyConfigSource=new EventSource("https://ntfy.sh/retsalerte_CONFIG/sse");
-    ntfyConfigSource.onmessage=function(e){
+    sseMain = new EventSource(`${NTFY_BASE}${topic}/sse`);
+    sseMain.onmessage = e => {
       try{
-        const msg=JSON.parse(e.data);
-        if(msg.event==="message"&&msg.title==="CONFIG_UPDATE"){
-          const cfg=JSON.parse(msg.message||"{}");
-          if(cfg.gid&&/^\d+$/.test(cfg.gid)){
-            const oldGid=getCurrentGid();
-            localStorage.setItem("rgid",cfg.gid);
-            if(cfg.label) localStorage.setItem("rgidLabel",cfg.label);
-            if(cfg.gid!==oldGid){
-              toast("📅 Nouvel onglet : "+(cfg.label||cfg.gid),"t-green");
-              const hdrOnglet=document.getElementById("hdrOnglet");
-              if(hdrOnglet) hdrOnglet.textContent="📅 "+(cfg.label||cfg.gid);
-              // Recharger les données immédiatement
+        const msg = JSON.parse(e.data);
+        if(msg.event === "message") handleAlert(msg);
+      }catch(ex){}
+    };
+    sseMain.onerror = () => {
+      if(sseMain){ sseMain.close(); sseMain=null; }
+      setTimeout(() => connectSSE(topic), 15000);
+    };
+  }catch(e){
+    // Fallback polling si SSE non disponible
+    setInterval(() => checkMissedAlerts(topic), 30000);
+  }
+}
+
+function connectConfigSSE(){
+  try{
+    sseConfig = new EventSource(`${NTFY_BASE}retsalerte_CONFIG/sse`);
+    sseConfig.onmessage = e => {
+      try{
+        const msg = JSON.parse(e.data);
+        if(msg.event === "message"){
+          const cfg = JSON.parse(msg.message || "{}");
+          if(cfg.gid && /^\d+$/.test(cfg.gid)){
+            const old = getCurrentGid();
+            localStorage.setItem("rgid", cfg.gid);
+            if(cfg.label) localStorage.setItem("rgidLabel", cfg.label);
+            if(cfg.gid !== old){
+              toast(`📅 Nouvel onglet : ${cfg.label||cfg.gid}`, "t-green");
+              document.getElementById("hdrSub").textContent = cfg.label || cfg.gid;
               loadSheets();
             }
           }
         }
       }catch(ex){}
     };
-    ntfyConfigSource.onerror=function(){
-      setTimeout(connectConfigSSE, 15000);
-    };
+    sseConfig.onerror = () => { setTimeout(connectConfigSSE, 20000); };
   }catch(e){}
 }
-function connectNtfySSE(topic){
-  if(ntfyEventSource){ntfyEventSource.close();}
+
+async function checkMissedAlerts(topic){
   try{
-    ntfyEventSource=new EventSource(`https://ntfy.sh/${topic}/sse`);
-    ntfyEventSource.onmessage=function(e){
-      try{
-        const msg=JSON.parse(e.data);
-        if(msg.event==="message"){handleNtfyMessage(msg);}
-      }catch(ex){}
-    };
-    ntfyEventSource.onerror=function(){
-      // Reconnexion automatique après 10s si la connexion coupe
-      setTimeout(()=>connectNtfySSE(topic),10000);
-    };
-  }catch(e){
-    // Fallback : poll toutes les 30s si SSE non supporté
-    setInterval(()=>checkNtfyMissed(topic),30*1000);
-  }
-}
-async function checkNtfyMissed(topic){
-  try{
-    const since=lastPushCheck||Math.floor(Date.now()/1000)-300;
-    const url=`https://ntfy.sh/${topic}/json?since=${since}&poll=1`;
-    const r=await fetch(url,{signal:AbortSignal.timeout(8000)});
-    if(!r.ok)return;
-    const txt=await r.text();
-    lastPushCheck=Math.floor(Date.now()/1000);
-    if(!txt.trim())return;
-    const lines=txt.trim().split("\n");
-    for(const line of lines){
-      try{
-        const msg=JSON.parse(line);
-        if(msg.event==="message"){handleNtfyMessage(msg);}
-      }catch(e){}
+    const since = Math.floor(Date.now()/1000) - 300; // 5min
+    const r = await fetch(`${NTFY_BASE}${topic}/json?since=${since}&poll=1`, {signal:AbortSignal.timeout(8000)});
+    if(!r.ok) return;
+    const txt = await r.text();
+    if(!txt.trim()) return;
+    for(const line of txt.trim().split("\n")){
+      try{ const msg=JSON.parse(line); if(msg.event==="message") handleAlert(msg,true); }catch(e){}
     }
   }catch(e){}
 }
-function handleNtfyMessage(msg){
-  showPushBanner(msg.title||"Alerte superviseur",msg.message||msg.body||"");
-  if(Notification.permission==="granted"){
-    new Notification(msg.title||"RetsAlerte - Alerte",{
-      body:msg.message||msg.body||"",
-      icon:"icon-192.png",
+
+function handleAlert(msg, isMissed=false){
+  const title = msg.title || "Alerte superviseur";
+  const body = msg.message || msg.body || "";
+  showPushBanner(title, body, msg.time);
+  // Notification native
+  if(Notification.permission === "granted"){
+    new Notification(title, {
+      body, icon:"icon-192.png",
       requireInteraction:true,
-      vibrate:[300,100,300,100,300]
+      vibrate:[300,100,300,100,300],
+      tag:"retsalerte-alert"
     });
   }
-}
-function showPushBanner(title,body){
-  const b=document.getElementById("pushBanner");
-  document.getElementById("pushBannerTitle").textContent=title;
-  document.getElementById("pushBannerBody").textContent=body;
-  b.classList.add("show");
-  // Son d'alerte
   playAlertSound();
+  toast(`🚨 ${title}`, "t-red");
 }
-function dismissPush(){document.getElementById("pushBanner").classList.remove("show");}
+
+function showPushBanner(title, body, time){
+  document.getElementById("pushTitle").textContent = title;
+  document.getElementById("pushBody").textContent = body;
+  if(time){
+    const d = new Date(time*1000);
+    document.getElementById("pushTime").textContent = "Reçu à " + d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+  }
+  document.getElementById("pushBanner").classList.add("show");
+}
+function dismissPush(){ document.getElementById("pushBanner").classList.remove("show"); }
+
 function playAlertSound(){
   try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const play=(f,s,d)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;o.type="square";g.gain.setValueAtTime(0,ctx.currentTime+s);g.gain.linearRampToValueAtTime(.18,ctx.currentTime+s+.02);g.gain.linearRampToValueAtTime(0,ctx.currentTime+s+d);o.start(ctx.currentTime+s);o.stop(ctx.currentTime+s+d+.05);};
-    play(880,0,.12);play(1100,.18,.12);play(880,.36,.2);
+    const ctx = new(window.AudioContext||window.webkitAudioContext)();
+    const p=(f,s,d)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;o.type="square";g.gain.setValueAtTime(0,ctx.currentTime+s);g.gain.linearRampToValueAtTime(.18,ctx.currentTime+s+.02);g.gain.linearRampToValueAtTime(0,ctx.currentTime+s+d);o.start(ctx.currentTime+s);o.stop(ctx.currentTime+s+d+.05);};
+    p(880,0,.12);p(1100,.18,.12);p(880,.36,.12);p(1100,.54,.2);
   }catch(e){}
 }
 
-// ── UPDATE APP ──
+// ─── RENDER APP ───
 function updateApp(){
-  if(!currentUser&&!isGuest&&!isAdmin)return;
-  const user=currentUser;
-  // Filtre robuste : nom exact OU contenu dans le champ tech (gère "NOM Prénom" ou "NOM")
-  const myDoss=user?D.filter(d=>{
-    if(!d.tech)return false;
-    const t=d.tech.toUpperCase().trim();
-    const u=user.toUpperCase().trim();
-    // Matcher: "BALKAYA" dans "BALKAYA RODI" ou "RODI BALKAYA" ou exact
-    return t===u || t.startsWith(u+" ") || t.endsWith(" "+u) || t.includes(" "+u+" ") || t.includes(u);
-  }):D;
-  const allUrg=D.filter(d=>st(d.percution)==="urgent");
+  if(!currentUser && !isGuest && !isAdmin) return;
 
-  // Header user
-  const dispName=currentUserInfo?`${currentUserInfo.prenom} ${currentUserInfo.nom}`:user||"Mode consultation";
-  document.getElementById("hdrUser").textContent=user?`Bonjour ${dispName.trim()}`:"Vue complete - tous les dossiers";
+  // Filtrage dossiers de l'utilisateur
+  const myDoss = currentUser ? D.filter(d => {
+    if(!d.tech) return false;
+    const t = d.tech.toUpperCase().trim();
+    const u = currentUser.toUpperCase().trim();
+    return t === u || t.startsWith(u+" ") || t.endsWith(" "+u) || t.includes(" "+u+" ") || t.includes(u+"_") || t===u;
+  }) : D;
 
-  // Badges
-  const myUrg=myDoss.filter(d=>st(d.percution)==="urgent");
-  const tb=document.getElementById("tabBadge");
-  if(myUrg.length){tb.textContent=myUrg.length;tb.classList.remove("hide");}else tb.classList.add("hide");
-  const ub=document.getElementById("urgBadge");
-  if(allUrg.length){ub.textContent=allUrg.length;ub.classList.remove("hide");}else ub.classList.add("hide");
+  const allUrg = D.filter(d => st(d.percution)==="urgent");
+  const myActive = myDoss.filter(d => st(d.percution)!=="done").sort((a,b)=>a.percution-b.percution);
+  const myDone = myDoss.filter(d => st(d.percution)==="done");
+  const myUrg = myActive.filter(d => st(d.percution)==="urgent");
 
-  // KPI
-  const s=myDoss.map(d=>st(d.percution));
-  document.getElementById("mesKpi").innerHTML=`
-    <div class="kpi kr"><div class="kpi-n">${s.filter(x=>x==="urgent").length}</div><div class="kpi-l">Urgents</div></div>
-    <div class="kpi ka"><div class="kpi-n">${s.filter(x=>x==="warning").length}</div><div class="kpi-l">Bientot</div></div>
-    <div class="kpi kg"><div class="kpi-n">${s.filter(x=>x==="done").length}</div><div class="kpi-l">Percutes</div></div>
-    <div class="kpi ko"><div class="kpi-n">${myDoss.length}</div><div class="kpi-l">Total</div></div>`;
+  // Badges tabs
+  const tb = document.getElementById("tabBadge");
+  if(myUrg.length){ tb.textContent=myUrg.length; tb.classList.remove("hide"); }else tb.classList.add("hide");
+  const ub = document.getElementById("urgBadge");
+  if(allUrg.length){ ub.textContent=allUrg.length; ub.classList.remove("hide"); }else ub.classList.add("hide");
 
-  // Mes dossiers
-  const myActive=myDoss.filter(d=>st(d.percution)!=="done").sort((a,b)=>a.percution-b.percution);
-  document.getElementById("mesPill").textContent=`${myActive.length} actifs`;
-  document.getElementById("mesList").innerHTML=myActive.length?myActive.map((d,i)=>cardHTML(d,i)).join(""):`<div class="empty"><span class="ei">✓</span>${user?"Aucun dossier actif":"Aucun dossier"}</div>`;
+  // KPI mes dossiers
+  const s = myDoss.map(d=>st(d.percution));
+  document.getElementById("mesKpi").innerHTML = `
+    <div class="kpi kr"><span class="kpi-ico">🔴</span><div class="kpi-n">${s.filter(x=>x==="urgent").length}</div><div class="kpi-l">Urgents</div></div>
+    <div class="kpi ka"><span class="kpi-ico">⚡</span><div class="kpi-n">${s.filter(x=>x==="warning").length}</div><div class="kpi-l">Bientôt</div></div>
+    <div class="kpi kg"><span class="kpi-ico">✓</span><div class="kpi-n">${s.filter(x=>x==="done").length}</div><div class="kpi-l">Percutés</div></div>
+    <div class="kpi ko"><span class="kpi-ico">📁</span><div class="kpi-n">${myDoss.length}</div><div class="kpi-l">Total</div></div>`;
 
-  // Urgents
-  document.getElementById("urgPill").textContent=`${allUrg.length} urgents`;
-  document.getElementById("urgList").innerHTML=allUrg.length?allUrg.sort((a,b)=>a.percution-b.percution).map((d,i)=>cardHTML(d,i)).join(""):`<div class="empty"><span class="ei">✓</span>Aucune percution urgente</div>`;
+  // Mes dossiers actifs
+  document.getElementById("mesPill").textContent = `${myActive.length} actif${myActive.length>1?"s":""}`;
+  document.getElementById("mesList").innerHTML = myActive.length
+    ? myActive.map((d,i)=>cardHTML(d,i,true)).join("")
+    : `<div class="empty"><span class="ei">✅</span>${currentUser?"Aucun dossier actif — tout est à jour !":"Aucun dossier"}</div>`;
 
-  // Tous
-  const allActive=D.filter(d=>st(d.percution)!=="done").sort((a,b)=>a.percution-b.percution);
-  document.getElementById("tousPill").textContent=`${D.length} dossiers`;
-  document.getElementById("tousList").innerHTML=allActive.map((d,i)=>cardHTML(d,i)).join("");
+  // Percutés (masqués par défaut)
+  const doneEl = document.getElementById("doneList");
+  const doneToggle = document.getElementById("doneToggle");
+  if(myDone.length){
+    doneToggle.style.display="block";
+    doneToggle.textContent = `${doneOpen?"▴":"▾"} ${myDone.length} dossier${myDone.length>1?"s":""} percuté${myDone.length>1?"s":""}`;
+    doneEl.innerHTML = myDone.map((d,i)=>cardHTML(d,i,true)).join("");
+    if(doneOpen) doneEl.classList.add("open"); else doneEl.classList.remove("open");
+  } else {
+    doneToggle.style.display="none";
+    doneEl.innerHTML="";
+  }
+
+  // Tab urgents (tous)
+  document.getElementById("urgPill").textContent = `${allUrg.length} urgent${allUrg.length>1?"s":""}`;
+  document.getElementById("urgList").innerHTML = allUrg.length
+    ? allUrg.sort((a,b)=>a.percution-b.percution).map((d,i)=>cardHTML(d,i,false)).join("")
+    : `<div class="empty"><span class="ei">✅</span>Aucune percution urgente</div>`;
+
+  // Tab tous
+  const allActive = D.filter(d=>st(d.percution)!=="done").sort((a,b)=>a.percution-b.percution);
+  document.getElementById("tousPill").textContent = `${D.length} dossier${D.length>1?"s":""}`;
+  document.getElementById("tousList").innerHTML = allActive.length
+    ? allActive.map((d,i)=>cardHTML(d,i,false)).join("")
+    : `<div class="empty"><span class="ei">📭</span>Aucun dossier</div>`;
 
   // Profil
-  if(user&&currentUserInfo){
-    const closed=myDoss.filter(d=>clotures[d.id]);
-    document.getElementById("profilHero").innerHTML=`
-      <div class="profil-avatar">${ini(user)}</div>
-      <div class="profil-name">${currentUserInfo.prenom} ${currentUserInfo.nom}</div>
-      <div class="profil-id">${currentUserInfo.identifiant}</div>
-      <button class="profil-logout" onclick="doLogout()">Se deconnecter</button>`;
-    document.getElementById("profilStats").innerHTML=`
-      <div class="kpi ko"><div class="kpi-n">${closed.length}</div><div class="kpi-l">Clotures</div></div>
-      <div class="kpi kg"><div class="kpi-n">${myDoss.length-closed.length}</div><div class="kpi-l">En cours</div></div>`;
-    document.getElementById("profilClosed").innerHTML=closed.length?closed.map((d,i)=>cardHTML(d,i)).join(""):`<div class="empty"><span class="ei">📋</span>Aucune cloture</div>`;
-  }else{
-    document.getElementById("profilHero").innerHTML=`
-      <div class="profil-avatar">👁</div>
-      <div class="profil-name">Mode consultation</div>
-      <div class="profil-id">Tous les dossiers</div>
-      <button class="profil-logout" onclick="doLogout()">Se connecter</button>`;
-  }
-  // Verif notifications auto
+  renderProfil(myDoss);
+
+  // Notifs auto
   checkAndNotify();
 }
 
-// ── CARD HTML ──
-function cardHTML(d,i){
-  const s=st(d.percution),c=cd(d.percution),sc={urgent:"su",warning:"sw",ok:"sk",done:"sd"}[s];
-  const cl=clotures[d.id];
-  const blink=(c.mins>=0&&c.mins<=15)?" blink":"";
-  const clBtn=cl
-    ?`<div class="cloture-btn done">✓ ${cl.status}</div>`
-    :`<button class="cloture-btn" onclick="event.stopPropagation();openModal('${d.id}')">Cloturer</button>`;
-  return`<div class="card ${sc}" style="animation:cardIn .32s ease ${i*.04}s both">
+function toggleDone(){
+  doneOpen = !doneOpen;
+  const doneEl = document.getElementById("doneList");
+  const toggle = document.getElementById("doneToggle");
+  if(doneOpen){ doneEl.classList.add("open"); }else{ doneEl.classList.remove("open"); }
+  updateApp();
+}
+
+// ─── CARD HTML ───
+function cardHTML(d, i, isMyCard=false){
+  const s = st(d.percution), c = cd(d.percution), sc={urgent:"su",warning:"sw",ok:"sk",done:"sd"}[s];
+  const cl = clotures[d.id];
+  const blink = (c.mins>=0&&c.mins<=15) ? " blink" : "";
+  const isMe = currentUser && d.tech && d.tech.toUpperCase().includes(currentUser.toUpperCase());
+  const clBtn = cl
+    ? `<div class="clot-btn done">✓ ${cl.status}</div>`
+    : `<button class="clot-btn" onclick="event.stopPropagation();openModal('${d.id}')">📋 Clôturer</button>`;
+  return `<div class="card ${sc}" style="animation:cardIn .3s ease ${i*.04}s both" onclick="cardTap('${d.id}')">
     <div class="cbar"></div>
     <div class="cbody">
-      <div class="ctop">${tTag(d.actprod)}${stTag(s)}</div>
-      <div class="ctech">${d.tech||"N/A"}</div>
+      <div class="ctop">${tTag(d.actprod)}${stTag(s)}${isMe&&!isMyCard?'<span class="ctech-you">MON DOSSIER</span>':''}</div>
+      <div class="ctech">${d.tech||"N/A"}${isMe&&isMyCard?'':''}</div>
       <div class="cmeta">
-        <span>${d.ville}${d.cp?" ("+d.cp+")":""}</span>
-        <span>Planif: ${d.planifiee||"_"}</span>
-        <span><span class="cid" onclick="event.stopPropagation();copyND('0${d.id}',this)" title="Copier">0${d.id}</span></span>
+        <div class="cmeta-row">📍 ${d.ville}${d.cp?" ("+d.cp+")":""}</div>
+        <div class="cmeta-row">📅 Planif. ${d.planifiee||"—"}</div>
+        <div class="cmeta-row"><span class="cid" onclick="event.stopPropagation();copyND('0${d.id}',this)">0${d.id}</span></div>
       </div>
       <div class="cdn-row">
-        <div class="cdn${blink}">${c.t}</div>
+        <div>
+          <div class="cdn${blink}">${c.t}</div>
+          <div class="cds">${c.s}</div>
+        </div>
         ${clBtn}
       </div>
     </div>
   </div>`;
 }
 
-// ── MODAL ──
+function cardTap(id){
+  const d = D.find(x=>x.id===id);
+  if(!d) return;
+  const c = cd(d.percution);
+  toast(`${d.tech} — ${d.ville} — ${c.t}`, c.mins<0?"t-amber":c.mins<30?"t-red":"t-green");
+}
+
+// ─── PROFIL ───
+function renderProfil(myDoss){
+  const profilHero = document.getElementById("profilHero");
+  const profilStats = document.getElementById("profilStats");
+  const notifBlock = document.getElementById("notifStatusBlock");
+  const topic = getNtfyTopic();
+
+  if(currentUserInfo){
+    const cl = myDoss.filter(d=>clotures[d.id]).length;
+    profilHero.innerHTML = `
+      <div class="profil-av">${ini(currentUserInfo.nom)}</div>
+      <div class="profil-name">${currentUserInfo.prenom} ${currentUserInfo.nom}</div>
+      <div class="profil-id">${currentUserInfo.id}</div>
+      <div class="profil-topic" title="Topic ntfy.sh pour notifications">📡 ${topic||"—"}</div>
+      <button class="profil-logout" onclick="doLogout()">Se déconnecter</button>`;
+    profilStats.innerHTML = `
+      <div class="kpi ko"><span class="kpi-ico">📁</span><div class="kpi-n">${myDoss.length}</div><div class="kpi-l">Mes dossiers</div></div>
+      <div class="kpi kg"><span class="kpi-ico">✓</span><div class="kpi-n">${cl}</div><div class="kpi-l">Clôturés</div></div>`;
+  } else {
+    profilHero.innerHTML = `
+      <div class="profil-av">👁</div>
+      <div class="profil-name">${isAdmin?"Admin":"Mode consultation"}</div>
+      <div class="profil-id">Vue complète</div>
+      <button class="profil-logout" onclick="doLogout()">Se connecter</button>`;
+    profilStats.innerHTML="";
+  }
+
+  // Bloc statut notifications
+  const notifOn = Notification.permission === "granted";
+  notifBlock.innerHTML = `
+    <div class="notif-status" onclick="toggleNotifBtn()">
+      <div class="notif-status-dot ${notifOn?"on":"off"}"></div>
+      <div>
+        <div class="notif-status-txt">${notifOn?"Notifications activées":"Notifications désactivées"}</div>
+        <div class="notif-status-sub">${notifOn?(topic?`Écoute sur ${topic}`:"—"):"Touchez pour activer"}</div>
+      </div>
+      <div class="notif-status-arrow">${notifOn?"✓":"›"}</div>
+    </div>
+    <div style="font-size:.62rem;color:var(--ink4);font-family:'JetBrains Mono',monospace;padding:0 4px;line-height:1.8;">
+      Les alertes du superviseur arrivent via le topic ntfy.sh ci-dessus.<br>
+      Le superviseur envoie vers ce topic quand il clique <strong>🚨 Alerter</strong>.
+    </div>`;
+}
+
+// ─── MODAL ───
 function openModal(id){
-  const d=D.find(x=>x.id===id);if(!d)return;
-  modalDossier=d;modalStatus="cloture";
-  document.getElementById("modalTitle").textContent="Cloturer dossier";
-  document.getElementById("modalSub").textContent=`${d.id} - ${d.tech} - ${d.ville}`;
+  const d = D.find(x=>x.id===id); if(!d) return;
+  modalDossier=d; modalStatus="cloture";
+  document.getElementById("modalSub").textContent=`0${d.id} · ${d.tech} · ${d.ville}`;
   document.getElementById("modalNote").value="";
   document.querySelectorAll(".msbtn").forEach(b=>b.classList.remove("on"));
   document.querySelector(".msbtn.cloture").classList.add("on");
   document.getElementById("overlay").classList.add("open");
 }
-function closeModal(){document.getElementById("overlay").classList.remove("open");modalDossier=null;}
-function selStatus(s,btn){modalStatus=s;document.querySelectorAll(".msbtn").forEach(b=>b.classList.remove("on"));btn.classList.add("on");}
+function closeModal(){ document.getElementById("overlay").classList.remove("open"); modalDossier=null; }
+function selStatus(s,btn){ modalStatus=s; document.querySelectorAll(".msbtn").forEach(b=>b.classList.remove("on")); btn.classList.add("on"); }
 function confirmCloture(){
-  if(!modalDossier)return;
-  const note=document.getElementById("modalNote").value.trim();
-  const labels={cloture:"Cloture DEF",rdv:"RDV pris",contact:"Contacte"};
-  const now=new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
-  clotures[modalDossier.id]={status:labels[modalStatus],who:currentUser||"Consul",at:now,note};
-  saveClotures();closeModal();
-  toast(`✓ ${labels[modalStatus]} - ${modalDossier.id}`,"t-green");
+  if(!modalDossier) return;
+  const labels={cloture:"Clôture DEF",rdv:"RDV pris",contact:"Contacté"};
+  const note = document.getElementById("modalNote").value.trim();
+  clotures[modalDossier.id]={status:labels[modalStatus],who:currentUser||"Consul",at:new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}),note};
+  saveClotures(); closeModal();
+  toast(`✓ ${labels[modalStatus]} — ${modalDossier.id}`, "t-green");
   updateApp();
 }
 
-// ── TABS ──
+// ─── TABS ───
 function goTab(id,btn){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));
   document.getElementById("s-"+id).classList.add("on");
@@ -758,235 +823,162 @@ function goTab(id,btn){
   btn.classList.add("on");
 }
 
-// ── NOTIFICATIONS ──
-function toggleNotif(){
-  if(Notification.permission==="granted"){toast("Notifications deja activees","t-green");}
+// ─── NOTIFICATIONS ───
+function toggleNotifBtn(){
+  if(Notification.permission==="granted"){ toast("✅ Notifications déjà activées","t-green"); }
   else requestNotif();
 }
 async function requestNotif(){
-  if(!("Notification" in window)){toast("Notifications non supportees","t-red");return;}
-  const perm=await Notification.requestPermission();
-  if(perm==="granted"){
+  if(!("Notification" in window)){ toast("Notifications non supportées","t-red"); return; }
+  const p = await Notification.requestPermission();
+  if(p==="granted"){
     document.getElementById("notifBtn").classList.add("active");
     document.getElementById("notifBanner").classList.remove("show");
-    toast("✓ Notifications activees !","t-green");
-    scheduleNotifs();
-  }else{toast("Notifications refusees","t-red");}
-}
-function scheduleNotifs(){
-  const user=currentUser;
-  const myDoss=user?D.filter(d=>d.tech&&d.tech.toUpperCase()===user.toUpperCase()):D;
-  myDoss.forEach(d=>{
-    const mins=(d.percution-new Date())/60000;
-    if(mins>0&&mins<=130&&Notification.permission==="granted"){
-      const delay=Math.max(0,(mins-120)*60000);
-      setTimeout(()=>{
-        if(st(d.percution)!=="done"){
-          new Notification("RetsAlerte - Percution dans 2h",{
-            body:`Dossier ${d.id} - ${d.ville} - ${cd(d.percution).t} restant`,
-            icon:"icon-192.png",vibrate:[200,100,200],requireInteraction:true
-          });
-        }
-      },delay);
-    }
-  });
+    toast("✅ Notifications activées !","t-green");
+    updateApp();
+  } else {
+    toast("Notifications refusées par le navigateur","t-red");
+  }
 }
 function checkAndNotify(){
-  if(Notification.permission!=="granted")return;
-  const user=currentUser;
-  const myDoss=user?D.filter(d=>d.tech&&d.tech.toUpperCase()===user.toUpperCase()):D;
-  const urg=myDoss.filter(d=>st(d.percution)==="urgent"&&!clotures[d.id]);
-  if(urg.length>0){
-    new Notification(`${urg.length} percution${urg.length>1?"s":""} imminente${urg.length>1?"s":""}`,{
-      body:urg.map(d=>`${d.id} - ${d.ville}`).join("\n"),
-      icon:"icon-192.png",requireInteraction:true,vibrate:[300,100,300,100,300]
+  if(Notification.permission!=="granted") return;
+  const myUrg = D.filter(d=>{
+    if(!currentUser) return false;
+    const t=d.tech.toUpperCase(), u=currentUser.toUpperCase();
+    return (t===u||t.includes(u)) && st(d.percution)==="urgent" && !clotures[d.id];
+  });
+  if(myUrg.length>0){
+    new Notification(`🚨 ${myUrg.length} percution${myUrg.length>1?"s":""} imminente${myUrg.length>1?"s":""}!`,{
+      body: myUrg.map(d=>`${d.id} – ${d.ville} (${cd(d.percution).t})`).join("\n"),
+      icon:"icon-192.png", requireInteraction:true, vibrate:[300,100,300,100,300]
     });
   }
 }
 
-// ── POINT 3 : Sync auto 2min + indicateur ──
-async function fetchWithProxies(url){
-  // 1. Essayer le proxy GAS (aucun CORS)
-  try{
-    const r=await fetch("https://api.allorigins.win/raw?url=https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec");
-    const t=await r.text();
-    if(t&&t.length>10&&!t.startsWith("<")&&!t.startsWith("error")){
-      dbg&&dbg("✅ GAS proxy OK");
-      return t;
-    }
-  }catch(e){}
-  const proxies=[
-    u=>"https://corsproxy.io/?"+encodeURIComponent(u),
-    u=>"https://api.allorigins.win/raw?url="+encodeURIComponent(u),
-    u=>"https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(u),
-    u=>"https://thingproxy.freeboard.io/fetch/"+u,
-    u=>u,
-    u=>"https://cors-anywhere.herokuapp.com/"+u
-  ];
-  for(const proxy of proxies){
-    try{
-      const r=await fetch(proxy(url),{signal:AbortSignal.timeout(12000)});
-      if(r.ok){
-        const t=await r.text();
-        if(t&&t.length>20&&(t.includes(",")||t.includes(";"))&&!t.startsWith("<!"))return t;
-      }
-    }catch(e){}
-  }
+// ─── CHARGEMENT DONNÉES ───
+async function fetchCsv(url){
+  // 1. Direct
+  try{ const r=await fetch(url,{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<"))return t;} }catch(e){}
+  // 2. corsproxy
+  try{ const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(url),{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<"))return t;} }catch(e){}
+  // 3. allorigins
+  try{ const r=await fetch("https://api.allorigins.win/raw?url="+encodeURIComponent(url),{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<"))return t;} }catch(e){}
   return null;
 }
-// dbg déplacé en haut du script
+
 async function loadSheets(){
-  const dot=document.getElementById("syncDot");
-  if(dot)dot.style.background="#ffcc00";
-  const url=getSheetsUrl();
-  dbg("🔗 GID="+getCurrentGid());
-  dbg("📡 URL="+url.slice(0,80)+"...");
-  let txt=await fetchWithProxies(url);
+  const dot = document.getElementById("syncDot");
+  if(dot){ dot.style.background="#ffcc00"; dot.style.boxShadow="0 0 7px #ffcc00"; dot.className="sync-dot warn"; }
+  const txt = await fetchCsv(getSheetsUrl());
   if(txt){
-    dbg("✅ CSV reçu: "+txt.length+" chars");
-    dbg("1ère ligne: "+txt.split("\n")[0].slice(0,80));
     parseAndLoad(txt);
-    if(dot){dot.style.background="var(--green)";dot.style.boxShadow="0 0 6px var(--green)";}
+    if(dot){ dot.className="sync-dot"; }
   } else {
-    dbg("❌ Échec chargement CSV — utilisation données locales");
-    if(dot){dot.style.background="var(--amber)";dot.style.boxShadow="0 0 6px var(--amber)";}
-    // Fallback sur données intégrées
-    if(RAW_FALLBACK&&RAW_FALLBACK.length>0){
-      dbg("📦 Fallback: "+RAW_FALLBACK.length+" dossiers locaux");
-      initData(RAW_FALLBACK);
-      if(currentUser||isGuest)updateApp();
-    }
-  }
-}
-function parseAndLoad(txt){
-  txt=txt.replace(/^\uFEFF/,"");
-  const lines=txt.trim().split(/\r?\n/);if(lines.length<2)return;
-  const firstLine=lines[0];
-  const sep=firstLine.includes("\t")?"\t":firstLine.includes(";")?";":",";
-  const norm=s=>s.replace(/"/g,"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-  const H=firstLine.split(sep).map(norm);
-  const ipl=H.findIndex(h=>h.includes("planifi"));
-  const itech=H.findIndex(h=>h==="nom technicien"||h.includes("nom tech")||h==="nom");
-  const iprenom=H.findIndex(h=>h==="prenom technicien"||h.includes("prenom tech")||h==="prenom");
-  const iap=H.findIndex(h=>h.includes("act")||h.includes("prod"));
-  const icp=H.findIndex(h=>h==="cp");
-  const ivil=H.findIndex(h=>h.includes("ville"));
-  // ND = colonne "nd" exacte OU colonne "n°" (index 1 dans export brut)
-  let ind=H.findIndex(h=>h==="nd");
-  if(ind<0) ind=H.findIndex(h=>h==="n°"||h==="numero");
-  const icre=H.findIndex(h=>h.includes("cree")||h.includes("creation")||h==="creee");
-  const raw=[];
-  for(let n=1;n<lines.length;n++){
-    const c=lines[n].split(sep).map(x=>x.replace(/"/g,"").trim());
-    if(c.length<3)continue;
-    const g=i=>i>=0?(c[i]||"").trim():"";
-    // ND : colonne dédiée sinon colonne 1 (N° dossier export brut)
-    const nd=(ind>=0?g(ind):g(1)).replace(/^0+/,"");
-    if(!nd||nd.length<5)continue;
-    // Tech : NOM seul ou NOM+PRENOM si deux colonnes séparées
-    let tech=g(itech).toUpperCase();
-    if(iprenom>=0&&g(iprenom)) tech=(tech+" "+g(iprenom).toUpperCase()).trim();
-    raw.push({id:nd,tech:tech||"N/A",actprod:g(iap).toUpperCase(),cp:g(icp),ville:g(ivil).toUpperCase(),date_creation:g(icre),planifiee:g(ipl),delai:48});
-  }
-  dbg("📊 Lignes parsées: "+raw.length);
-  if(raw.length>0){
-    dbg("Ex: ND="+raw[0].id+" tech="+raw[0].tech+" cree="+raw[0].date_creation);
-    dbg("User actuel: "+(currentUser||"(aucun)"));
-    const match=currentUser?raw.filter(r=>r.tech.toUpperCase().includes(currentUser.toUpperCase())):[];
-    dbg("Dossiers pour cet user: "+match.length);
-    initData(raw);if(currentUser||isGuest)updateApp();
-  } else {
-    dbg("⚠️ Aucune ligne parsée ! Vérif colonnes");
+    if(dot){ dot.className="sync-dot err"; }
+    toast("⚠ Impossible de charger les données","t-amber");
+    // Pas de fallback local pour ne pas afficher de mauvaises données
   }
 }
 
-// ── UTILS ──
+function parseAndLoad(txt){
+  txt = txt.replace(/^\uFEFF/,"");
+  const lines = txt.trim().split(/\r?\n/);
+  if(lines.length < 2) return;
+  const sep = lines[0].includes("\t")?"\t":lines[0].includes(";")?";":",";
+  const norm = s => s.replace(/"/g,"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  const H = lines[0].split(sep).map(norm);
+
+  const ipl  = H.findIndex(h=>h.includes("planifi"));
+  const itech = H.findIndex(h=>h.includes("nom technicien")||h.includes("nom tech")||h==="nom technicien"||h==="nom");
+  const iap  = H.findIndex(h=>h.includes("act")||h.includes("prod"));
+  const icp  = H.findIndex(h=>h.replace(/[^a-z]/g,"")==="cp");
+  const ivil  = H.findIndex(h=>h.includes("ville"));
+  const ind  = H.findIndex(h=>h.replace(/[^a-z]/g,"")==="nd");
+  const icre  = H.findIndex(h=>h.includes("cree")||h.includes("creation")||h.includes("creee"));
+
+  const raw = [];
+  for(let n=1;n<lines.length;n++){
+    const c = lines[n].split(sep).map(x=>x.replace(/"/g,"").trim());
+    if(c.length<3) continue;
+    const g = i => i>=0?(c[i]||"").trim():"";
+    const nd = g(ind).replace(/^0+/,"");
+    if(!nd||nd.length<5) continue;
+    raw.push({
+      id:nd,
+      tech:(g(itech)||"N/A").toUpperCase(),
+      actprod:g(iap).toUpperCase(),
+      cp:g(icp),
+      ville:g(ivil).toUpperCase(),
+      date_creation:g(icre),
+      planifiee:g(ipl),
+      delai:48
+    });
+  }
+  if(raw.length > 0){
+    // Sécurité: vérifier que les dates parsent correctement
+    const testD = raw.map(r=>{const cr=parseDate(r.date_creation);const pl=parseDate(r.planifiee);return cr?new Date(cr.getTime()+48*3600000):(pl?new Date(pl.getTime()+48*3600000):null);}).filter(Boolean);
+    const now=new Date(), e48=new Date(now.getTime()+48*3600000);
+    const active = testD.filter(p=>p>=now&&p<=e48).length;
+    // Si on a des lignes mais 0 dossiers actifs sur les 17 dossiers, suspect
+    if(raw.length > 5 && active === 0 && testD.length > 0){
+      toast("⚠ Format données inattendu – vérifiez l'onglet","t-amber");
+      return;
+    }
+    initData(raw);
+    updateApp();
+  }
+}
+
+// ─── GID ADMIN ───
+function openGidModal(){
+  document.getElementById("gidModal").style.display="flex";
+  document.getElementById("gidInput").value="";
+  document.getElementById("gidStatus").textContent="GID actuel : "+getCurrentGid();
+}
+function closeGidModal(){ document.getElementById("gidModal").style.display="none"; }
+async function saveGid(){
+  const raw = (document.getElementById("gidInput").value||"").trim();
+  if(!raw) return;
+  let gid = raw;
+  const m = raw.match(/[?&]gid=(\d+)/);
+  if(m) gid=m[1];
+  if(!/^\d+$/.test(gid)){ toast("GID invalide","t-red"); return; }
+  const btn = document.getElementById("gidSaveBtn");
+  btn.textContent="..."; btn.disabled=true;
+  const url = `${SHEETS_BASE}?gid=${gid}&single=true&output=csv`;
+  const txt = await fetchCsv(url);
+  btn.textContent="CHARGER"; btn.disabled=false;
+  if(!txt||txt.length<20){ document.getElementById("gidStatus").textContent="❌ Lien inaccessible"; document.getElementById("gidStatus").style.color="var(--red)"; return; }
+  localStorage.setItem("rgid",gid);
+  localStorage.setItem("rgidLabel","rets "+new Date().toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit"}));
+  closeGidModal();
+  toast("✅ Onglet chargé","t-green");
+  loadSheets();
+}
+
+// ─── UTILS ───
 function copyND(nd,el){
   navigator.clipboard.writeText(nd).then(()=>{
-    const o=el.textContent;el.textContent="Copie!";
-    setTimeout(()=>el.textContent=o,1400);
+    const o=el.textContent; el.textContent="✓ Copié!"; setTimeout(()=>el.textContent=o,1400);
   }).catch(()=>{
-    const t=document.createElement("textarea");t.value=nd;document.body.appendChild(t);t.select();document.execCommand("copy");document.body.removeChild(t);
-    const o=el.textContent;el.textContent="Copie!";setTimeout(()=>el.textContent=o,1400);
+    const t=document.createElement("textarea"); t.value=nd; document.body.appendChild(t); t.select(); document.execCommand("copy"); document.body.removeChild(t);
+    const o=el.textContent; el.textContent="✓ Copié!"; setTimeout(()=>el.textContent=o,1400);
   });
 }
 function toast(msg,cls=""){
   const b=document.getElementById("toasts"),el=document.createElement("div");
-  el.className="toast "+cls;el.textContent=msg;b.appendChild(el);
-  setTimeout(()=>{el.classList.add("out");setTimeout(()=>el.remove(),220);},3000);
+  el.className="toast "+cls; el.textContent=msg; b.appendChild(el);
+  setTimeout(()=>{el.classList.add("out");setTimeout(()=>el.remove(),220);},3500);
 }
 
-// ── INIT ──
-const savedAdmin=localStorage.getItem("rAdminMode");
-if(savedAdmin==="1"){
-  isAdmin=true; currentUser=null; currentUserInfo=null; isGuest=false;
-  document.addEventListener("DOMContentLoaded",()=>startApp());
-  if(document.readyState!=="loading")startApp();
-} else if(savedUser&&currentUserInfo){
-  currentUser=savedUser;isGuest=false;
-  document.addEventListener("DOMContentLoaded",()=>startApp());
-  if(document.readyState!=="loading")startApp();
-}
-
-// ── MODAL GID (admin) ──
-function openAppGidModal(){
-  document.getElementById("appGidModal").style.display="flex";
-  document.getElementById("appGidInput").value=localStorage.getItem("rgid")||localStorage.getItem("appGid")||"";
-  document.getElementById("appGidStatus").textContent="Onglet actuel : "+getCurrentGidLabel();
-}
-function closeAppGidModal(){document.getElementById("appGidModal").style.display="none";}
-async function saveAppGid(){
-  const raw=(document.getElementById("appGidInput").value||"").trim();
-  if(!raw){alert("Entrez un lien CSV ou un GID");return;}
-  let gid=raw;
-  const m=raw.match(/[?&]gid=(\d+)/);
-  if(m) gid=m[1];
-  if(!/^\d+$/.test(gid)){alert("GID invalide — doit être un nombre");return;}
-  const btn=document.getElementById("appGidSaveBtn");
-  btn.textContent="Vérification..."; btn.disabled=true;
-  const url=`${SHEETS_BASE}?gid=${gid}&single=true&output=csv`;
-  let ok=false;
-  const txt=await fetchWithProxies(url);
-  if(txt&&txt.length>20)ok=true;
-  btn.textContent="ENREGISTRER"; btn.disabled=false;
-  if(!ok){document.getElementById("appGidStatus").textContent="❌ Lien inaccessible — vérifiez la publication";document.getElementById("appGidStatus").style.color="var(--red)";return;}
-  localStorage.setItem("rgid",gid);
-  localStorage.setItem("appGid",gid);
-  const label="rets "+new Date().toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit"});
-  localStorage.setItem("rgidLabel",label);
-  localStorage.setItem("appGidLabel",label);
-  const hdrUser=document.getElementById("hdrUser");
-  if(hdrUser&&isAdmin) hdrUser.textContent="👑 Admin · "+label;
-  const hdrOnglet=document.getElementById("hdrOnglet");
-  if(hdrOnglet) hdrOnglet.textContent="📅 "+label;
-  const banner=document.getElementById("noGidBanner");
-  if(banner) banner.style.display="none";
-  closeAppGidModal();
-  await loadSheets();
-}
-
-// ── SERVICE WORKER (PWA) ──
-if('serviceWorker' in navigator){
-  window.addEventListener('load', ()=>{
-    navigator.serviceWorker.register('/retsalerte/sw.js').catch(()=>{});
-  });
+// ─── INIT ───
+const savedId = localStorage.getItem("ruser");
+const savedInfo = localStorage.getItem("ruserinfo");
+const savedAdmin = localStorage.getItem("rAdminMode");
+if(savedAdmin==="1"){ isAdmin=true; document.addEventListener("DOMContentLoaded",()=>startApp()); if(document.readyState!=="loading") startApp(); }
+else if(savedId && savedInfo){
+  try{ currentUserInfo=JSON.parse(savedInfo); currentUser=currentUserInfo.nom; isGuest=false; document.addEventListener("DOMContentLoaded",()=>startApp()); if(document.readyState!=="loading") startApp(); }catch(e){}
 }
 </script>
-
-<!-- MODAL GID ADMIN -->
-<div id="appGidModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)closeAppGidModal()">
-  <div style="background:#1e1e22;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:24px;width:100%;max-width:400px;box-shadow:0 32px 80px rgba(0,0,0,.8);">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:4px;color:#ff5500;margin-bottom:6px;">📅 ONGLET DU JOUR</div>
-    <div id="appGidStatus" style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace;margin-bottom:16px;"></div>
-    <div style="font-size:.7rem;color:rgba(255,255,255,.5);margin-bottom:8px;">Collez le lien CSV Google Sheets ou le GID seul :</div>
-    <input id="appGidInput" type="text" placeholder="https://docs.google.com/... ou 123456789"
-      style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,85,0,.3);color:#fff;border-radius:10px;padding:12px 14px;font-size:.8rem;outline:none;box-sizing:border-box;margin-bottom:14px;"
-      onkeydown="if(event.key==='Enter')saveAppGid()">
-    <div style="display:flex;gap:10px;">
-      <button id="appGidSaveBtn" onclick="saveAppGid()" style="flex:1;padding:12px;background:linear-gradient(135deg,#ff5500,#ff7722);border:none;border-radius:10px;color:#fff;font-weight:700;font-size:.8rem;cursor:pointer;">ENREGISTRER</button>
-      <button onclick="closeAppGidModal()" style="padding:12px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.6);cursor:pointer;">Annuler</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>
