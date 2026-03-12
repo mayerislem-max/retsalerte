@@ -338,8 +338,8 @@ const USERS={"435E2@LOB62":{"nom":"ALHAN","prenom":"Grynia","identifiant":"435E2
 
 const SHEETS_BASE="https://docs.google.com/spreadsheets/d/e/2PACX-1vRtxvbeKkUnyJ4CAi6kTtmQJtslPcbSsH4t8ZzUDfXcUIHFXrG3igkB5AvoyqntV8EzycO1hIDh-z4t/pub";
 // Même clé que le site superviseur → synchronisation automatique
-function getCurrentGid(){return localStorage.getItem("rgid")||localStorage.getItem("appGid")||"493970109";}
-function getCurrentGidLabel(){return localStorage.getItem("rgidLabel")||localStorage.getItem("appGidLabel")||"rets 06/03";}
+function getCurrentGid(){return localStorage.getItem("rgid")||localStorage.getItem("appGid")||"0";}
+function getCurrentGidLabel(){return localStorage.getItem("rgidLabel")||localStorage.getItem("appGidLabel")||"rets 12/03";}
 function getSheetsUrl(){return `${SHEETS_BASE}?gid=${getCurrentGid()}&single=true&output=csv`;}
 const NTFY_BASE="https://ntfy.sh/retsalerte_";
 
@@ -410,10 +410,9 @@ function startApp(){
   // Onglet label
   const hdrOnglet=document.getElementById("hdrOnglet");
   if(hdrOnglet) hdrOnglet.textContent="📅 "+getCurrentGidLabel();
-  // Banner si GID non configuré (onglet par défaut)
-  const noGid=!localStorage.getItem("rgid")&&!localStorage.getItem("appGid");
+  // Banner masqué — GID toujours configuré
   const banner=document.getElementById("noGidBanner");
-  if(banner) banner.style.display=noGid&&!isAdmin?"flex":"none";
+  if(banner) banner.style.display="none";
   // Bouton GID admin
   const gidBtn=document.getElementById("gidAppBtn");
   if(gidBtn) gidBtn.style.display=isAdmin?"flex":"none";
