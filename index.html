@@ -1012,7 +1012,7 @@ function sendWhatsApp(dossier){
 }
 
 // ─── ONGLET DU JOUR (GID) ───
-const SHEETS_BASE="https://docs.google.com/spreadsheets/d/e/2PACX-1vRtxvbeKkUnyJ4CAi6kTtmQJtslPcbSsH4t8ZzUDfXcUIHFXrG3igkB5AvoyqntV8EzycO1hIDh-z4t/pub";
+const SHEETS_BASE="https://docs.google.com/spreadsheets/d/e/2PACX-1vTp5akRIobYOz6JdfLBYIMs2K9dUZvwAdNu8-JWfmHzWKT4Srgv1-yDxM_3BB2ClXYQI9mutrRagcBD/pub";
 let currentGid=localStorage.getItem("rgid")||"493970109";
 let currentSheetsLabel=localStorage.getItem("rgidLabel")||"rets 06/03";
 function getSheetsUrl(){return `${SHEETS_BASE}?gid=${currentGid}&single=true&output=csv`;}
@@ -1071,20 +1071,38 @@ function selectProfil(type){
     document.getElementById("codeModal").classList.add("open");
     setTimeout(()=>document.getElementById("codeInput").focus(), 150);
   } else {
-    applyProfil("ca", true);
+    document.getElementById("codeInput").value = "";
+    document.getElementById("codeError").textContent = "";
+    document.getElementById("codeModal").dataset.mode = "ca";
+    document.getElementById("codeModal").classList.add("open");
+    setTimeout(()=>document.getElementById("codeInput").focus(), 150);
   }
 }
 
 function verifyCode(){
   const val = document.getElementById("codeInput").value.trim();
-  if(val === ADMIN_CODE){
-    document.getElementById("codeModal").classList.remove("open");
-    applyProfil("admin", true);
+  const mode = document.getElementById("codeModal").dataset.mode;
+  if(mode === "ca"){
+    if(val === "rets2026"){
+      document.getElementById("codeModal").classList.remove("open");
+      document.getElementById("codeModal").dataset.mode = "";
+      applyProfil("ca", true);
+    } else {
+      document.getElementById("codeError").textContent = "Code incorrect, réessayez";
+      document.getElementById("codeInput").value = "";
+      document.getElementById("codeInput").focus();
+      setTimeout(()=>document.getElementById("codeError").textContent="", 2500);
+    }
   } else {
-    document.getElementById("codeError").textContent = "Code incorrect, réessayez";
-    document.getElementById("codeInput").value = "";
-    document.getElementById("codeInput").focus();
-    setTimeout(()=>document.getElementById("codeError").textContent="", 2500);
+    if(val === ADMIN_CODE){
+      document.getElementById("codeModal").classList.remove("open");
+      applyProfil("admin", true);
+    } else {
+      document.getElementById("codeError").textContent = "Code incorrect, réessayez";
+      document.getElementById("codeInput").value = "";
+      document.getElementById("codeInput").focus();
+      setTimeout(()=>document.getElementById("codeError").textContent="", 2500);
+    }
   }
 }
 
