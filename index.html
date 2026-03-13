@@ -680,7 +680,7 @@ body.day-mode .cmeta-cree{color:var(--ink3);background:rgba(0,0,0,.04);border-co
       <div class="login-card-desc">Accès complet<br>Gestion des onglets<br>Configuration avancée</div>
     </div>
     <div class="login-card ca-card" onclick="selectProfil('ca')">
-      <div class="login-card-badge">🔐 CODE REQUIS</div>
+      <div class="login-card-badge">🔓 ACCÈS LIBRE</div>
       <div class="login-card-ico">👥</div>
       <div class="login-card-name">CA - Gestion du rets</div>
       <div class="login-card-desc">Consultation uniquement<br>Dossiers & suivi techniciens<br>Sans configuration</div>
@@ -783,8 +783,6 @@ body.day-mode .cmeta-cree{color:var(--ink3);background:rgba(0,0,0,.04);border-co
       </div>
       <div class="sec-hd"><div class="sec-ttl">Percutions · 48 prochaines heures</div><div class="sec-pill" id="c48h">0 dossiers</div></div>
       <div class="card-list" id="l48"><div class="skel skel-card"></div><div class="skel skel-card"></div><div class="skel skel-card" style="opacity:.5"></div></div>
-      <div class="sec-hd" style="margin-top:20px"><div class="sec-ttl" style="opacity:.6">⬛ Dossiers percutés aujourd'hui</div><div class="sec-pill" id="cDone" style="background:rgba(255,255,255,.06)">0</div></div>
-      <div class="card-list" id="lDone"></div>
       <div class="syncbar"><div class="stxt" id="stxt">Chargement...</div><button class="btn-ref" onclick="doRef(this)"><span class="sp">↻</span> Sheets</button></div>
     </div>
     <!-- DOSSIERS -->
@@ -880,7 +878,6 @@ body.day-mode .cmeta-cree{color:var(--ink3);background:rgba(0,0,0,.04);border-co
           <canvas id="cHistoTypes" height="200"></canvas>
         </div>
       </div>
-      </div><!-- /a-historique -->
 
 
     <!-- TECHNICIENS (admin only) -->
@@ -989,7 +986,7 @@ body.day-mode .cmeta-cree{color:var(--ink3);background:rgba(0,0,0,.04);border-co
 </div>
 
 <script>
-const RAW=[{"id":"492526823","tech":"HAFIDHOU","actprod":"PLIFTH","cp":"05230","ville":"LA BATIE-NEUVE","date_creation":"08/03/2026 18:25","planifiee":"09/03/2026 16:00","delai":48},{"id":"490438754","tech":"LA MARCA","actprod":"PMSFTH","cp":"13200","ville":"ARLES","date_creation":"08/03/2026 16:55","planifiee":"10/03/2026 09:15","delai":48},{"id":"490470648","tech":"LA MARCA","actprod":"PMSFTH","cp":"13200","ville":"ARLES","date_creation":"08/03/2026 12:03","planifiee":"10/03/2026 13:15","delai":48},{"id":"491272533","tech":"ZOUBERT","actprod":"PMSFTH","cp":"13008","ville":"MARSEILLE 08","date_creation":"08/03/2026 18:30","planifiee":"10/03/2026 13:00","delai":48},{"id":"442271011","tech":"KHEDIM","actprod":"PLIFTH","cp":"13790","ville":"ROUSSET","date_creation":"08/03/2026 11:50","planifiee":"10/03/2026 10:45","delai":48},{"id":"491885617","tech":"ABS FTTH","actprod":"PMSFTH","cp":"13011","ville":"MARSEILLE 11","date_creation":"08/03/2026 09:34","planifiee":"10/03/2026 20:00","delai":48},{"id":"442761368","tech":"CHERIKI","actprod":"ESCFTH","cp":"13130","ville":"BERRE-L'ETANG","date_creation":"08/03/2026 17:33","planifiee":"10/03/2026 08:00","delai":48},{"id":"492462911","tech":"BA","actprod":"PLIFTH","cp":"05100","ville":"BRIANCON","date_creation":"08/03/2026 18:50","planifiee":"10/03/2026 12:00","delai":48},{"id":"442588889","tech":"ALHAN","actprod":"PMSFTH","cp":"13610","ville":"LE PUY-STE-REPARADE","date_creation":"08/03/2026 12:32","planifiee":"10/03/2026 08:45","delai":48},{"id":"442835508","tech":"MOKLI","actprod":"PMSFTH","cp":"13600","ville":"CEYRESTE","date_creation":"08/03/2026 18:32","planifiee":"10/03/2026 11:00","delai":48},{"id":"442090824","tech":"RODIEL","actprod":"PMSFTH","cp":"13110","ville":"PORT-DE-BOUC","date_creation":"08/03/2026 11:06","planifiee":"10/03/2026 08:00","delai":48},{"id":"491834224","tech":"CHAIEB","actprod":"PMSFTH","cp":"13016","ville":"MARSEILLE 16","date_creation":"08/03/2026 10:32","planifiee":"10/03/2026 13:00","delai":48},{"id":"442863058","tech":"BELLINI","actprod":"PMSFTH","cp":"13800","ville":"ISTRES","date_creation":"08/03/2026 12:57","planifiee":"10/03/2026 15:00","delai":48},{"id":"442189871","tech":"BEN MEKKI","actprod":"PLIFTH","cp":"13400","ville":"AUBAGNE","date_creation":"08/03/2026 18:35","planifiee":"10/03/2026 12:00","delai":48},{"id":"490507709","tech":"CA GTK LOT 1","actprod":"PMSFTH","cp":"13129","ville":"ARLES","date_creation":"08/03/2026 18:28","planifiee":"10/03/2026 09:30","delai":48},{"id":"490583911","tech":"ALHAN","actprod":"PLIFTH","cp":"13560","ville":"SENAS","date_creation":"08/03/2026 11:50","planifiee":"11/03/2026 08:15","delai":48},{"id":"491916450","tech":"BEN DHAOU","actprod":"PMSFTH","cp":"13012","ville":"MARSEILLE 12","date_creation":"08/03/2026 18:34","planifiee":"10/03/2026 14:00","delai":48}];
+const RAW=[{"id": "491263080", "tech": "HAMMACHE", "actprod": "PMSFTH", "cp": "13008", "ville": "MARSEILLE 08", "date_creation": "04/03/2026 19:36", "planifiee": "06/03/2026 13:00", "delai": 48}, {"id": "442315390", "tech": "RODIEL", "actprod": "PMSFTH", "cp": "13110", "ville": "PORT-DE-BOUC", "date_creation": "04/03/2026 19:18", "planifiee": "06/03/2026 13:15", "delai": 48}, {"id": "442430983", "tech": "SAIDALI", "actprod": "PMRFTH", "cp": "13620", "ville": "CARRY LE ROUET", "date_creation": "04/03/2026 12:05", "planifiee": "06/03/2026 08:35", "delai": 48}, {"id": "492217293", "tech": "PRAT", "actprod": "PMSFTH", "cp": "05200", "ville": "EMBRUN", "date_creation": "04/03/2026 10:47", "planifiee": "11/03/2026 13:00", "delai": 48}, {"id": "492745515", "tech": "N/A", "actprod": "ESCFTH", "cp": "04800", "ville": "GRÃOUX-LES-BAINS", "date_creation": "04/03/2026 10:10", "planifiee": "07/03/2026 13:30", "delai": 48}, {"id": "490453857", "tech": "BELLINI", "actprod": "PMSFTH", "cp": "13800", "ville": "ISTRES", "date_creation": "04/03/2026 19:01", "planifiee": "06/03/2026 15:15", "delai": 48}, {"id": "492797453", "tech": "ZAKARIA", "actprod": "PLIFTH", "cp": "04280", "ville": "CERESTE EN LUBERON", "date_creation": "04/03/2026 16:50", "planifiee": "06/03/2026 15:30", "delai": 48}, {"id": "492516597", "tech": "CHALBI", "actprod": "PMRFTH", "cp": "05500", "ville": "ST BONNET EN CHAMPSAUR", "date_creation": "04/03/2026 19:45", "planifiee": "06/03/2026 10:00", "delai": 48}, {"id": "490732754", "tech": "ABS FTTH", "actprod": "PMSFTH", "cp": "13140", "ville": "MIRAMAS", "date_creation": "04/03/2026 13:26", "planifiee": "06/03/2026 11:00", "delai": 48}, {"id": "442448353", "tech": "RAGOT", "actprod": "PLIFTH", "cp": "13730", "ville": "ST-VICTORET", "date_creation": "04/03/2026 18:05", "planifiee": "06/03/2026 10:00", "delai": 48}, {"id": "490913516", "tech": "BELLINI", "actprod": "PMSFTH", "cp": "13520", "ville": "MAUSSANE-LES-ALPILLES", "date_creation": "04/03/2026 13:50", "planifiee": "06/03/2026 09:45", "delai": 48}, {"id": "491881207", "tech": "CHAABIHI", "actprod": "PMSFTH", "cp": "13011", "ville": "MARSEILLE 11", "date_creation": "04/03/2026 21:35", "planifiee": "06/03/2026 10:00", "delai": 48}, {"id": "491022312", "tech": "CHAIEB", "actprod": "PLIFTH", "cp": "13014", "ville": "MARSEILLE 14", "date_creation": "04/03/2026 13:55", "planifiee": "06/03/2026 09:30", "delai": 48}, {"id": "490456420", "tech": "BALKAYA", "actprod": "PMSFTH", "cp": "13800", "ville": "ISTRES", "date_creation": "04/03/2026 11:11", "planifiee": "06/03/2026 11:45", "delai": 48}, {"id": "442883091", "tech": "RAGOT", "actprod": "PLIFTH", "cp": "13700", "ville": "MARIGNANE", "date_creation": "04/03/2026 12:20", "planifiee": "06/03/2026 14:00", "delai": 48}, {"id": "442075438", "tech": "TABOUCHI", "actprod": "PMRFTH", "cp": "13700", "ville": "MARIGNANE", "date_creation": "04/03/2026 20:19", "planifiee": "06/03/2026 14:20", "delai": 48}, {"id": "442927793", "tech": "ITRISSO", "actprod": "PLIFTH", "cp": "13290", "ville": "AIX-EN-PROVENCE", "date_creation": "04/03/2026 15:05", "planifiee": "06/03/2026 09:15", "delai": 48}, {"id": "490980698", "tech": "LA MARCA", "actprod": "PMSFTH", "cp": "13200", "ville": "ARLES", "date_creation": "04/03/2026 08:44", "planifiee": "06/03/2026 09:15", "delai": 48}, {"id": "490530574", "tech": "BALKAYA", "actprod": "PMSFTH", "cp": "13140", "ville": "MIRAMAS", "date_creation": "04/03/2026 11:51", "planifiee": "06/03/2026 12:00", "delai": 48}, {"id": "491499726", "tech": "BEN DHAOU", "actprod": "PMRFTH", "cp": "13006", "ville": "MARSEILLE 6EME", "date_creation": "04/03/2026 11:49", "planifiee": "06/03/2026 13:30", "delai": 48}, {"id": "442012428", "tech": "MOKLI", "actprod": "PMSFTH", "cp": "13600", "ville": "LA CIOTAT", "date_creation": "04/03/2026 13:26", "planifiee": "06/03/2026 09:30", "delai": 48}, {"id": "492538208", "tech": "CHALBI", "actprod": "ESCFTH", "cp": "05170", "ville": "ORCIÃRES", "date_creation": "04/03/2026 14:21", "planifiee": "06/03/2026 13:15", "delai": 48}, {"id": "442551568", "tech": "SAIDALI", "actprod": "ESCFTH", "cp": "13300", "ville": "SALON-DE-PROVENCE", "date_creation": "04/03/2026 08:39", "planifiee": "06/03/2026 15:00", "delai": 48}, {"id": "442818840", "tech": "IBOUROI", "actprod": "PMSFTH", "cp": "13127", "ville": "VITROLLES", "date_creation": "04/03/2026 20:12", "planifiee": "06/03/2026 13:30", "delai": 48}, {"id": "492671568", "tech": "CHALBI", "actprod": "PMSFTH", "cp": "05170", "ville": "ORCIÃRES", "date_creation": "04/03/2026 13:55", "planifiee": "06/03/2026 13:15", "delai": 48}, {"id": "442233696", "tech": "FETTACHE", "actprod": "PMSFTH", "cp": "13100", "ville": "AIX-EN-PROVENCE", "date_creation": "04/03/2026 18:30", "planifiee": "06/03/2026 13:15", "delai": 48}, {"id": "491040116", "tech": "CAMARA", "actprod": "PMSFTH", "cp": "13006", "ville": "MARSEILLE 06", "date_creation": "04/03/2026 19:17", "planifiee": "06/03/2026 13:00", "delai": 48}, {"id": "442543081", "tech": "KARTLI", "actprod": "PMSFTH", "cp": "13320", "ville": "BOUC-BEL-AIR", "date_creation": "04/03/2026 15:19", "planifiee": "06/03/2026 13:00", "delai": 48}, {"id": "491440384", "tech": "BEN YAHIA", "actprod": "PMSFTH", "cp": "13011", "ville": "MARSEILLE 11", "date_creation": "04/03/2026 08:03", "planifiee": "06/03/2026 13:00", "delai": 48}, {"id": "442063638", "tech": "RAGOT", "actprod": "PMSFTH", "cp": "13180", "ville": "GIGNAC-LA-NERTHE", "date_creation": "04/03/2026 19:49", "planifiee": "06/03/2026 12:30", "delai": 48}, {"id": "442292339", "tech": "ALHAN", "actprod": "PMSFTH", "cp": "13640", "ville": "LA ROQUE-D ANTHÃRON", "date_creation": "04/03/2026 19:44", "planifiee": "06/03/2026 11:45", "delai": 48}, {"id": "442673647", "tech": "ITRISSO", "actprod": "PMSFTH", "cp": "13100", "ville": "LE THOLONET", "date_creation": "04/03/2026 19:21", "planifiee": "06/03/2026 11:30", "delai": 48}, {"id": "442302265", "tech": "IBOUROI", "actprod": "PMSFTH", "cp": "13127", "ville": "VITROLLES", "date_creation": "04/03/2026 11:07", "planifiee": "06/03/2026 10:45", "delai": 48}, {"id": "490542389", "tech": "LA MARCA", "actprod": "PMSFTH", "cp": "13200", "ville": "ARLES", "date_creation": "04/03/2026 18:05", "planifiee": "06/03/2026 10:00", "delai": 48}, {"id": "490520538", "tech": "LA MARCA", "actprod": "PMSFTH", "cp": "13200", "ville": "ARLES", "date_creation": "04/03/2026 09:58", "planifiee": "06/03/2026 09:15", "delai": 48}, {"id": "491226082", "tech": "HAMMACHE", "actprod": "PMSFTH", "cp": "13008", "ville": "MARSEILLE 08", "date_creation": "04/03/2026 15:49", "planifiee": "06/03/2026 09:00", "delai": 48}, {"id": "490584561", "tech": "BALKAYA", "actprod": "PLIFTH", "cp": "13140", "ville": "MIRAMAS", "date_creation": "04/03/2026 11:20", "planifiee": "06/03/2026 08:00", "delai": 48}, {"id": "442771042", "tech": "TABOUCHI", "actprod": "PLIFTH", "cp": "13220", "ville": "CHÃ¢TEAUNEUF-LES-MARTIGUES", "date_creation": "04/03/2026 20:50", "planifiee": "06/03/2026 08:45", "delai": 48}, {"id": "442739891", "tech": "MOKLI", "actprod": "PLIFTH", "cp": "13600", "ville": "LA CIOTAT", "date_creation": "04/03/2026 21:20", "planifiee": "06/03/2026 13:00", "delai": 48}, {"id": "442887295", "tech": "DANABACHE", "actprod": "ESCFTH", "cp": "13270", "ville": "FOS-SUR-MER", "date_creation": "04/03/2026 16:36", "planifiee": "06/03/2026 08:00", "delai": 48}, {"id": "442013944", "tech": "YEKKEN", "actprod": "PMSFTH", "cp": "13400", "ville": "AUBAGNE", "date_creation": "04/03/2026 21:33", "planifiee": "06/03/2026 11:00", "delai": 48}, {"id": "490972240", "tech": "BELLINI", "actprod": "PMSFTH", "cp": "13520", "ville": "MAUSSANE-LES-ALPILLES", "date_creation": "04/03/2026 08:26", "planifiee": "06/03/2026 09:00", "delai": 48}];
 const TECHS={"KARTLI": "+33699828136", "LAZLI": "+33762959545", "MOKLI": "+33781809746", "MZIOI": "+33767095082", "SAIDALI": "+33768919860", "CHAABIHI": "+33629673044", "DALI": "+33766500402", "BEN YAHIA": "+33761626860", "FETTACHE": "+33629158419", "ITRISSO": "+33610530858", "KEM": "+33621122679", "MBECHEZI": "+33762678390", "RAGOT": "+33763906781", "TABOUCHI": "+33749037076", "BEN DHAOU": "+33749445085", "D'AILLO": "+33699971533", "HAMMACHE": "+33619071487", "NGUYEN": "+33625606288", "SAIDOUN": "+33783356609", "BACHIR-BEY": "+33773003778", "BELLINI": "+33601361024", "BETTAYEB": "+33767503748", "CHERIFI": "+33667613479", "EL BOUROUMI": "+33642992032", "EL HAMMAMI": "+33658752882", "BALKAYA": "+33656831864", "KAMIL": "+33759114282", "CHAIEB": "+33780435951", "LA MARCA": "+33627057055", "BENMANSOUR": "+33629612007", "EL MJIDI": "+33784054812", "HAJJEM": "+33638787255", "BENTOUNES": "+33676345697", "BOUCHOUCHA": "+33752604464", "CARUANA": "+33665551428", "CHADLI": "+33775110419", "ESSAIH": "+33663195160", "GRIGOLETTO": "+33663292526", "HOUAIJ BOUHLEL": "+33682430138", "KHALIL": "+33634922811", "KLAI": "+33629903812", "LEDENON": "+33646261578", "MICHEL": "+33699869344", "MOKHTARI": "+33607864454", "MOUKAMBI": "+33609066681", "OSMANI": "+33665509309", "SDIRI": "+33627389880", "TIKELLALINE": "+33660705855", "YOUSSOUF": "+33782246566", "ZOUAGHI": "+33665029115", "MALEN": "+33618246357", "BRUNET": "+33608816917", "COUTINHO": "+33617507345", "RICARD": "+33671308767", "SAMUEL": "+33661593251", "ABOUDOU": "+33626754058", "CRUDU THOMAS": "+33778212914", "EL DEANE": "+33777800230", "KANTE": "+33750124020", "LAUGIER": "+33626754031", "MAUTONE": "+33626754042", "MESTARI": "+33621467893", "RAFIK": "+33624749068", "FUSTER": "+33643408611", "SAHLI": "+33769928549", "ARFAOUI": "+33679427511", "BOUGOURGOUR": "+33695015584", "CAMARA": "+33623877941", "CHOLET": "+33627803709", "HALIMI": "+33778544224", "PIRAS": "+33671722132", "PRAT": "+33610861118", "RICHARD": "+33682297003", "ROUSSELLE": "+33665406154", "SLITI": "+33601899087", "TALBI": "+33652040400", "WENGER": "+33698743179", "ZURAB CHELBI": "+33685221192", "ABIDI": "+33628407741", "AJGOU": "+33666174294", "AUDIFRET": "+33626576578", "BELHAOUES": "+33660076798", "BENDIDA MAHIEDDINE": "+33767517360", "BOUACHIR": "+33783164668", "BUISSON": "+33664780931", "CHIALI": "+33625428514", "FERRARINI": "+33786820278", "HLALI": "+33625752042", "JEAN": "+33633723161", "KOHI": "+33764627847", "PACTHOD": "+33629704442", "RAHAL": "+33764200852", "RIFAI": "+33762655271", "ZENDJEBIL": "+33650748613", "AMR": "+33763641646", "BAH": "+33660536442", "BALIL": "+33695164201", "BERRAHMA": "+33646724443", "BOUASRIA": "+33656856429", "BRAHIMI": "+33652049130", "CHNIT": "+33751103528", "CHNIT MOUKHLIS": "+33751231395", "ELFELLAH": "+33753746484", "EL OUAFI": "+33686281907", "IALLATANE": "+33745820281", "KMIECIAK": "+33786359297", "LABARRE": "+33782278000", "LATRECHE": "+33610973692", "MAHDADI": "+33672407234", "MORALES": "+3368764752", "MUNERATTO": "+33620000947", "OULHACI": "+33669947868", "ZAKARIA": "+33641416447", "CLAVERIE": "+33679998918", "BELKACEM": "+33766277866", "KEFI": "+33660246122", "LEKAJ": "+33667498709", "MOHAMED": "+33780220346", "ABDELHAKIM": "+33745072373", "CHERKAOUI": "+33622461987", "COSTA": "+33659506961", "DARBAL": "+33674542660", "DELLA VEDOVA": "+33677151699", "GHEZIL": "+33680947213", "HOUACINE": "+33749287039", "LOUKNANE": "+33773886151", "RODIEL": "+33695705500", "SANCHEZ": "+33666308165", "SEDIRA": "+33628668113", "SI ABDALLAH": "+33788442410", "SOBIHI": "+33672962371", "TAFA": "+33658120810", "ZOUINE": "+33651148761", "BARRY": "+33636111996", "IBOUROI": "+33665618306", "CISS": "+33771899546", "DIABY": "+33771844693", "DIRA": "+33771719722", "HOUSNI": "+33750519800", "MARHUENDA": "+33629762875", "OUARI": "+33695086009", "SERPI": "+33625111469", "SULAIMON": "+33636118350", "VIAN": "+33670264984", "XIMENIS": "+33629762832", "ABBES": "+33744898215", "ABDALLAH": "+33614317251", "AKRIMI": "+33760005021", "CHARMAT": "+33785526413", "DRID": "+33781354473", "EL ZANT": "+33603927898", "GHILAS": "+33699186020", "GUISSE": "+33632205165", "HAMADA": "+33751378108", "HAMDI": "+33783551614", "HARIKI": "+33660253681", "KHELIL": "+33673975753", "KIROUANI": "+33616313598", "MEDHI": "+33695703249", "SALHI": "+33660691174", "SELATNI": "+33766227215", "SIDI AMAR": "+33641433444", "YOUSSEF": "+33758646303", "ZAITER": "+33666598198", "ZOUBERT": "+33755666343", "BELKESSAM": "+33755335447", "CHAIB": "+33768778456", "DADI": "+33695804816", "EL BOUANANI": "+33665439495", "GHANEM": "+33768511798", "HELLAL": "+33758497739", "MGARRECH": "+33625879278", "SOUFIANI": "+33771371978", "ABDELLI": "+33783124345", "BA": "+33678547595", "BEMMOUSSAT": "+33672346804", "DEBARD": "+33641587911", "DIARRA": "+33602344058", "DRA": "+33751050164", "DRAHE": "+33652858320", "HAFIDHOU": "+33771932964", "MARCHAND": "+33782576579", "OZKAN": "+33663202087", "DARI": "+33617832200", "BOUTERFAS": "+33652892591", "CAPRINI": "+33664410256", "DEPIEDS": "+33621218822", "GALLO": "+33667590790", "THOMASSIN": "+33614164886"};
 // SHEETS URL gere par getSheetsUrl() / currentGid ci-dessus
 
@@ -1015,18 +1012,9 @@ function sendWhatsApp(dossier){
 }
 
 // ─── ONGLET DU JOUR (GID) ───
-const SHEETS_BASE="https://docs.google.com/spreadsheets/d/e/2PACX-1vTp5akRIobYOz6JdfLBYIMs2K9dUZvwAdNu8-JWfmHzWKT4Srgv1-yDxM_3BB2ClXYQI9mutrRagcBD/pub";
-let currentGid=localStorage.getItem("rgid")||"901370948";
-let currentSheetsLabel=localStorage.getItem("rgidLabel")||"rets";
-// Indicateur visuel si gid par defaut (non configure)
-function checkGidStatus(){
-  const isDefault = !localStorage.getItem("rgid") || localStorage.getItem("rgid")==="901370948";
-  const upEl=document.getElementById("lastUpdate");
-  if(isDefault && upEl && !upEl.textContent.includes("Sync")){
-    upEl.textContent="Config requise";
-    upEl.className="tb-update warn";
-  }
-}
+const SHEETS_BASE="https://docs.google.com/spreadsheets/d/e/2PACX-1vRtxvbeKkUnyJ4CAi6kTtmQJtslPcbSsH4t8ZzUDfXcUIHFXrG3igkB5AvoyqntV8EzycO1hIDh-z4t/pub";
+let currentGid=localStorage.getItem("rgid")||"493970109";
+let currentSheetsLabel=localStorage.getItem("rgidLabel")||"rets 06/03";
 function getSheetsUrl(){return `${SHEETS_BASE}?gid=${currentGid}&single=true&output=csv`;}
 
 function openGidModal(){
@@ -1058,31 +1046,16 @@ function applyGid(){
   localStorage.setItem("rgidLabel",label);
   document.getElementById("tbPage").textContent="Onglet : "+label;
   closeGidModal();
-  toast("\u2705 Onglet mis \u00e0 jour \u2014 chargement...","t-green");
-  // \u2500\u2500 SYNC CONFIG vers tous les appareils techniciens \u2500\u2500
-  pushConfigToTechs(newGid, label);
+  toast("✅ Onglet mis à jour — chargement...","t-green");
   doRef(document.getElementById("btnRef"));
-}
-
-// Pousse le nouveau GID via ntfy topic global retsalerte_CONFIG
-async function pushConfigToTechs(gid, label){
-  try{
-    await fetch("https://ntfy.sh/retsalerte_CONFIG",{
-      method:"POST",
-      headers:{"Title":"CONFIG_UPDATE","Priority":"low","Tags":"gear"},
-      body:JSON.stringify({gid, label})
-    });
-    toast("\ud83d\udce1 Config sync\u00e9e vers les techniciens","t-green");
-  }catch(e){console.warn("Sync config:",e);}
 }
 
 // ─── PROFIL SYSTEM ───
 const ADMIN_CODE = "adminrets";
-const CA_CODE = "Rets2026";
 let currentProfil = null; // 'admin' | 'ca'
 
 function initProfil(){
-  const saved = localStorage.getItem("rProfil");
+  const saved = sessionStorage.getItem("rProfil");
   if(saved === "admin" || saved === "ca"){
     applyProfil(saved, false);
   } else {
@@ -1095,36 +1068,20 @@ function selectProfil(type){
   if(type === "admin"){
     document.getElementById("codeInput").value = "";
     document.getElementById("codeError").textContent = "";
-    document.getElementById("codeModal").dataset.profilType = "admin";
-    document.getElementById("codeModal").querySelector(".code-box-title").textContent = "\ud83d\udd10 Acc\u00e8s Mayer";
-    document.getElementById("codeModal").querySelector(".code-box-sub").textContent = "Entrez votre code d'acc\u00e8s";
     document.getElementById("codeModal").classList.add("open");
     setTimeout(()=>document.getElementById("codeInput").focus(), 150);
   } else {
-    // CA aussi necessite un code
-    document.getElementById("codeInput").value = "";
-    document.getElementById("codeError").textContent = "";
-    document.getElementById("codeModal").dataset.profilType = "ca";
-    document.getElementById("codeModal").querySelector(".code-box-title").textContent = "Acces CA";
-    document.getElementById("codeModal").querySelector(".code-box-sub").textContent = "Entrez le code d acces CA";
-    document.getElementById("codeModal").classList.add("open");
-    setTimeout(()=>document.getElementById("codeInput").focus(), 150);
+    applyProfil("ca", true);
   }
 }
 
 function verifyCode(){
   const val = document.getElementById("codeInput").value.trim();
-  const profilType = document.getElementById("codeModal").dataset.profilType || "admin";
-  const expectedCode = profilType === "ca" ? CA_CODE : ADMIN_CODE;
-  if(val === expectedCode){
+  if(val === ADMIN_CODE){
     document.getElementById("codeModal").classList.remove("open");
-    // Reset modal title for next use
-    document.getElementById("codeModal").querySelector(".code-box-title").textContent = "Acces Mayer";
-    document.getElementById("codeModal").querySelector(".code-box-sub").textContent = "Entrez votre code d acces";
-    document.getElementById("codeModal").dataset.profilType = "admin";
-    applyProfil(profilType, true);
+    applyProfil("admin", true);
   } else {
-    document.getElementById("codeError").textContent = "Code incorrect, reessayez";
+    document.getElementById("codeError").textContent = "Code incorrect, réessayez";
     document.getElementById("codeInput").value = "";
     document.getElementById("codeInput").focus();
     setTimeout(()=>document.getElementById("codeError").textContent="", 2500);
@@ -1137,7 +1094,7 @@ function closeCodeModal(){
 
 function applyProfil(type, save){
   currentProfil = type;
-  if(save) localStorage.setItem("rProfil", type);
+  if(save) sessionStorage.setItem("rProfil", type);
   const ls = document.getElementById("loginScreen");
   ls.style.transition = "opacity .3s";
   ls.style.opacity = "0";
@@ -1161,7 +1118,7 @@ function applyProfil(type, save){
 
 function logoutProfil(){
   if(!confirm("Changer de profil ?")) return;
-  localStorage.removeItem("rProfil");
+  sessionStorage.removeItem("rProfil");
   currentProfil = null;
   document.body.classList.remove("is-admin", "is-ca");
   const ls = document.getElementById("loginScreen");
@@ -1172,7 +1129,6 @@ function logoutProfil(){
 }
 
 // ─── STORAGE ───
-let soundOn = localStorage.getItem("rSound") !== "off";
 let D=[],fil="tous",sortCol="percution",sortDir=1,popD=null;
 let contacts=JSON.parse(localStorage.getItem("rcontacts")||"{}");
 let sentAlerts=JSON.parse(localStorage.getItem("rsentAlerts")||"{}");
@@ -1198,19 +1154,22 @@ async function sendAlert(){
   if(!msg){toast("Entrez un message","t-amber");return;}
   const tech=alertDossier.tech.toUpperCase().replace(/\s/g,"_").replace(/[^A-Z0-9_]/g,"");
   const topic=`retsalerte_${tech}`;
-  const title=`Alerte Superviseur — 0${alertDossier.id}`;
+  // Title sans accents ni caractères spéciaux (ISO-8859-1 requis par ntfy)
+  const titleRaw=`Alerte Superviseur - 0${alertDossier.id}`;
+  const title=titleRaw.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^\x00-\x7F]/g,"");
+  // Body sans accents pour compatibilité maximale
+  const bodyClean=msg.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^\x00-\x7F]/g,"");
   const btn=document.querySelector(".alert-send-btn");
   btn.textContent="Envoi en cours...";btn.disabled=true;
   try{
     const r=await fetch(`https://ntfy.sh/${topic}`,{
       method:"POST",
-      headers:{"Title":title,"Priority":"urgent","Tags":"rotating_light"},
-      body:msg
+      headers:{"Title":title,"Priority":"urgent","Tags":"rotating_light","Content-Type":"text/plain; charset=utf-8"},
+      body:bodyClean
     });
     if(r.ok||r.status===200){
       sentAlerts[alertDossier.id]={at:new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}),msg};
       saveSentAlerts();
-      // Enregistrer dans l'historique
       recordAlert(alertDossier, msg);
       toast(`✓ Alerte envoyee a ${alertDossier.tech}`,"t-green");
       closeAlertModal();
@@ -1225,24 +1184,13 @@ async function sendAlert(){
 // ─── PENDING CONTACT ACTION ───
 let pendingContactId=null,pendingContactStatus=null;
 
-function parseDate(s){
-  if(!s)return null;
-  s=String(s).trim();
-  // Format DD/MM/YYYY HH:MM ou DD-MM-YYYY
-  let m=s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
-  if(m)return new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0));
-  // Format YYYY-MM-DD
-  m=s.match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);
-  if(m)return new Date(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0));
-  // Timestamp JS
-  const d=new Date(s);
-  return isNaN(d)?null:d;
-}
-function initData(raw){D=raw.map(r=>{const pl=parseDate(r.planifiee);const cr=parseDate(r.date_creation);let percution;if(cr){percution=new Date(cr.getTime()+(r.delai||48)*3600000);}else if(pl){percution=new Date(pl.getTime()+(r.delai||48)*3600000);}else{percution=new Date(Date.now()+48*3600000);}return{...r,created:cr,percution};});}
+function parseDate(s){if(!s)return null;const m=s.match(/^(\d{2})[\/-](\d{2})[\/-](\d{4})(?:\s+(\d{2}):(\d{2}))?$/);return m?new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0)):null;}
+function initData(raw){D=raw.map(r=>{const pl=parseDate(r.planifiee);const cr=parseDate(r.date_creation);return{...r,created:cr,percution:pl||null};}).filter(d=>d.percution);}
 
 // ─── CLOCK ───
 setInterval(()=>document.getElementById("clk").textContent=new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit",second:"2-digit"}),1000);
 setInterval(()=>{updK();rAcc();if(document.getElementById("v-dossiers").classList.contains("on"))rDos();},2*60*1000);
+setInterval(()=>doRef(document.getElementById("btnRef")),2*60*1000);
 
 // ─── NAV ───
 const PAGES={accueil:"Percutions 48 prochaines heures",dossiers:"Tous les dossiers",analyse:"Statistiques & Analyse"};
@@ -1394,7 +1342,6 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"){closePopup();closeC
 function rAcc(){
   const now=new Date(),e48=new Date(now.getTime()+48*3600000);
   const up=D.filter(d=>d.percution>=now&&d.percution<=e48).sort((a,b)=>a.percution-b.percution);
-  const done=D.filter(d=>st(d.percution)==="done").sort((a,b)=>b.percution-a.percution);
   const urg=up.filter(d=>st(d.percution)==="urgent");
   const b=document.getElementById("urgBanner");
   if(urg.length){b.classList.add("show");document.getElementById("urgN").textContent=urg.length;}else b.classList.remove("show");
@@ -1403,11 +1350,6 @@ function rAcc(){
   document.getElementById("badge48").textContent=up.length;
   document.getElementById("c48h").textContent=`${up.length} dossier${up.length>1?"s":""}`;
   document.getElementById("l48").innerHTML=up.length?up.map((d,i)=>cardHTML(d,i)).join(""):`<div class="empty"><span class="ei">✅</span>Aucune percution dans les 48 prochaines heures</div>`;
-  // Section percutés
-  const doneEl=document.getElementById("cDone");
-  const lDoneEl=document.getElementById("lDone");
-  if(doneEl) doneEl.textContent=`${done.length} dossier${done.length>1?"s":""}`;
-  if(lDoneEl) lDoneEl.innerHTML=done.length?done.map((d,i)=>cardHTML(d,i)).join(""):`<div class="empty" style="opacity:.4"><span class="ei">📭</span>Aucun dossier percuté</div>`;
   if(urg.length)checkAlarm(urg);
 }
 function rDos(){
@@ -1479,9 +1421,7 @@ async function saveOnglet(){
   res.innerHTML=`<span style="color:var(--amber)">Chargement en cours...</span>`;
   // Tester l'URL
   let txt=null;
-  // GAS proxy (no CORS)
-  try{const r=await fetch("https://api.allorigins.win/raw?url="+encodeURIComponent("https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec"),{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("error")&&!t.startsWith("{"))txt=t;}}catch(e){}
-  if(!txt){try{const r=await fetch(url,{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
+  try{const r=await fetch(url,{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}
   if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(url),{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
   if(!txt){res.innerHTML=`<span style="color:var(--red)">❌ Impossible de charger ce lien. Vérifiez qu'il est bien publié.</span>`;return;}
   // Parser pour compter les lignes
@@ -1638,23 +1578,36 @@ async function loadAllOnglets(){
   return result.sort((a,b)=>a.label.localeCompare(b.label));
 }
 
+function parseCSVLine(line,sep){
+  if(sep!==",") return line.split(sep).map(x=>x.replace(/^"|"$/g,"").trim());
+  const result=[];let cur="";let inQ=false;
+  for(let i=0;i<line.length;i++){
+    const ch=line[i];
+    if(ch==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}
+    else if(ch===','&&!inQ){result.push(cur.trim());cur="";}
+    else cur+=ch;
+  }
+  result.push(cur.trim());
+  return result;
+}
+
 function parseCsvToDossiers(txt){
   txt=txt.replace(/^\uFEFF/,"");
   const lines=txt.trim().split(/\r?\n/);if(lines.length<2)return[];
   const firstLine=lines[0];
   const sep=firstLine.includes("\t")?"\t":firstLine.includes(";")?";":",";
   const norm=s=>s.replace(/"/g,"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-  const H=firstLine.split(sep).map(norm);
+  const H=parseCSVLine(firstLine,sep).map(norm);
   const itech=H.findIndex(h=>h.includes("technicien")||h.includes("nom tech")||h==="nom");
   const iap=H.findIndex(h=>h.includes("act")||h.includes("prod"));
-  const ind=H.findIndex(h=>h.replace(/[^a-z]/g,"")==="nd");
+  const ind=H.findIndex(h=>norm(h)==="nd"||h==="nd");
   const ipl=H.findIndex(h=>h.includes("planifi"));
-  const icp=H.findIndex(h=>h.replace(/[^a-z]/g,"")==="cp");
+  const icp=H.findIndex(h=>h==="cp");
   const ivil=H.findIndex(h=>h.includes("ville"));
-  const icre=H.findIndex(h=>h.includes("cree")||h.includes("creation")||h.includes("creee"));
+  const icre=H.findIndex(h=>h.includes("cree")||h.includes("creation"));
   const raw=[];
   for(let n=1;n<lines.length;n++){
-    const c=lines[n].split(sep).map(x=>x.replace(/"/g,"").trim());
+    const c=parseCSVLine(lines[n],sep);
     if(c.length<3)continue;
     const g=i=>i>=0?(c[i]||"").trim():"";
     const nd=g(ind).replace(/^0+/,"");
@@ -1731,18 +1684,36 @@ function drawLine(id,labels,values,color){
 
 // ─── REFRESH ───
 async function doRef(btn){
-  if(btn)btn.classList.add("loading");
+  if(!btn)return;btn.classList.add("loading");
   let txt=null;
-  // Debug: affiche le gid utilise
-  console.log("[doRef] Sync avec gid="+currentGid+" label="+currentSheetsLabel);
-  const DIRECT_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTp5akRIobYOz6JdfLBYIMs2K9dUZvwAdNu8-JWfmHzWKT4Srgv1-yDxM_3BB2ClXYQI9mutrRagcBD/pub?gid="+currentGid+"&single=true&output=csv";
-  const GAS="https://script.google.com/macros/s/AKfycbyyBidd7r37hc92YKdu-J5_bx4EYE0DvF4UuXDzNXHpd-bRK6QB8Ivq1LNxseOEZzoXnQ/exec?gid="+currentGid;
-  // Essai 1 : URL Sheets pub directe
-  if(!txt){try{const r=await fetch(DIRECT_URL,{signal:AbortSignal.timeout(15000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("<!"))txt=t;}else{console.warn("Sheets direct status:",r.status);}}catch(e){console.warn("Sheets direct:",e.message);}}
-  // Essai 2 : corsproxy.io
-  if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(DIRECT_URL),{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<"))txt=t;}else{console.warn("corsproxy status:",r.status);}}catch(e){console.warn("corsproxy:",e.message);}}
-  // Essai 3 : GAS proxy (nécessite redéploiement du script .gs)
-  if(!txt){try{const r=await fetch(GAS,{signal:AbortSignal.timeout(12000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("error")&&!t.startsWith("{"))txt=t;}else{console.warn("GAS status:",r.status);}}catch(e){console.warn("GAS:",e.message);}}
+  const url=getSheetsUrl();
+  const proxies=[
+    url,
+    "https://corsproxy.io/?"+encodeURIComponent(url),
+    "https://api.allorigins.win/raw?url="+encodeURIComponent(url),
+    "https://cors-anywhere.herokuapp.com/"+url,
+    "https://thingproxy.freeboard.io/fetch/"+url
+  ];
+  for(const u of proxies){
+    if(txt)break;
+    try{
+      const r=await fetch(u,{signal:AbortSignal.timeout(10000)});
+      if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("<!"))txt=t;}
+    }catch(e){}
+  }
+  const upEl=document.getElementById("lastUpdate");
+  if(txt){
+    parseAndLoad(txt);
+    const now=new Date().toLocaleTimeString("fr-FR");
+    document.getElementById("stxt").innerHTML=`Sync · <strong>${now}</strong> · <strong>${D.length}</strong> dossiers`;
+    if(upEl){upEl.textContent="Sync "+now;upEl.className="tb-update ok";}
+    toast("🔄 Données actualisées !","t-green");
+  }else{
+    if(upEl){upEl.textContent="Données locales";upEl.className="tb-update warn";}
+    toast("⚠️ Impossible de charger — vérifiez la publication Sheets","t-amber");
+  }
+  btn.classList.remove("loading");
+}
   const upEl=document.getElementById("lastUpdate");
   if(txt){
     parseAndLoad(txt);
@@ -1754,28 +1725,26 @@ async function doRef(btn){
     if(upEl){upEl.textContent="Données locales";upEl.className="tb-update warn";}
     toast("⚠️ Données locales");
   }
-  if(btn)btn.classList.remove("loading");
+  btn.classList.remove("loading");
 }
 function parseAndLoad(txt){
   txt=txt.replace(/^\uFEFF/,"");
   const lines=txt.trim().split(/\r?\n/);
-  console.log("[parseAndLoad] Lignes CSV recues:",lines.length,"| Ligne 1:",lines[0],"| Ligne 2:",lines[1]||"");
   if(lines.length<2)return;
-  // Détecte séparateur : TAB en priorité, puis ; puis ,
   const firstLine=lines[0];
   const sep=firstLine.includes("\t")?"\t":firstLine.includes(";")?";":",";
   const norm=s=>s.replace(/"/g,"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-  const H=firstLine.split(sep).map(norm);
-  const ipl=H.findIndex(h=>h.includes("planifi"));
-  const itech=H.findIndex(h=>h.includes("technicien")||h.includes("nom tech")||h==="nom");
-  const iap=H.findIndex(h=>h.includes("act")||h.includes("prod"));
-  const icp=H.findIndex(h=>h.replace(/[^a-z]/g,"")==="cp");
-  const ivil=H.findIndex(h=>h.includes("ville"));
-  const ind=H.findIndex(h=>h.replace(/[^a-z]/g,"")==="nd");
-  const icre=H.findIndex(h=>h.includes("cree")||h.includes("creation")||h.includes("creee"));
+  const H=parseCSVLine(firstLine,sep).map(norm);
+  const ipl  = H.findIndex(h=>h.includes("planifi"));
+  const itech= H.findIndex(h=>h.includes("technicien")||h.includes("nom tech")||h==="nom");
+  const iap  = H.findIndex(h=>h.includes("act")||h.includes("prod"));
+  const icp  = H.findIndex(h=>h==="cp");
+  const ivil = H.findIndex(h=>h.includes("ville"));
+  const ind  = H.findIndex(h=>norm(h)==="nd"||h==="nd");
+  const icre = H.findIndex(h=>h.includes("cree")||h.includes("creation"));
   const raw=[];
   for(let n=1;n<lines.length;n++){
-    const c=lines[n].split(sep).map(x=>x.replace(/"/g,"").trim());
+    const c=parseCSVLine(lines[n],sep);
     if(c.length<3)continue;
     const g=i=>i>=0?(c[i]||"").trim():"";
     const nd=g(ind).replace(/^0+/,"");
@@ -1792,18 +1761,6 @@ function parseAndLoad(txt){
     });
   }
   if(raw.length>0){
-    // Filet de sécurité : si les nouvelles données donnent 0 dossiers dans les 48h
-    // alors que les anciennes en avaient, le parse a probablement raté les dates
-    const testD = raw.map(r=>{const pl=parseDate(r.planifiee);const cr=parseDate(r.date_creation);const percution=cr?new Date(cr.getTime()+(r.delai||48)*3600000):(pl?new Date(pl.getTime()+(r.delai||48)*3600000):new Date(Date.now()+48*3600000));return{...r,percution};});
-    const now=new Date(),e48=new Date(now.getTime()+48*3600000);
-    const newActive=testD.filter(d=>d.percution>=now&&d.percution<=e48).length;
-    const oldActive=D.filter(d=>{const h=(d.percution-now)/3600000;return h>=0&&h<=48;}).length;
-    if(newActive===0&&raw.length>3&&oldActive>0){
-      console.warn("⚠️ Parse suspect : 0 dossiers actifs sur",raw.length,"— données locales conservées. Headers:",H);
-      toast("⚠️ Format Sheets non reconnu — données locales conservées","t-amber");
-      if(btn)btn.classList.remove("loading");
-      return;
-    }
     initData(raw);updK();rAcc();
     updateGlobalIndicator();
     updateAlertBadge();
@@ -1841,7 +1798,7 @@ function toast(msg,cls=""){
 }
 
 // ─── INIT ───
-initData(RAW);updK();rAcc();setTimeout(checkGidStatus,800);
+initData(RAW);updK();rAcc();
 
 // ─── THEME MODE ───
 let isDayMode = localStorage.getItem("rTheme") === "day";
@@ -1857,7 +1814,7 @@ function toggleTheme(){
 applyTheme();
 
 // ─── SOUND ───
-
+let soundOn = localStorage.getItem("rSound") !== "off";
 function applySoundBtn(){
   const btn = document.getElementById("soundBtn");
   if(btn){ btn.textContent = soundOn ? "🔔" : "🔕"; btn.classList.toggle("active", !soundOn); }
@@ -1904,7 +1861,7 @@ function doQuickSearch(q){
 function openDossierFromSearch(id){
   toggleSearch();
   const d = D.find(x=>x.id===id);
-  if(d){ goV('dossiers', document.querySelector('.sbn[onclick*="dossiers"]')||document.querySelector('.mbn[onclick*="dossiers"]')); setTimeout(()=>openPopup(d.id), 200); }
+  if(d){ goV('dossiers', document.querySelector('.sbn[onclick*="dossiers"]')||document.querySelector('.mbn[onclick*="dossiers"]')); setTimeout(()=>openPopup(d), 200); }
 }
 
 // ─── INDICATEUR GLOBAL CA ───
@@ -2041,24 +1998,6 @@ const PAGES_EXT = {techniciens:"Gestion des techniciens", alertes:"Historique de
 
 // INIT — Afficher écran de connexion
 initProfil();
-
-// ── AUTO-LOAD AU DÉMARRAGE ──
-window.addEventListener("load", function(){
-  const gidSaved = localStorage.getItem("rgid");
-  const gidOK = gidSaved && gidSaved !== "901370948";
-  if(gidOK){
-    // GID configure par l utilisateur -> sync auto
-    setTimeout(()=>{ doRef(document.getElementById("btnRef")); }, 1500);
-  } else {
-    // Pas de GID -> on garde les donnees RAW, on signale
-    setTimeout(()=>{
-      const stxt = document.getElementById("stxt");
-      if(stxt) stxt.innerHTML = "<strong style=\"color:var(--amber)\">Onglet non configure</strong> &middot; Cliquez sur <strong>Onglet</strong> pour activer la synchro live";
-      const upEl = document.getElementById("lastUpdate");
-      if(upEl){ upEl.textContent="Donnees locales"; upEl.className="tb-update warn"; }
-    }, 600);
-  }
-});
 </script>
 </body>
 </html>
