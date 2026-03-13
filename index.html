@@ -1714,19 +1714,6 @@ async function doRef(btn){
   }
   btn.classList.remove("loading");
 }
-  const upEl=document.getElementById("lastUpdate");
-  if(txt){
-    parseAndLoad(txt);
-    const now=new Date().toLocaleTimeString("fr-FR");
-    document.getElementById("stxt").innerHTML=`Sync · <strong>${now}</strong> · <strong>${D.length}</strong> dossiers`;
-    if(upEl){upEl.textContent="Sync "+now;upEl.className="tb-update ok";}
-    toast("🔄 Données actualisées !","t-green");
-  }else{
-    if(upEl){upEl.textContent="Données locales";upEl.className="tb-update warn";}
-    toast("⚠️ Données locales");
-  }
-  btn.classList.remove("loading");
-}
 function parseAndLoad(txt){
   txt=txt.replace(/^\uFEFF/,"");
   const lines=txt.trim().split(/\r?\n/);
