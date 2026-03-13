@@ -339,7 +339,7 @@ const USERS={"435E2@LOB62":{"nom":"ALHAN","prenom":"Grynia","identifiant":"435E2
 const SHEETS_BASE="https://docs.google.com/spreadsheets/d/e/2PACX-1vRtxvbeKkUnyJ4CAi6kTtmQJtslPcbSsH4t8ZzUDfXcUIHFXrG3igkB5AvoyqntV8EzycO1hIDh-z4t/pub";
 // Même clé que le site superviseur → synchronisation automatique
 function getCurrentGid(){return localStorage.getItem("rgid")||localStorage.getItem("appGid")||"901370948";}
-function getCurrentGidLabel(){return localStorage.getItem("rgidLabel")||localStorage.getItem("appGidLabel")||"rets 12/03";}
+function getCurrentGidLabel(){const s=localStorage.getItem("rgidLabel")||localStorage.getItem("appGidLabel");if(s)return s;const n=new Date();return"rets "+String(n.getDate()).padStart(2,"0")+"/"+String(n.getMonth()+1).padStart(2,"0");}
 function getSheetsUrl(){return `${SHEETS_BASE}?gid=${getCurrentGid()}&single=true&output=csv`;}
 const NTFY_BASE="https://ntfy.sh/retsalerte_";
 
@@ -511,7 +511,7 @@ function updateApp(){
     const u=user.toUpperCase().trim();
     return t===u || t.startsWith(u+" ") || t.endsWith(" "+u) || t.includes(" "+u+" ");
   }):D;
-  const allUrg=D.filter(d=>st(d.percution)==="urgent");
+  const allUrg=myDoss.filter(d=>st(d.percution)==="urgent");
 
   // Header user
   const dispName=currentUserInfo?`${currentUserInfo.prenom} ${currentUserInfo.nom}`:user||"Mode consultation";
