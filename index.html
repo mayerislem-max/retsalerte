@@ -1683,10 +1683,34 @@ function drawLine(id,labels,values,color){
 async function doRef(btn){
   if(!btn)return;btn.classList.add("loading");
   let txt=null;
-  // Essai 1 : direct Google Sheets (CORS public)
-  try{const r=await fetch(getSheetsUrl(),{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}
-  // Essai 2 : proxy CORS public si direct échoue
-  if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(getSheetsUrl()),{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
+  const url=getSheetsUrl();
+  const proxies=[
+    url,
+    "https://corsproxy.io/?"+encodeURIComponent(url),
+    "https://api.allorigins.win/raw?url="+encodeURIComponent(url),
+    "https://cors-anywhere.herokuapp.com/"+url,
+    "https://thingproxy.freeboard.io/fetch/"+url
+  ];
+  for(const u of proxies){
+    if(txt)break;
+    try{
+      const r=await fetch(u,{signal:AbortSignal.timeout(10000)});
+      if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("<!"))txt=t;}
+    }catch(e){}
+  }
+  const upEl=document.getElementById("lastUpdate");
+  if(txt){
+    parseAndLoad(txt);
+    const now=new Date().toLocaleTimeString("fr-FR");
+    document.getElementById("stxt").innerHTML=`Sync · <strong>${now}</strong> · <strong>${D.length}</strong> dossiers`;
+    if(upEl){upEl.textContent="Sync "+now;upEl.className="tb-update ok";}
+    toast("🔄 Données actualisées !","t-green");
+  }else{
+    if(upEl){upEl.textContent="Données locales";upEl.className="tb-update warn";}
+    toast("⚠️ Impossible de charger — vérifiez la publication Sheets","t-amber");
+  }
+  btn.classList.remove("loading");
+}
   const upEl=document.getElementById("lastUpdate");
   if(txt){
     parseAndLoad(txt);
