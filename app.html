@@ -697,9 +697,6 @@ async function loadSheets(){
     toast("⚠ Impossible de charger — vérifiez la connexion","t-amber");
   }
 }
-  if(txt){parseAndLoad(txt);if(dot){dot.style.background="var(--green)";dot.style.boxShadow="0 0 6px var(--green)";}}
-  else{if(dot){dot.style.background="var(--amber)";dot.style.boxShadow="0 0 6px var(--amber)";}}
-}
 function parseAndLoad(txt){
   txt=txt.replace(/^\uFEFF/,"");
   const lines=txt.trim().split(/\r?\n/);
