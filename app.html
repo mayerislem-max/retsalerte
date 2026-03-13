@@ -668,8 +668,19 @@ async function loadSheets(){
   if(dot)dot.style.background="#ffcc00";
   const url=getSheetsUrl();
   let txt=null;
-  try{const r=await fetch(url,{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}
-  if(!txt){try{const r=await fetch("https://corsproxy.io/?"+encodeURIComponent(url),{signal:AbortSignal.timeout(8000)});if(r.ok){const t=await r.text();if(t&&t.length>20&&!t.startsWith("<"))txt=t;}}catch(e){}}
+  const proxies=[
+    url,
+    "https://corsproxy.io/?"+encodeURIComponent(url),
+    "https://api.allorigins.win/raw?url="+encodeURIComponent(url),
+    "https://thingproxy.freeboard.io/fetch/"+url
+  ];
+  for(const u of proxies){
+    if(txt)break;
+    try{const r=await fetch(u,{signal:AbortSignal.timeout(10000)});if(r.ok){const t=await r.text();if(t&&t.length>30&&!t.startsWith("<")&&!t.startsWith("<!"))txt=t;}}catch(e){}
+  }
+  if(txt){parseAndLoad(txt);if(dot){dot.className="sync-dot";}}
+  else{if(dot){dot.className="sync-dot err";}toast("⚠ Impossible de charger les données","t-amber");}
+}
   if(txt){parseAndLoad(txt);if(dot){dot.style.background="var(--green)";dot.style.boxShadow="0 0 6px var(--green)";}}
   else{if(dot){dot.style.background="var(--amber)";dot.style.boxShadow="0 0 6px var(--amber)";}}
 }
