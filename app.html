@@ -238,8 +238,7 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--ink);displa
       <div class="login-hint">Format : XXXXX@LOB62 (transmis par votre responsable)</div>
       <div id="loginError">Identifiant non reconnu. Verifiez et reessayez.</div>
       <button class="login-btn" onclick="doLogin()">ACCEDER A MES DOSSIERS</button>
-      <div class="login-divider"><span>ou</span></div>
-      <button class="login-guest" onclick="doGuest()">Voir tous les dossiers (mode consultation)</button>
+
     </div>
 
     <div class="login-footer">RETSALERTE v2.0 &mdash; LOB62 FTTH</div>
@@ -258,7 +257,7 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--ink);displa
     <div class="hdr-right">
       <div class="sync-dot" id="syncDot" title="Sync auto 2min"></div>
       <button class="hdr-btn" id="gidAppBtn" onclick="openAppGidModal()" title="Changer l'onglet du jour" style="display:none;">📅</button>
-      <button class="hdr-btn" id="notifBtn" onclick="toggleNotif()" title="Notifications">🔔</button>
+      <button class="hdr-btn" id="notifBtn" onclick="toggleNotif()" title="Notifications">🔔</button><button class="hdr-btn" onclick="doRefreshApp()" title="Actualiser" id="refreshBtn">↻</button>
     </div>
   </div>
   <div id="noGidBanner" style="display:none;background:rgba(255,204,0,.12);border-bottom:1px solid rgba(255,204,0,.3);padding:8px 16px;font-size:.7rem;color:#ffcc00;font-family:'JetBrains Mono',monospace;text-align:center;">
@@ -470,6 +469,7 @@ async function checkNtfy(topic){
         const msg=JSON.parse(line);
         if(msg.event==="message"){
           showPushBanner(msg.title||"Alerte superviseur",msg.message||msg.body||"");
+          playAlertSound();
           if(Notification.permission==="granted"){
             new Notification(msg.title||"RetsAlerte - Alerte",{
               body:msg.message||msg.body||"",
@@ -616,10 +616,31 @@ function confirmCloture(){
   clotures[modalDossier.id]={status:labels[modalStatus],who:currentUser||"Consul",at:now,note};
   saveClotures();closeModal();
   toast(`✓ ${labels[modalStatus]} - ${modalDossier.id}`,"t-green");
+  // Remonter la cloture DEF au site via ntfy
+  if(modalStatus==="cloture"){
+    const payload={type:"CLOTURE_DEF",dossier:modalDossier.id,tech:currentUser||"",ville:modalDossier.ville||"",at:now,note};
+    const msg=`CLOTURE DEF - Dossier ${modalDossier.id} - ${modalDossier.ville||""} - ${currentUser||""} - ${now}`;
+    const titleClean="Cloture DEF - 0"+modalDossier.id;
+    fetch("https://ntfy.sh/retsalerte_CLOTURES",{
+      method:"POST",
+      headers:{"Title":titleClean,"Priority":"default","Tags":"white_check_mark","Content-Type":"text/plain; charset=utf-8"},
+      body:msg
+    }).catch(()=>{});
+  }
   updateApp();
 }
 
-// ── TABS ──
+// ── REFRESH MANUEL ──
+async function doRefreshApp(){
+  const btn=document.getElementById("refreshBtn");
+  if(btn){btn.style.opacity="0.4";btn.style.pointerEvents="none";}
+  await loadSheets();
+  updateApp();
+  toast("🔄 Données actualisées !","t-green");
+  if(btn){btn.style.opacity="";btn.style.pointerEvents="";}
+}
+
+
 function goTab(id,btn){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));
   document.getElementById("s-"+id).classList.add("on");
