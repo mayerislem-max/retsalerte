@@ -1270,8 +1270,10 @@ function cardHTML(d,i){
   const s=st(d.percution),c=cd(d.percution),sc={urgent:"su",warning:"sw",ok:"sk",done:"sd"}[s];
   const blink=(c.mins>=0&&c.mins<=15)?" blink":"";
   const alertSent=sentAlerts[d.id];
+  const appCl=appClotures[d.id];
   const alertBtn=`<button class="alert-btn${alertSent?" sent":""}" onclick="event.stopPropagation();openAlertModal('${d.id}')" title="Envoyer alerte au technicien">${alertSent?"✓ Alerte envoyee":"🚨 Alerter"}</button>`;
   const waBtn=`<button class="btn-wa-mini" onclick="event.stopPropagation();sendWhatsApp(D.find(x=>x.id==='${d.id}'))" title="WhatsApp">📱</button>`;
+  const appClBadge=appCl?`<span style="background:rgba(48,209,88,.15);border:1px solid rgba(48,209,88,.3);color:#30d158;border-radius:8px;padding:2px 8px;font-size:.6rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">✓ CLO DEF APP · ${appCl.who} · ${appCl.at}</span>`:"";
   const creeLbl = d.date_creation ? `<span class="cmeta-cree">📝 Créé le ${d.date_creation}</span>` : "";
   return`<div class="card ${sc}" style="animation:cardIn .4s cubic-bezier(.34,1.1,.64,1) ${i*.045}s both" onclick="openPopup('${d.id}')">
     <div class="cbar"></div>
@@ -1282,6 +1284,7 @@ function cardHTML(d,i){
         <div class="ctech">👷 ${d.tech}</div>
         <div class="cmeta"><span>📍 ${d.ville}${d.cp&&d.cp!=="—"?" ("+d.cp+")":""}</span><span>📅 ${d.planifiee||"—"}</span><span>⚡ ${fm(d.percution)}</span></div>
         ${creeLbl}
+        ${appClBadge}
         <div class="card-actions" style="margin-top:8px;display:flex;gap:6px;align-items:center;">${alertBtn}${waBtn}</div>
       </div>
     </div>
@@ -1805,7 +1808,44 @@ function toast(msg,cls=""){
 // ─── INIT ───
 initData(RAW);updK();rAcc();
 
-// ─── THEME MODE ───
+// ─── POLL CLOTURES depuis app techniciens ───
+let _cloturesSince=Math.floor(Date.now()/1000)-300;
+const appClotures=JSON.parse(localStorage.getItem("rAppClotures")||"{}");
+function saveAppClotures(){localStorage.setItem("rAppClotures",JSON.stringify(appClotures));}
+async function pollAppClotures(){
+  try{
+    const r=await fetch(`https://ntfy.sh/retsalerte_CLOTURES/json?since=${_cloturesSince}&poll=1`,{signal:AbortSignal.timeout(8000)});
+    if(!r.ok)return;
+    const txt=await r.text();
+    _cloturesSince=Math.floor(Date.now()/1000);
+    const lines=txt.trim().split("\n").filter(Boolean);
+    let newCount=0;
+    for(const line of lines){
+      try{
+        const msg=JSON.parse(line);
+        if(msg.event!=="message")continue;
+        const body=msg.message||"";
+        // Format: CLOTURE DEF - Dossier XXXXXX - VILLE - TECH - HH:MM
+        const m=body.match(/Dossier (\d+).*?-\s*([^-]+?)\s*-\s*(\w+)\s*-\s*(\d{2}:\d{2})/);
+        if(m){
+          const id=m[1];const ville=m[2].trim();const tech=m[3].trim();const at=m[4];
+          if(!appClotures[id]){
+            appClotures[id]={status:"Cloture DEF",who:tech,ville,at,source:"app"};
+            saveAppClotures();newCount++;
+          }
+        }
+      }catch(e){}
+    }
+    if(newCount>0){
+      toast(`✅ ${newCount} cloture(s) DEF reçue(s) de l'app`,"t-green");
+      updK();rAcc();if(document.getElementById("v-dossiers").classList.contains("on"))rDos();
+    }
+  }catch(e){}
+}
+setInterval(pollAppClotures,60*1000);
+pollAppClotures();
+
+
 let isDayMode = localStorage.getItem("rTheme") === "day";
 function applyTheme(){
   document.body.classList.toggle("day-mode", isDayMode);
